@@ -30,7 +30,7 @@ const Header = () => {
                   ? 'Поиск запчастей, например «фильтр»'
                   : 'Введите ваш VIN'
               }
-              className="w-full h-10 pl-10 pr-4 border border-[#DDDDDD80] rounded-md text-sm focus:outline-none focus:border-[#62C382]"
+              className="w-full h-[42px] pl-10 pr-4 border border-[#DDDDDD80] rounded-md text-sm focus:outline-none focus:border-[#62C382]"
             />
             <Search className="absolute left-3 top-1/2 -translate-y-1/2" height="16" width="16" color="#4EBC73" />
           </div>
