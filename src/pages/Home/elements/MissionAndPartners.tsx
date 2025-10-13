@@ -10,12 +10,12 @@ const MissionAndPartners = () => {
   ];
 
   return (
-    <div className="w-full px-2 py-6 flex flex-col items-start gap-5 overflow-hidden">
+    <div className="w-full px-4 py-6 flex flex-col items-start gap-3 overflow-hidden">
       <p className="text-3xl text-black font-semibold">
         Магазин <span className="text-[#4EBC73]">Phaeton</span>
       </p>
 
-      <div className="flex flex-col gap-4 w-full">
+      <div className="flex flex-col gap-3 w-full">
         {/* Миссия */}
         <div className="flex flex-col gap-1">
           <p className="text-lg text-[#62C382] font-semibold">Миссия и цели</p>

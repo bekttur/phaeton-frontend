@@ -15,14 +15,14 @@ const Header = () => {
           <span className='text-xl font-semibold text-[#62C382]'>Phaeton</span>
           <button
             onClick={() => setIsMenuOpen(true)}
-            className='w-fit h-fit rounded-md py-2.5 px-3 bg-[#DEF2E3] flex items-center justify-center'
+            className='w-fit h-fit rounded-md py-2 px-2.5 bg-[#DEF2E3] flex items-center justify-center'
           >
             <Menu width={24} height={24} color='#7ED399' />
           </button>
         </div>
       </div>
 
-      <div className='w-full pt-16 px-2 pb-3'>
+      <div className='w-full pt-16 px-2'>
         {activeTab !== 'model' ? (
           <div className='relative'>
             <input

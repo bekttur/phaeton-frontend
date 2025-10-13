@@ -30,7 +30,7 @@ const CatalogCategories = () => {
   ];
 
   return (
-    <div className='w-full h-fit flex flex-col gap-2 px-2 py-4 bg-[#F6F6F6]'>
+    <div className='w-full h-fit flex flex-col gap-2 px-2 py-3 bg-[#F6F6F6]'>
       <div className='w-full grid grid-cols-2 gap-2'>
         {data.map((item, idx) => (
           <div

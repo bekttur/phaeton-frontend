@@ -17,7 +17,7 @@ const FindByBrand = () => {
   return (
     <div className='w-full h-fit flex flex-col gap-4 px-2 py-4 bg-[#F6F6F6]'>
       <span className='text-xl font-bold'>Найдите запчасти по марке</span>
-      <div className='w-full grid grid-cols-2 gap-3'>
+      <div className='w-full grid grid-cols-2 gap-2'>
         {repeatedBrands.map((brand, i) => (
           <div
             key={i}
