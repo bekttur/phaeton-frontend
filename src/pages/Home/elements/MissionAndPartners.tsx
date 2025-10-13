@@ -42,7 +42,7 @@ const MissionAndPartners = () => {
               {[...logos, ...logos, ...logos].map((logo, index) => (
                 <img
                   key={index}
-                  src={logo}
+                  src={`${import.meta.env.BASE_URL}${logo}`}
                   alt={`partner-${index}`}
                   className="w-fit h-[60px] object-contain opacity-90 hover:opacity-100 transition"
                 />
