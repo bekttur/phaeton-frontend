@@ -43,29 +43,43 @@ const Header = () => {
           </div>
         ) : (
           <div className='grid grid-cols-2 gap-2'>
-            <select
-              defaultValue='marka'
-              className='h-10 px-3 border border-[#DDDDDD80] rounded-md text-sm focus:outline-none focus:border-[#62C382]'
-            >
-              <option disabled value='marka'>
-                Марка
-              </option>
-              <option value='toyota'>Toyota</option>
-              <option value='mitsubishi'>Mitsubishi</option>
-              <option value='audi'>Audi</option>
-            </select>
+            <div className='relative'>
+              <select
+                defaultValue='marka'
+                className='appearance-none h-10 w-full px-3 border border-[#DDDDDD80] rounded-md text-sm focus:outline-none focus:border-[#62C382] bg-white'
+              >
+                <option disabled value='marka'>
+                  Марка
+                </option>
+                <option value='toyota'>Toyota</option>
+                <option value='mitsubishi'>Mitsubishi</option>
+                <option value='audi'>Audi</option>
+              </select>
+              <img
+                src={`${import.meta.env.BASE_URL}icon/chevron-down.svg`}
+                alt='chevron'
+                className='pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3'
+              />
+            </div>
 
-            <select
-              defaultValue='model'
-              className='h-10 px-3 border border-[#DDDDDD80] rounded-md text-sm focus:outline-none focus:border-[#62C382]'
-            >
-              <option disabled value='model'>
-                Модель
-              </option>
-              <option value='camry'>Camry</option>
-              <option value='outlander'>Outlander</option>
-              <option value='a6'>A6</option>
-            </select>
+            <div className='relative'>
+              <select
+                defaultValue='model'
+                className='appearance-none h-10 w-full px-3 border border-[#DDDDDD80] rounded-md text-sm focus:outline-none focus:border-[#62C382] bg-white'
+              >
+                <option disabled value='model'>
+                  Модель
+                </option>
+                <option value='camry'>Camry</option>
+                <option value='outlander'>Outlander</option>
+                <option value='a6'>A6</option>
+              </select>
+              <img
+                src={`${import.meta.env.BASE_URL}icon/chevron-down.svg`}
+                alt='chevron'
+                className='pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3'
+              />
+            </div>
           </div>
         )}
 
