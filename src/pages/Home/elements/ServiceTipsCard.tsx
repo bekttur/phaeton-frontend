@@ -7,9 +7,9 @@ interface VideoPreview {
 
 const ServiceTipsCard = () => {
   const previews: VideoPreview[] = [
-    { id: 1, youtubeId: 'kOhl3qY4fa0' },
-    { id: 2, youtubeId: 'xrT4R5C1mBY' },
-    { id: 3, youtubeId: '_rJk9-wxepg' },
+    { id: 1, youtubeId: 'VJxppgsHjF8' },
+    { id: 2, youtubeId: 'WWEs82u37Mw' },
+    { id: 3, youtubeId: 'RYHoyBhcA_A' },
   ];
 
   return (
@@ -40,7 +40,7 @@ const ServiceTipsCard = () => {
           {/* Основное видео */}
           <div className='relative rounded-md overflow-hidden'>
             <img
-              src={`https://img.youtube.com/vi/phELv70EU2A/maxresdefault.jpg`}
+              src={`https://img.youtube.com/vi/c5LeLdbK_-A/maxresdefault.jpg`}
               alt='main video'
               className='w-full h-full object-cover'
             />
