@@ -46,7 +46,7 @@ const ServiceTipsCard = () => {
             />
             <div className='absolute inset-0 flex items-center justify-center'>
               <div className='bg-white/90 rounded-full p-3 flex items-center justify-center'>
-                <img src='/icon/play.svg' alt='play' className='w-5 h-6 ml-1' />
+                <img src={`${import.meta.env.BASE_URL}icon/play.svg`} alt='play' className='w-5 h-6 ml-1' />
               </div>
             </div>
           </div>

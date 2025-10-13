@@ -4,11 +4,11 @@ const FindByBrand = () => {
   const brands = [
     {
       name: 'Mitsubishi',
-      img: '/brands/mitsubishi.png',
+      img: 'brands/mitsubishi.png',
       width: 33,
       height: 29,
     },
-    { name: 'Audi', img: '/brands/audi.png', width: 47, height: 26 },
+    { name: 'Audi', img: 'brands/audi.png', width: 47, height: 26 },
   ];
 
   // Повторяем список 5 раз
@@ -25,7 +25,7 @@ const FindByBrand = () => {
           >
             <img
               className='object-contain'
-              src={brand.img}
+              src={`${import.meta.env.BASE_URL}${brand.img}`}
               alt={brand.name}
               width={brand.width}
               height={brand.height}

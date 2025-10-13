@@ -3,28 +3,28 @@ import Button from '../../../components/ui/Button/Button';
 const CatalogCategories = () => {
   const data = [
     {
-      img: '/categories/1.png',
+      img: 'categories/1.png',
       title: 'Ходовая часть',
     },
     {
-      img: '/categories/2.png',
+      img: 'categories/2.png',
       title: 'Электрика и свет',
     },
 
     {
-      img: '/categories/3.png',
+      img: 'categories/3.png',
       title: 'Колёса и шины',
     },
     {
-      img: '/categories/4.png',
+      img: 'categories/4.png',
       title: 'Топливная система',
     },
     {
-      img: '/categories/5.png',
+      img: 'categories/5.png',
       title: 'Фильтры и расходники',
     },
     {
-      img: '/categories/6.png',
+      img: 'categories/6.png',
       title: 'Кузов и интерьер',
     },
   ];
@@ -40,7 +40,7 @@ const CatalogCategories = () => {
             <div
               className={`w-[100%] h-[100%] relative bg-contain bg-no-repeat px-2 py-1.5`}
               style={{
-                backgroundImage: `url(${item.img})`,
+                backgroundImage: `url(${import.meta.env.BASE_URL}${item.img})`,
                 backgroundPosition: '15px 0px',
               }}
             >

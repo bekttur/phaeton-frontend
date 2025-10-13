@@ -59,7 +59,7 @@ const HeroCarousel = () => {
               key={i}
               className='shrink-0 w-full min-h-[270px] h-auto snap-start font-exo bg-cover bg-center rounded-lg'
               style={{
-                backgroundImage: `url(${item.img})`,
+                backgroundImage: `url(${import.meta.env.BASE_URL}${item.img})`,
               }}
             >
               <div className='w-full h-full flex flex-col items-start justify-between py-5 px-3 rounded-lg'>
