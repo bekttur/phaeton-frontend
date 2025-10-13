@@ -10,28 +10,28 @@ const BottomNav = () => {
 
 	  <div className='w-full flex flex-col items-center'>
         <div className=' rounded-md bg-[#F6F6F6] w-10 h-10 flex items-center justify-center'>
-          <img className='w-5 h-5' src='/icon/local_mall.svg' alt='' />
+          <img className='w-5 h-5' src='icon/local_mall.svg' alt='' />
         </div>
         <p className='text-sm mt-2'>Каталог</p>
       </div>
 
 	  <div className='w-full flex flex-col items-center'>
         <div className=' rounded-md bg-[#F6F6F6] w-10 h-10 flex items-center justify-center'>
-          <img className='w-5 h-5' src='/icon/shopping_cart.svg' alt='' />
+          <img className='w-5 h-5' src='icon/shopping_cart.svg' alt='' />
         </div>
         <p className='text-sm mt-2'>Корзина</p>
       </div>
 
 	  <div className='w-full flex flex-col items-center'>
         <div className=' rounded-md bg-[#F6F6F6] w-10 h-10 flex items-center justify-center'>
-          <img className='w-5 h-5' src='/icon/favorite.svg' alt='' />
+          <img className='w-5 h-5' src='icon/favorite.svg' alt='' />
         </div>
         <p className='text-sm mt-2'>Избранное</p>
       </div>
 
 	  <div className='w-full flex flex-col items-center'>
         <div className=' rounded-md bg-[#F6F6F6] w-10 h-10 flex items-center justify-center'>
-          <img className='w-5 h-5' src='/icon/car_gear.svg' alt='' />
+          <img className='w-5 h-5' src='icon/car_gear.svg' alt='' />
         </div>
         <p className='text-sm mt-2'>Гараж</p>
       </div>

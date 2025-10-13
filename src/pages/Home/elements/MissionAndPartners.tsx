@@ -1,12 +1,12 @@
 const MissionAndPartners = () => {
   const logos = [
-    '/logo/partners/1.svg',
-    '/logo/partners/2.svg',
-    '/logo/partners/3.svg',
-    '/logo/partners/4.svg',
-    '/logo/partners/5.svg',
-    '/logo/partners/6.svg',
-    '/logo/partners/7.svg',
+    'logo/partners/1.svg',
+    'logo/partners/2.svg',
+    'logo/partners/3.svg',
+    'logo/partners/4.svg',
+    'logo/partners/5.svg',
+    'logo/partners/6.svg',
+    'logo/partners/7.svg',
   ];
 
   return (

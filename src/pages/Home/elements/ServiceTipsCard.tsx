@@ -66,7 +66,7 @@ const ServiceTipsCard = () => {
                 <div className='absolute inset-0 flex items-center justify-center'>
                   <div className='bg-white/90 rounded-full p-3 flex items-center justify-center'>
                     <img
-                      src='/icon/play.svg'
+                      src='icon/play.svg'
                       alt='play'
                       className='w-3 h-4 ml-1'
                     />
