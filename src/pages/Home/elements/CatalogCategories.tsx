@@ -35,13 +35,13 @@ const CatalogCategories = () => {
         {data.map((item, idx) => (
           <div
             key={idx}
-            className='w-[166px] h-[176px] rounded-[6px] bg-[#efefef] border border-[#DCE0E5]'
+            className='min-w-[166px] min-h-[176px] rounded-[6px] bg-[#efefef] border border-[#DCE0E5]'
           >
             <div
               className={`w-[100%] h-[100%] relative bg-contain bg-no-repeat px-2 py-1.5`}
               style={{
                 backgroundImage: `url(${import.meta.env.BASE_URL}${item.img})`,
-                backgroundPosition: '15px 0px',
+                backgroundPosition: 'bottom right',
               }}
             >
               <span className='text-base font-semibold'>{item.title}</span>
