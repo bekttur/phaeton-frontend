@@ -62,7 +62,7 @@ const HeroCarousel = () => {
                 backgroundImage: `url(${import.meta.env.BASE_URL}${item.img})`,
               }}
             >
-              <div className='w-full h-full flex flex-col items-start justify-between py-1 px-3 rounded-lg'>
+              <div className='w-full h-full flex flex-col items-start justify-between pt-1 pb-3 px-3 rounded-lg'>
                 <p className='text-white text-[20px]/[36px] font-bold capitalize '>
                   {item.title}
                 </p>
