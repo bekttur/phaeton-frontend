@@ -9,7 +9,7 @@ const BottomNav = () => {
             alt=''
           />
         </div>
-        <p className='text-xs mt-1'>Главное</p>
+        <p className='text-xs font-semibold mt-1'>Главное</p>
       </div>
 
       <div className='w-full flex flex-col items-center'>
@@ -20,7 +20,7 @@ const BottomNav = () => {
             alt=''
           />
         </div>
-        <p className='text-xs mt-1'>Каталог</p>
+        <p className='text-xs font-semibold mt-1'>Каталог</p>
       </div>
 
       <div className='w-full flex flex-col items-center'>
@@ -31,7 +31,7 @@ const BottomNav = () => {
             alt=''
           />
         </div>
-        <p className='text-xs mt-1'>Корзина</p>
+        <p className='text-xs font-semibold mt-1'>Корзина</p>
       </div>
 
       <div className='w-full flex flex-col items-center'>
@@ -42,7 +42,7 @@ const BottomNav = () => {
             alt=''
           />
         </div>
-        <p className='text-xs mt-1'>Гараж</p>
+        <p className='text-xs font-semibold mt-1'>Гараж</p>
       </div>
     </div>
   );
