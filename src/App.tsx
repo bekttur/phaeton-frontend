@@ -6,7 +6,7 @@ import Header from './components/Header/Header';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/REPO">
       <Header />
       <main>
         <AppRoutes />

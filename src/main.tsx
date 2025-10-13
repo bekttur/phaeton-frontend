@@ -4,11 +4,14 @@ import './index.css';
 import App from './App.tsx';
 import '@radix-ui/themes/styles.css';
 import { Theme } from '@radix-ui/themes';
+import { HashRouter } from 'react-router-dom';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Theme>
-      <App />
+      <HashRouter>
+        <App />
+      </HashRouter>
     </Theme>
   </StrictMode>
 );
