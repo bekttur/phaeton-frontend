@@ -1,7 +1,4 @@
-import {
-  X,
-  ChevronRight,
-} from 'lucide-react';
+import { X, ChevronRight } from 'lucide-react';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -19,6 +16,10 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
       icon: 'icon/mobile-menu/language.svg',
       title: 'Язык',
       subtitle: 'Русский',
+    },
+    {
+      icon: 'icon/mobile-menu/favorite.svg',
+      title: 'Избранное',
     },
     {
       icon: 'icon/mobile-menu/smart_toy.svg',
