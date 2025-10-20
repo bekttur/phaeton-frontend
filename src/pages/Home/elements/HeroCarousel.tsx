@@ -1,23 +1,35 @@
 import { useEffect, useRef, useState } from 'react';
 
 const HeroCarousel = () => {
+  const [isLg, setIsLg] = useState(false);
+  const [current, setCurrent] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Проверяем, большой ли экран
+    const checkScreenSize = () => {
+      setIsLg(window.innerWidth >= 1024); // lg breakpoint (tailwind)
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
   const data = [
     {
       title: 'AI-ассистент запчастей',
-      img: 'images/hero.png',
+      img: isLg ? 'images/hero-lg.png' : 'images/hero.png',
     },
     {
       title: 'AI-ассистент запчастей',
-      img: 'images/hero.png',
+      img: isLg ? 'images/hero-lg.png' : 'images/hero.png',
     },
     {
       title: 'AI-ассистент запчастей',
-      img: 'images/hero.png',
+      img: isLg ? 'images/hero-lg.png' : 'images/hero.png',
     },
   ];
-
-  const [current, setCurrent] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -26,19 +38,17 @@ const HeroCarousel = () => {
     const handleScroll = () => {
       const { scrollLeft, clientWidth } = container;
       const index = Math.round(scrollLeft / clientWidth);
-      if (index !== current) {
-        setCurrent(index);
-      }
+      setCurrent(index);
     };
 
     container.addEventListener('scroll', handleScroll, { passive: true });
     return () => container.removeEventListener('scroll', handleScroll);
-  }, [current]);
+  }, []);
 
   return (
-    <div className='relative w-full h-auto px-2 bg-[#F6F6F6]'>
-      <div className='absolute top-3 right-4 flex gap-1 z-10'>
-        {data.map((_: any, i: number) => (
+    <div className='relative w-full h-full lg:h-full px-2 lg:px-0 bg-[#F6F6F6] lg:bg-transparent'>
+      <div className='absolute top-3 lg:top-5 right-4 lg:right-5 flex gap-1 z-10'>
+        {data.map((_, i) => (
           <span
             key={i}
             className={`w-1.5 h-1.5 rounded-full transition ${
@@ -48,31 +58,28 @@ const HeroCarousel = () => {
         ))}
       </div>
 
-      {/* Контент */}
       <div
         ref={containerRef}
-        className={`flex overflow-x-auto snap-x snap-mandatory scrollbar-hide h-full`}
+        className='flex overflow-x-auto snap-x snap-mandatory scrollbar-hide h-full w-full rounded-lg'
       >
-        {data.length > 0 &&
-          data.map((item: any, i: number) => (
-            <div
-              key={i}
-              className='shrink-0 w-full min-h-[270px] h-auto snap-start font-exo bg-cover bg-center bg-no-repeat rounded-lg'
-              style={{
-                backgroundImage: `url(${import.meta.env.BASE_URL}${item.img})`,
-              }}
-            >
-              <div className='w-full h-full flex flex-col items-start justify-between pt-1 pb-3 px-3 rounded-lg'>
-                <p className='text-white text-[20px]/[36px] font-bold capitalize '>
-                  {item.title}
-                </p>
-
-                <button className='w-fit h-fit px-2.5 py-1.5 rounded-[4.5px] bg-[#4EBC73] text-white text-sm'>
-                  Подобрать запчасть
-                </button>
-              </div>
+        {data.map((item, i) => (
+          <div
+            key={i}
+            className='shrink-0 min-w-full min-h-[270px] lg:min-h-[560px] h-auto snap-start font-exo bg-cover lg:bg-cover bg-center bg-no-repeat rounded-lg'
+            style={{
+              backgroundImage: `url(${import.meta.env.BASE_URL}${item.img})`,
+            }}
+          >
+            <div className='w-full h-full flex flex-col items-start justify-between pt-1 lg:pt-5 pb-3 lg:pb-8 px-3 lg:px-10 rounded-lg'>
+              <p className='text-white text-[20px]/[36px] font-bold capitalize'>
+                {item.title}
+              </p>
+              <button className='w-fit h-fit px-2.5 py-1.5 rounded-[4.5px] bg-[#4EBC73] text-white text-sm'>
+                Подобрать запчасть
+              </button>
             </div>
-          ))}
+          </div>
+        ))}
       </div>
     </div>
   );

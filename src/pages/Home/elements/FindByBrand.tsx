@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import Button from '../../../components/ui/Button/Button';
 
 const FindByBrand = () => {
@@ -11,14 +12,34 @@ const FindByBrand = () => {
     { name: 'Audi', img: 'brands/audi.png', width: 47, height: 26 },
   ];
 
-  // Повторяем список 5 раз
+  // Повторяем список
   const repeatedBrands = Array(5).fill(brands).flat();
+  const repeatedBrandsLg = Array(9).fill(brands).flat(); 
+
+  const [isLg, setIsLg] = useState(false);
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsLg(window.innerWidth >= 1024); 
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
+
+  const data = isLg ? repeatedBrandsLg : repeatedBrands;
 
   return (
-    <div className='w-full h-fit flex flex-col gap-4 px-2 py-4 bg-[#F6F6F6]'>
-      <span className='text-xl font-bold'>Найдите запчасти по марке</span>
-      <div className='w-full grid grid-cols-2 gap-2'>
-        {repeatedBrands.map((brand, i) => (
+    <div className='w-full h-fit flex flex-col gap-4 px-2 py-4 bg-[#F6F6F6] lg:px-32 lg:pt-20'>
+      <span className='text-xl lg:text-3xl font-bold'>Найдите запчасти по марке</span>
+      <div
+        className={`w-full grid ${
+          isLg ? 'grid-cols-6' : 'grid-cols-2'
+        } gap-2 lg:gap-4`}
+      >
+        {data.map((brand, i) => (
           <div
             key={i}
             className='w-full h-[60px] rounded-lg bg-white border border-[#DCE0E5] flex items-center justify-center px-3 gap-4'
@@ -38,8 +59,8 @@ const FindByBrand = () => {
       </div>
 
       <div className='w-full flex items-center justify-center'>
-        <Button className='w-full text-base rounded-md'>
-          Открыть полный список
+        <Button className='w-full text-base rounded-md bg-[#E3E6E8] hover:bg-[#c9cccdb9]'>
+          <span className='text-[#14181F]'>Открыть полный список</span>
         </Button>
       </div>
     </div>

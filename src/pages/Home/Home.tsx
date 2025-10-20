@@ -1,13 +1,13 @@
 import CatalogCategories from './elements/CatalogCategories'
 import FindByBrand from './elements/FindByBrand'
-import HeroCarousel from './elements/HeroCarousel'
+import HeroSection from './elements/HeroSection'
 import MissionAndPartners from './elements/MissionAndPartners'
 import ServiceTipsCard from './elements/ServiceTipsCard'
 
 const Home = () => {
 	return (
 		<div className='w-full'>
-			<HeroCarousel />
+			<HeroSection />
 			<CatalogCategories />
 			<FindByBrand />
 			<ServiceTipsCard />

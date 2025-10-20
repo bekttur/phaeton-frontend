@@ -10,7 +10,7 @@ const Header = () => {
 
   return (
     <>
-      <div className='fixed top-0 left-0 right-0 z-50 bg-white border-b'>
+      <div className='lg:hidden fixed top-0 left-0 right-0 z-50 bg-white border-b'>
         <div className='w-full min-h-14 flex items-center justify-between px-2'>
           <span className='text-xl font-semibold text-[#62C382]'>Phaeton</span>
           <button
@@ -22,7 +22,7 @@ const Header = () => {
         </div>
       </div>
 
-      <div className='w-full pt-16 px-2'>
+      <div className='lg:hidden w-full pt-16 px-2'>
         {activeTab !== 'model' ? (
           <div className='relative'>
             <input

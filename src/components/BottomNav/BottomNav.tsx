@@ -1,6 +1,6 @@
 const BottomNav = () => {
   return (
-    <div className='grid grid-cols-4 gap-5 py-2 px-2 sticky bottom-0 bg-white border-t'>
+    <div className='grid lg:hidden grid-cols-4 gap-5 py-2 px-2 sticky bottom-0 bg-white border-t'>
       <div className='w-full flex flex-col items-center'>
         <div className=' rounded-md bg-[#F6F6F6] w-10 h-10 flex items-center justify-center'>
           <img
