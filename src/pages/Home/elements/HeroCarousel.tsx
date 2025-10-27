@@ -71,7 +71,7 @@ const HeroCarousel = () => {
             }}
           >
             <div className='w-full h-full flex flex-col items-start justify-between pt-1 lg:pt-5 pb-3 lg:pb-8 px-3 lg:px-10 rounded-lg'>
-              <p className='text-white text-[20px]/[36px] font-bold capitalize'>
+              <p className='text-white text-[20px]/[36px] lg:text-2xl font-bold capitalize'>
                 {item.title}
               </p>
               <button className='w-fit h-fit px-2.5 py-1.5 rounded-[4.5px] bg-[#4EBC73] text-white text-sm'>

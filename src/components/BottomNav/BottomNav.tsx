@@ -1,7 +1,9 @@
+import { Link } from 'react-router-dom';
+
 const BottomNav = () => {
   return (
     <div className='grid lg:hidden grid-cols-4 gap-5 py-2 px-2 sticky bottom-0 bg-white border-t'>
-      <div className='w-full flex flex-col items-center'>
+      <Link to={'/'} className='w-full flex flex-col items-center'>
         <div className=' rounded-md bg-[#F6F6F6] w-10 h-10 flex items-center justify-center'>
           <img
             className='w-5 h-5'
@@ -10,9 +12,9 @@ const BottomNav = () => {
           />
         </div>
         <p className='text-xs font-semibold mt-1'>Главное</p>
-      </div>
+      </Link>
 
-      <div className='w-full flex flex-col items-center'>
+      <Link to={'/catalog'} className='w-full flex flex-col items-center'>
         <div className=' rounded-md bg-[#F6F6F6] w-10 h-10 flex items-center justify-center'>
           <img
             className='w-5 h-5'
@@ -21,7 +23,7 @@ const BottomNav = () => {
           />
         </div>
         <p className='text-xs font-semibold mt-1'>Каталог</p>
-      </div>
+      </Link>
 
       <div className='w-full flex flex-col items-center'>
         <div className=' rounded-md bg-[#F6F6F6] w-10 h-10 flex items-center justify-center'>

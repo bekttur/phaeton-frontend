@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import {
-  ChevronDown,
   Search,
   ArrowRight,
 } from 'lucide-react';
@@ -15,7 +14,7 @@ const DesktopHeader = () => {
       {/* Верхняя строка */}
       <div className='border-b border-gray-200 bg-[#F6F6F6]'>
         <div className='mx-auto px-32 py-3 flex items-center justify-between'>
-          <div className='flex items-center gap-6'>
+          <div className='flex items-center gap-3'>
             <button className='flex items-center gap-2 text-sm bg-[#EDEDED] rounded-md text-[#4A5E46] hover:text-[#62C382] font-semibold transition py-2 px-3'>
               <img
                 src={`${
@@ -75,9 +74,13 @@ const DesktopHeader = () => {
 
           {/* Выпадающий список */}
           <div className='flex-shrink-0'>
-            <button className='flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-md transition'>
+            <button className='flex items-center gap-2 px-4 py-2 text-md font-semibold text-[#315448] hover:bg-gray-50 rounded-md transition relative'>
               <span>Каталог запчастей</span>
-              <ChevronDown width={16} height={16} />
+               <img
+                src={`${import.meta.env.BASE_URL}icon/chevron-down.svg`}
+                alt='chevron'
+                className='pointer-events-none relative right-0 w-3 h-3'
+              />
             </button>
           </div>
 
@@ -133,8 +136,8 @@ const DesktopHeader = () => {
                 }
                 className='w-full h-10 pl-12 pr-14 border border-none rounded-lg text-sm focus:outline-none focus:border-none focus:ring-0 focus:ring-transparent bg-[#F3F3F1]'
               />
-              <button className='absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-[#62C382] text-white rounded-md hover:bg-[#4EBC73] transition'>
-                <ArrowRight width={18} height={18} />
+              <button className='absolute right-0 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-[#F9F9F7] text-white rounded-md border border-[#DDDDDDB8] hover:bg-[#4EBC73] transition'>
+                <ArrowRight width={18} height={18} color='#6E6E6F' />
               </button>
             </div>
           </div>
