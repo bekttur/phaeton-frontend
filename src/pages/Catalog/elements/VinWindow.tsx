@@ -1,13 +1,19 @@
 import { X } from 'lucide-react';
 import Button from '../../../components/ui/Button/Button';
+import { useViewportHeight } from '../../../hooks/useViewportHeight'; // добавь свой путь
 
 interface VinWindowProps {
   handleCloseVin: () => void;
 }
 
 const VinWindow = ({ handleCloseVin }: VinWindowProps) => {
+  const viewportHeight = useViewportHeight();
+
   return (
-    <div className='lg:hidden relative w-full max-w-lg h-[85vh] bg-white overflow-hidden flex flex-col'>
+    <div
+      className='lg:hidden relative w-full max-w-lg bg-white overflow-hidden flex flex-col'
+      style={{ height: `${viewportHeight}px` }} // ← динамическая высота
+    >
       {/* Кнопка закрытия */}
       <button
         onClick={handleCloseVin}
@@ -61,7 +67,7 @@ const VinWindow = ({ handleCloseVin }: VinWindowProps) => {
         </div>
       </div>
 
-      {/* Нижние кнопки — фиксированы (не прокручиваются) */}
+      {/* Нижние кнопки — фиксированы */}
       <div className='sticky bottom-0 w-full bg-white px-8 flex flex-col gap-4 pb-4 pt-2 border-t border-gray-100'>
         <Button className='w-full rounded-lg py-3'>Добавить</Button>
 
