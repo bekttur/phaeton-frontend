@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { Search, Menu } from 'lucide-react';
 import MobileMenu from './MobileMenu';
+import { useLocation } from 'react-router-dom';
 
 const Header = () => {
   const [activeTab, setActiveTab] = useState<'catalog' | 'vin' | 'model'>(
     'catalog'
   );
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { pathname } = useLocation();
 
   return (
     <>
@@ -83,21 +85,27 @@ const Header = () => {
           </div>
         )}
 
-        <fieldset className='w-full py-2 flex items-center gap-2'>
-          {['catalog', 'vin', 'model'].map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab as any)}
-              className={`flex-1 py-2 rounded-md text-sm font-medium border transition ${
-                activeTab === tab
-                  ? 'bg-[#62C382] text-white border-[#62C382]'
-                  : 'border-gray-300 text-gray-600'
-              }`}
-            >
-              {tab === 'catalog' ? 'Каталог' : tab === 'vin' ? 'VIN' : 'Модель'}
-            </button>
-          ))}
-        </fieldset>
+        {pathname === '/' && (
+          <fieldset className='w-full py-2 flex items-center gap-2'>
+            {['catalog', 'vin', 'model'].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab as any)}
+                className={`flex-1 py-2 rounded-md text-sm font-medium border transition ${
+                  activeTab === tab
+                    ? 'bg-[#62C382] text-white border-[#62C382]'
+                    : 'border-gray-300 text-gray-600'
+                }`}
+              >
+                {tab === 'catalog'
+                  ? 'Каталог'
+                  : tab === 'vin'
+                  ? 'VIN'
+                  : 'Модель'}
+              </button>
+            ))}
+          </fieldset>
+        )}
       </div>
 
       <MobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
