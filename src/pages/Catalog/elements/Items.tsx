@@ -35,7 +35,7 @@ const Items = () => {
               <AccordionItem
                 key={idx}
                 title={acc.title}
-                defaultOpen={acc.defaultOpen}
+                defaultOpen={false}
               >
                 {acc.subItems &&
                   acc.subItems.map((sub, i) => (

@@ -85,7 +85,7 @@ const Header = () => {
           </div>
         )}
 
-        {pathname === '/' && (
+        {pathname === '/' ? (
           <fieldset className='w-full py-2 flex items-center gap-2'>
             {['catalog', 'vin', 'model'].map((tab) => (
               <button
@@ -105,7 +105,7 @@ const Header = () => {
               </button>
             ))}
           </fieldset>
-        )}
+        ) : <div className='pb-4' />}
       </div>
 
       <MobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />

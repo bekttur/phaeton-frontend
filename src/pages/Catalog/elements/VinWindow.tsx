@@ -71,8 +71,8 @@ const VinWindow = ({ handleCloseVin }: VinWindowProps) => {
       <div className='sticky bottom-0 w-full bg-white px-8 flex flex-col gap-4 pb-4 pt-2 border-t border-gray-100'>
         <Button className='w-full rounded-lg py-3'>Добавить</Button>
 
-        <Button className='w-full rounded-lg py-3 bg-[#979797] hover:bg-gray-500'>
-          Нет VIN? Подобрать по марке и модели
+        <Button className='w-full rounded-lg py-3 text-[#636366] bg-[#EBECED]  hover:bg-gray-500'>
+          <span className='text-[#636366]'> Подобрать по марке и модели</span>
         </Button>
       </div>
     </div>
