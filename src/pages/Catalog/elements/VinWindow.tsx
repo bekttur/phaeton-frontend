@@ -7,7 +7,7 @@ interface VinWindowProps {
 
 const VinWindow = ({ handleCloseVin }: VinWindowProps) => {
   return (
-    <div className='lg:hidden relative w-full h-full max-w-lg min-h-screen bg-white overflow-hidden flex flex-col justify-between'>
+    <div className='lg:hidden relative w-full h-full max-w-lg min-h-[80vh] bg-white overflow-hidden flex flex-col justify-between'>
       <button
         onClick={handleCloseVin}
         className='absolute top-6 right-6 z-10 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-lg hover:bg-gray-50 transition-colors'
