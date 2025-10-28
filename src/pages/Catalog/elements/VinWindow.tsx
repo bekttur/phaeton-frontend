@@ -7,7 +7,7 @@ interface VinWindowProps {
 
 const VinWindow = ({ handleCloseVin }: VinWindowProps) => {
   return (
-    <div className='lg:hidden relative w-full h-full max-w-lg min-h-[80vh] bg-white overflow-hidden flex flex-col justify-between'>
+    <div className='lg:hidden relative w-full h-[85vh] max-w-lg bg-white overflow-hidden flex flex-col justify-between'>
       <button
         onClick={handleCloseVin}
         className='absolute top-6 right-6 z-10 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-lg hover:bg-gray-50 transition-colors'
@@ -17,10 +17,9 @@ const VinWindow = ({ handleCloseVin }: VinWindowProps) => {
 
       <div>
         <div
-          className='relative h-[400px] bg-gradient-to-b from-[#4EBC73] to-[#65DDC0] flex items-end justify-center overflow-hidden pb-8'
+          className='relative h-[350px] bg-gradient-to-b from-[#4EBC73] to-[#65DDC0] flex items-end justify-center overflow-hidden pb-8'
           style={{ borderRadius: '0 0 140px 140px' }}
         >
-          <div className='absolute bottom-0 w-full h-1/2'></div>
 
           <img
             src={`${import.meta.env.BASE_URL}images/car.png`}
