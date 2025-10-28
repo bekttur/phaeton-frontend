@@ -25,7 +25,7 @@ const VinWindow = ({ handleCloseVin }: VinWindowProps) => {
       {/* Контент с прокруткой */}
       <div className='flex-1 overflow-y-auto'>
         <div
-          className='relative h-[320px] bg-gradient-to-b from-[#4EBC73] to-[#65DDC0] flex items-end justify-center overflow-hidden pb-8'
+          className='relative h-[200px] bg-gradient-to-b from-[#4EBC73] to-[#65DDC0] flex items-end justify-center overflow-hidden pb-8'
           style={{ borderRadius: '0 0 140px 140px' }}
         >
           <img
