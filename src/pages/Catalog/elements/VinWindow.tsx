@@ -7,7 +7,8 @@ interface VinWindowProps {
 
 const VinWindow = ({ handleCloseVin }: VinWindowProps) => {
   return (
-    <div className='lg:hidden relative w-full h-[85vh] max-w-lg bg-white overflow-hidden flex flex-col justify-between'>
+    <div className='lg:hidden relative w-full max-w-lg h-[85vh] bg-white overflow-hidden flex flex-col'>
+      {/* Кнопка закрытия */}
       <button
         onClick={handleCloseVin}
         className='absolute top-6 right-6 z-10 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-lg hover:bg-gray-50 transition-colors'
@@ -15,18 +16,19 @@ const VinWindow = ({ handleCloseVin }: VinWindowProps) => {
         <X className='w-4 h-4 text-gray-700' />
       </button>
 
-      <div>
+      {/* Контент с прокруткой */}
+      <div className='flex-1 overflow-y-auto'>
         <div
-          className='relative h-[350px] bg-gradient-to-b from-[#4EBC73] to-[#65DDC0] flex items-end justify-center overflow-hidden pb-8'
+          className='relative h-[230px] bg-gradient-to-b from-[#4EBC73] to-[#65DDC0] flex items-end justify-center overflow-hidden pb-8'
           style={{ borderRadius: '0 0 140px 140px' }}
         >
-
           <img
             src={`${import.meta.env.BASE_URL}images/car.png`}
             alt='Car'
             className='relative z-10 w-4/5 h-auto object-contain drop-shadow-2xl'
           />
         </div>
+
         <div className='relative'>
           <div className='w-[50px] h-[50px] flex items-center justify-center absolute left-1/2 bottom-[-25px] bg-white rounded-lg p-2 shadow-lg z-100 border border-[#E8E8E8] transform -translate-x-1/2'>
             <img
@@ -59,7 +61,8 @@ const VinWindow = ({ handleCloseVin }: VinWindowProps) => {
         </div>
       </div>
 
-      <div className='w-full px-8 flex flex-col gap-4 pb-4'>
+      {/* Нижние кнопки — фиксированы (не прокручиваются) */}
+      <div className='sticky bottom-0 w-full bg-white px-8 flex flex-col gap-4 pb-4 pt-2 border-t border-gray-100'>
         <Button className='w-full rounded-lg py-3'>Добавить</Button>
 
         <Button className='w-full rounded-lg py-3 bg-[#979797] hover:bg-gray-500'>
