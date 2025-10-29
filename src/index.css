@@ -41,13 +41,13 @@ fieldset {
 
 /* scrolbar */
 .scrollbar-hide::-webkit-scrollbar {
-  display: none; /* Chrome, Safari */
+  display: none;
 }
-
 .scrollbar-hide {
-  -ms-overflow-style: none; /* IE, Edge */
+  -ms-overflow-style: none; /* IE и Edge */
   scrollbar-width: none; /* Firefox */
 }
+
 
 /* partners */
 

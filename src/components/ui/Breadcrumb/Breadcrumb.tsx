@@ -13,32 +13,36 @@ type BreadcrumbProps = {
 
 const Breadcrumb: React.FC<BreadcrumbProps> = ({ items }) => {
   return (
-    <nav className="flex items-center text-gray-500 text-sm pt-3">
-      {items.map((item, index) => {
-        const isLast = index === items.length - 1;
+    <nav className="flex items-center text-gray-500 text-sm pt-3 overflow-x-auto scrollbar-hide">
+      <div className="flex space-x-2 whitespace-nowrap">
+        {items.map((item, index) => {
+          const isLast = index === items.length - 1;
 
-        return (
-          <div key={index} className="flex items-center">
-            {item.href && !isLast ? (
-              <Link
-                to={item.href}
-                className="font-semibold text-gray-700 hover:underline"
-              >
-                {item.title}
-              </Link>
-            ) : (
-              <span
-                className={`${
-                  isLast ? 'text-[#909792] font-medium' : 'text-[#56625A] font-semibold'
-                }`}
-              >
-                {item.title}
-              </span>
-            )}
-            {!isLast && <ChevronRight className="mx-2 text-[#56625A]" size={14} />}
-          </div>
-        );
-      })}
+          return (
+            <div key={index} className="flex items-center">
+              {item.href && !isLast ? (
+                <Link
+                  to={item.href}
+                  className="font-semibold text-gray-700 hover:underline"
+                >
+                  {item.title}
+                </Link>
+              ) : (
+                <span
+                  className={`${
+                    isLast
+                      ? 'text-[#909792] font-medium'
+                      : 'text-[#56625A] font-semibold'
+                  }`}
+                >
+                  {item.title}
+                </span>
+              )}
+              {!isLast && <ChevronRight className="mx-2 text-[#56625A]" size={14} />}
+            </div>
+          );
+        })}
+      </div>
     </nav>
   );
 };

@@ -1,6 +1,7 @@
 import { X } from 'lucide-react';
 import Button from '../../../components/ui/Button/Button';
 import { useViewportHeight } from '../../../hooks/useViewportHeight'; // добавь свой путь
+import { useNavigate } from 'react-router-dom';
 
 interface VinWindowProps {
   handleCloseVin: () => void;
@@ -8,6 +9,12 @@ interface VinWindowProps {
 
 const VinWindow = ({ handleCloseVin }: VinWindowProps) => {
   const viewportHeight = useViewportHeight();
+
+   const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate('/products');
+  };
 
   return (
     <div
@@ -69,7 +76,7 @@ const VinWindow = ({ handleCloseVin }: VinWindowProps) => {
 
       {/* Нижние кнопки — фиксированы */}
       <div className='sticky bottom-0 w-full bg-white px-8 flex flex-col gap-4 pb-4 pt-2 border-t border-gray-100'>
-        <Button className='w-full rounded-lg py-3'>Добавить</Button>
+        <Button onClick={handleClick} className='w-full rounded-lg py-3'>Добавить</Button>
 
         <Button className='w-full rounded-lg py-3 text-[#636366] bg-[#EBECED]  hover:bg-gray-500'>
           <span className='text-[#636366]'> Подобрать по марке и модели</span>
