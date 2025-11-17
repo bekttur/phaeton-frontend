@@ -4,7 +4,11 @@ const BottomNav = () => {
   const { pathname } = useLocation();
 
   return (
-    <div className='grid lg:hidden grid-cols-4 gap-5 py-2 px-2 sticky bottom-0 bg-white border-t'>
+    <div
+      className={`grid lg:hidden grid-cols-4 gap-5 py-2 px-2 sticky bottom-0 bg-white border-t ${
+        pathname.startsWith('/product/') ? 'hidden' : 'grid'
+      }`}
+    >
       {/* Главное */}
       <Link to='/' className='w-full flex flex-col items-center'>
         <div

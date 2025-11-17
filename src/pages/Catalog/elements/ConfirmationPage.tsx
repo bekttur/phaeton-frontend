@@ -120,7 +120,7 @@ const ConfirmationPage = () => {
           onClick={() => setMenuOpen(true)}
           className='h-12 w-12 bg-[#EAECED] rounded-[10px] flex items-center justify-center'
         >
-          <img src='/icon/format_line_spacing.svg' width={24} height={24} />
+          <img src={`${import.meta.env.BASE_URL}/icon/format_line_spacing.svg` }width={24} height={24} />
         </button>
 
         <div className='flex flex-col items-start'>
