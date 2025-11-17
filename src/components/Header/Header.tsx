@@ -1,114 +1,58 @@
 import { useState } from 'react';
-import { Search, Menu } from 'lucide-react';
+import { Menu, MapPin } from 'lucide-react';
 import MobileMenu from './MobileMenu';
-import { useLocation } from 'react-router-dom';
+import MobileCitySelect from './MobileCitySelect';
 
 const Header = () => {
-  const [activeTab, setActiveTab] = useState<'catalog' | 'vin' | 'model'>(
-    'catalog'
-  );
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { pathname } = useLocation();
+  const [isCitySelectOpen, setIsCitySelectOpen] = useState(false);
+
+  const [confirmedCity, setConfirmedCity] = useState('Алматы');
+  const [tempCity, setTempCity] = useState<string | null>(null);
 
   return (
     <>
-      <div className='lg:hidden fixed top-0 left-0 right-0 z-50 bg-white border-b'>
+      <div className='lg:hidden fixed top-0 left-0 right-0 z-40 bg-white border-b'>
         <div className='w-full min-h-14 flex items-center justify-between px-2'>
           <span className='text-xl font-semibold text-[#62C382]'>Phaeton</span>
-          <button
-            onClick={() => setIsMenuOpen(true)}
-            className='w-fit h-fit rounded-md py-2 px-2.5 bg-[#DEF2E3] flex items-center justify-center'
-          >
-            <Menu width={24} height={24} color='#7ED399' />
-          </button>
+
+          <div className='flex items-center gap-3 justify-between'>
+            <button
+              onClick={() => setIsCitySelectOpen(true)}
+              className='w-fit h-fit rounded-[10px] py-2 px-2.5 bg-[#DEF2E3] flex items-center justify-center gap-1'
+            >
+              <MapPin width={24} height={24} color='#7ED399' />
+              <span className='text-[15px] text-[#6ABF85] mb-0.5 font-medium'>
+                {confirmedCity}
+              </span>
+            </button>
+            <button
+              onClick={() => setIsMenuOpen(true)}
+              className='w-fit h-fit rounded-[10px] py-2 px-2.5 bg-[#DEF2E3] flex items-center justify-center gap-1'
+            >
+              <Menu width={24} height={24} color='#7ED399' />
+            </button>
+          </div>
         </div>
       </div>
 
-      <div className='lg:hidden w-full pt-16 px-2'>
-        {activeTab !== 'model' ? (
-          <div className='relative'>
-            <input
-              type='text'
-              placeholder={
-                activeTab === 'catalog'
-                  ? 'Поиск запчастей, например «фильтр»'
-                  : 'Введите ваш VIN'
-              }
-              className='w-full h-[42px] pl-10 pr-4 border border-[#DDDDDD80] rounded-md text-sm focus:outline-none focus:border-[#62C382]'
-            />
-            <Search
-              className='absolute left-3 top-1/2 -translate-y-1/2'
-              height='16'
-              width='16'
-              color='#4EBC73'
-            />
-          </div>
-        ) : (
-          <div className='grid grid-cols-2 gap-2'>
-            <div className='relative'>
-              <select
-                defaultValue='marka'
-                className='appearance-none h-10 w-full px-3 border border-[#DDDDDD80] rounded-md text-sm focus:outline-none focus:border-[#62C382] bg-white'
-              >
-                <option disabled value='marka'>
-                  Марка
-                </option>
-                <option value='toyota'>Toyota</option>
-                <option value='mitsubishi'>Mitsubishi</option>
-                <option value='audi'>Audi</option>
-              </select>
-              <img
-                src={`${import.meta.env.BASE_URL}icon/chevron-down.svg`}
-                alt='chevron'
-                className='pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3'
-              />
-            </div>
-
-            <div className='relative'>
-              <select
-                defaultValue='model'
-                className='appearance-none h-10 w-full px-3 border border-[#DDDDDD80] rounded-md text-sm focus:outline-none focus:border-[#62C382] bg-white'
-              >
-                <option disabled value='model'>
-                  Модель
-                </option>
-                <option value='camry'>Camry</option>
-                <option value='outlander'>Outlander</option>
-                <option value='a6'>A6</option>
-              </select>
-              <img
-                src={`${import.meta.env.BASE_URL}icon/chevron-down.svg`}
-                alt='chevron'
-                className='pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3'
-              />
-            </div>
-          </div>
-        )}
-
-        {pathname === '/' ? (
-          <fieldset className='w-full py-2 flex items-center gap-2'>
-            {['catalog', 'vin', 'model'].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab as any)}
-                className={`flex-1 py-2 rounded-md text-sm font-medium border transition ${
-                  activeTab === tab
-                    ? 'bg-[#62C382] text-white border-[#62C382]'
-                    : 'border-gray-300 text-gray-600'
-                }`}
-              >
-                {tab === 'catalog'
-                  ? 'Каталог'
-                  : tab === 'vin'
-                  ? 'VIN'
-                  : 'Модель'}
-              </button>
-            ))}
-          </fieldset>
-        ) : <div className='pb-4' />}
-      </div>
+      
 
       <MobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
+      <MobileCitySelect
+        isOpen={isCitySelectOpen}
+        onClose={() => {
+          setTempCity(null);
+          setIsCitySelectOpen(false);
+        }}
+        selectedCity={tempCity ?? confirmedCity}
+        onSelectTemp={setTempCity}
+        onConfirm={(city) => {
+          setConfirmedCity(city);
+          setIsCitySelectOpen(false);
+        }}
+      />
     </>
   );
 };

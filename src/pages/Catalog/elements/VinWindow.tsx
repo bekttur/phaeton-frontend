@@ -10,10 +10,10 @@ interface VinWindowProps {
 const VinWindow = ({ handleCloseVin }: VinWindowProps) => {
   const viewportHeight = useViewportHeight();
 
-   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate('/products');
+    navigate('/confirmation');
   };
 
   return (
@@ -32,7 +32,7 @@ const VinWindow = ({ handleCloseVin }: VinWindowProps) => {
       {/* Контент с прокруткой */}
       <div className='flex-1 overflow-y-auto'>
         <div
-          className='relative h-[200px] bg-gradient-to-b from-[#4EBC73] to-[#65DDC0] flex items-end justify-center overflow-hidden pb-8'
+          className='relative h-[300px] bg-gradient-to-b from-[#4EBC73] to-[#65DDC0] flex items-end justify-center overflow-hidden pb-8'
           style={{ borderRadius: '0 0 140px 140px' }}
         >
           <img
@@ -56,7 +56,7 @@ const VinWindow = ({ handleCloseVin }: VinWindowProps) => {
           <h1 className='text-2xl font-bold text-[#4EBC73] text-center mb-2'>
             Добавьте свой автомобиль
           </h1>
-          <p className='text-center text-[#13362A] font-medium mb-6'>
+          <p className='text-center text-[#13362A] font-medium mb-4'>
             сократите поиск до 10 секунд
           </p>
 
@@ -65,23 +65,29 @@ const VinWindow = ({ handleCloseVin }: VinWindowProps) => {
             те запчасти, которые подойдут именно вашему авто.
           </p>
 
-          <input
+          <div className='sticky bottom-0 w-full bg-white flex flex-col gap-4 pb-4 pt-2'>
+            <Button onClick={handleClick} className='w-full h-10 rounded-[10px]'>
+              Добавить автомобиль
+            </Button>
+
+            <Button className='w-full h-10 rounded-[10px] text-[#636366] bg-[#EBECED]  hover:bg-gray-500'>
+              <span className='text-[#636366]'>
+                {' '}
+                Спасибо, я сделаю потом
+              </span>
+            </Button>
+          </div>
+
+          {/* <input
             type='text'
             placeholder='Введите VIN, например JTMBFREV60D012345'
             className='w-full px-4 py-2 border border-gray-200 rounded-lg text-gray-700 placeholder-gray-400 focus:outline-none focus:border-emerald-400 transition-colors mb-6'
             maxLength={17}
-          />
+          /> */}
         </div>
       </div>
 
       {/* Нижние кнопки — фиксированы */}
-      <div className='sticky bottom-0 w-full bg-white px-8 flex flex-col gap-4 pb-4 pt-2 border-t border-gray-100'>
-        <Button onClick={handleClick} className='w-full rounded-lg py-3'>Добавить</Button>
-
-        <Button className='w-full rounded-lg py-3 text-[#636366] bg-[#EBECED]  hover:bg-gray-500'>
-          <span className='text-[#636366]'> Подобрать по марке и модели</span>
-        </Button>
-      </div>
     </div>
   );
 };

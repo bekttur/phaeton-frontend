@@ -3,7 +3,7 @@ import DigitalGarage from './DigitalGarage';
 
 const HeroSection = () => {
   return (
-    <div className='w-full h-auto lg:px-32 bg-[#F6F6F6] lg:p-6 lg:mt-36'>
+    <div className='w-full h-auto mt-20 lg:px-32 bg-[#F6F6F6] lg:p-6 lg:mt-36'>
       <div
         className='w-full flex flex-col lg:flex-row gap-0 lg:gap-6 lg:min-h-[530px]'
       >

@@ -1,5 +1,5 @@
-import { Check, Heart, ChevronDown } from 'lucide-react';
-import Breadcrumb from '../../../components/ui/Breadcrumb/Breadcrumb';
+import { useState } from 'react';
+import { Heart } from 'lucide-react';
 
 interface Product {
   id: number;
@@ -17,6 +17,17 @@ interface Product {
 
 function ProductsPage() {
   const carName = 'Toyota 4Runner / Hilux';
+
+  // ⭐ избранные товары
+  const [favorites, setFavorites] = useState<number[]>([]);
+
+  const toggleFavorite = (id: number) => {
+    setFavorites(prev =>
+      prev.includes(id)
+        ? prev.filter(x => x !== id)
+        : [...prev, id]
+    );
+  };
 
   const products: Product[] = [
     {
@@ -72,32 +83,32 @@ function ProductsPage() {
 
   return (
     <div className="lg:hidden w-full h-full bg-gray-50 px-2">
-      <Breadcrumb
+      {/* <Breadcrumb
         items={[
           { title: 'Главная', href: '/' },
           { title: 'Каталог товаров', href: '/catalog' },
-          { title: 'Шины', href: '/catalog/2' },
+          { title: 'Шины', href: '/2' },
           { title: 'Шины для легковых авто' },
         ]}
-      />
+      /> */}
 
-      <div className="py-4">
+      {/* <div className="py-4">
         <h1 className="text-xl font-bold text-[#3E3E3E]">
           Шины для легковых авто
         </h1>
         <p className="text-sm text-[#3E3E3E] font-semibold">120 товаров</p>
-      </div>
+      </div> */}
 
-      <div className="py-4 flex items-center justify-between">
+      {/* <div className="py-4 flex items-center justify-between">
         <button className="flex items-center gap-2 px-3 py-1.5 border border-gray-300 rounded-lg text-sm text-[#565656] font-semibold">
           Сначала недорогие
           <ChevronDown className="w-4 h-4" color="#565656" />
         </button>
         <button className="border border-gray-300 px-1.5 py-1.5 rounded-lg text-sm font-medium text-[#565656]">Фильтры</button>
-      </div>
+      </div> */}
 
       <div>
-        <div className="bg-[#4E9DBC] rounded-2xl p-4 mb-4 shadow-md">
+        {/* <div className="bg-[#4E9DBC] rounded-2xl p-4 mb-4 shadow-md">
           <div className="flex items-start gap-3">
             <img
               src={`${import.meta.env.BASE_URL}images/911.png`}
@@ -121,7 +132,7 @@ function ProductsPage() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         <div className="grid grid-cols-2 gap-3 pb-4">
           {products.map((product) => (
@@ -135,9 +146,23 @@ function ProductsPage() {
                     -{product.discount}%
                   </span>
                 )}
-                <span className="absolute top-2 right-2">
-                  <Heart className="w-5 h-5 text-gray-400" />
-                </span>
+
+                {/* ❤️ сердечко (кликабельное) */}
+                <button
+                  onClick={() => toggleFavorite(product.id)}
+                  className={`absolute top-2 right-2 p-1 ${ favorites.includes(product.id)
+                        ? 'bg-[#FFFFFF]'
+                        : 'bg-[#D8D8D899]'}  rounded-lg`}
+                >
+                  <Heart
+                    className={`w-5 h-5 transition ${
+                      favorites.includes(product.id)
+                        ? 'text-[#5FCD84] fill-[#5FCD84]'
+                        : 'text-[#83838399]'
+                    }`}
+                  />
+                </button>
+
                 {product.isFeatured && (
                   <span
                     className={`absolute ${
@@ -147,17 +172,20 @@ function ProductsPage() {
                     Товар месяца
                   </span>
                 )}
+
                 <img
                   src={product.image}
                   alt={product.name}
                   className="w-full h-40 object-cover"
                 />
+
                 {product.installment && (
                   <span className="absolute bottom-2 left-2 bg-orange-400 text-white text-xs font-semibold px-2 py-1 rounded">
                     {product.installment}
                   </span>
                 )}
               </div>
+
               <div className="p-2">
                 <h3 className="text-sm font-medium text-[#3E3E3E] mb-1">
                   {product.name}
@@ -173,9 +201,11 @@ function ProductsPage() {
                     ({product.reviews} отзыва)
                   </span>
                 </div>
+
                 <p className="text-lg font-bold text-[#3E3E3E] mb-2">
                   {product.price.toLocaleString('ru-KZ')} ₸
                 </p>
+
                 <button className="w-full bg-gradient-to-r from-blue-500 to-emerald-500 text-white text-sm font-medium py-2 rounded-lg">
                   Кэшбэк до {product.cashback.toLocaleString('ru-KZ')} ₸
                 </button>

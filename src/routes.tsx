@@ -5,13 +5,15 @@ import Favorites from './pages/Favorites/Favorites';
 import Home from './pages/Home/Home';
 import Items from './pages/Catalog/elements/Items';
 import ProductsPage from './pages/Catalog/elements/ProductsPage';
+import ConfirmationPage from './pages/Catalog/elements/ConfirmationPage';
 
 export const AppRoutes = () => (
   <Routes>
     <Route path="/" element={<Home />} />
     <Route path="/catalog" element={<Catalog />} />
-    <Route path="/catalog/:id" element={<Items />} />
+    <Route path="/:id" element={<Items />} />
     <Route path="/favorites" element={<Favorites/>} />
+    <Route path="/confirmation" element={<ConfirmationPage/>} />
     <Route path="/products" element={<ProductsPage/>} />
   </Routes>
 );
