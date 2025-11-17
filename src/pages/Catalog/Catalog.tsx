@@ -11,11 +11,11 @@ const Catalog = () => {
   const items = showAll ? catalog_data : catalog_data.slice(0, 6);
 
   return (
-    <div style={{ paddingTop: showAll ? '70px' : '0px' }}>
+    <div style={{ paddingTop: showAll ? '70px' : '0px' }} className='bg-[#F6F6F6]'>
       {!!showAll && <QuickSearchTabs />}
 
       {!!showAll && (
-        <div className='bg-[#4EBC73] rounded-2xl p-4 mb-4 shadow-md mx-2'>
+        <div className='bg-[#4EBC73] rounded-2xl p-4 mb-4 mx-2'>
           <div className='flex flex-row-reverse items-start gap-3'>
             <img
               src={`${import.meta.env.BASE_URL}images/911.png`}

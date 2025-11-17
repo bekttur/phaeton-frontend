@@ -37,7 +37,7 @@ export default function Reviews() {
 
   const renderStars = (rating: number) => {
     return (
-      <div className="flex gap-1">
+      <div className='flex gap-1'>
         {Array.from({ length: 5 }).map((_, index) => (
           <span
             key={index}
@@ -51,25 +51,34 @@ export default function Reviews() {
   };
 
   return (
-    <div className="mt-2 p-4 pb-24 rounded-[10px]">
-      {reviews.map((review) => (
-        <div key={review.id} className="bg-white p-4 border-b border-gray-200 py-4 last:border-0">
-          <div className="flex items-start justify-between mb-2">
-            <div>
-              <h4 className="font-semibold text-gray-900">{review.author}</h4>
-              <p className="text-xs text-gray-500">{review.vehicle}</p>
+    <div className='mt-2 p-4 pb-24'>
+      <div className=' bg-white rounded-[10px]'>
+        {reviews.map((review) => (
+          <div
+            key={review.id}
+            className='p-4 border-b border-gray-200 py-4 last:border-0'
+          >
+            <div className='flex items-start justify-between mb-2'>
+              <div>
+                <h4 className='font-semibold text-gray-900'>{review.author}</h4>
+                <p className='text-xs text-gray-500'>{review.vehicle}</p>
+              </div>
+              <div className='text-right'>
+                {renderStars(review.rating)}
+                <p className='text-xs text-gray-500 mt-1'>{review.date}</p>
+              </div>
             </div>
-            <div className="text-right">
-              {renderStars(review.rating)}
-              <p className="text-xs text-gray-500 mt-1">{review.date}</p>
-            </div>
+            <p className='text-sm text-gray-700 leading-relaxed'>
+              {review.text}
+            </p>
+            {review.id === 1 && (
+              <button className='text-green-600 text-sm font-medium mt-2'>
+                показать полностью
+              </button>
+            )}
           </div>
-          <p className="text-sm text-gray-700 leading-relaxed">{review.text}</p>
-          <button className="text-green-600 text-sm font-medium mt-2">
-            показать полностью
-          </button>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }

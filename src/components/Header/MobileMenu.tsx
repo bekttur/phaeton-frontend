@@ -18,6 +18,10 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
       subtitle: 'Русский',
     },
     {
+      icon: 'icon/shopping_cart.svg',
+      title: 'Корзина',
+    },
+    {
       icon: 'icon/mobile-menu/favorite.svg',
       title: 'Избранное',
     },

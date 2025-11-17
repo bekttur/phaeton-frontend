@@ -9,7 +9,7 @@ export default function ProductGallery() {
     <div className='bg-white px-4 py-6'>
       <div className='flex items-start justify-between mb-4'>
         <div className='flex gap-2'>
-          <span className='px-4 py-2 bg-gradient-to-r from-[#207FC2] to-[#0ECE8D] text-white text-sm font-medium rounded-full'>
+          <span className='px-4 py-2 bg-gradient-to-r from-[#207FC2] to-[#0ECE8D] text-white text-sm font-bold rounded-full'>
             0 - 0 - 24
           </span>
 

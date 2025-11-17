@@ -150,7 +150,11 @@ function ProductsPage() {
 
                 {/* ❤️ сердечко (кликабельное) */}
                 <button
-                  onClick={() => toggleFavorite(product.id)}
+                  onClick={(e) => {
+                    e.preventDefault(); // ❗ отменяем переход по Link
+                    e.stopPropagation(); // ❗ останавливаем всплытие
+                    toggleFavorite(product.id);
+                  }}
                   className={`absolute top-2 right-2 p-1 ${
                     favorites.includes(product.id)
                       ? 'bg-[#FFFFFF]'

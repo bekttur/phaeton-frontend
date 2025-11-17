@@ -60,12 +60,12 @@ const HeroCarousel = () => {
 
       <div
         ref={containerRef}
-        className='flex overflow-x-auto snap-x snap-mandatory scrollbar-hide h-full w-full rounded-lg'
+        className='flex overflow-x-auto snap-x snap-mandatory scrollbar-hide h-full w-full rounded-2xl'
       >
         {data.map((item, i) => (
           <div
             key={i}
-            className='shrink-0 min-w-full min-h-[270px] lg:min-h-[560px] h-auto snap-start font-exo bg-cover lg:bg-cover bg-center bg-no-repeat rounded-lg'
+            className='shrink-0 min-w-full min-h-[270px] lg:min-h-[560px] h-auto snap-start font-exo bg-cover lg:bg-cover bg-center bg-no-repeat rounded-2xl'
             style={{
               backgroundImage: `url(${import.meta.env.BASE_URL}${item.img})`,
             }}
@@ -74,9 +74,9 @@ const HeroCarousel = () => {
               <p className='text-white text-[20px]/[36px] lg:text-2xl font-bold capitalize'>
                 {item.title}
               </p>
-              <button className='w-fit h-fit px-2.5 py-1.5 rounded-[4.5px] bg-[#4EBC73] text-white text-sm'>
+              {/* <button className='w-fit h-fit px-2.5 py-1.5 rounded-[4.5px] bg-[#4EBC73] text-white text-sm'>
                 Подобрать запчасть
-              </button>
+              </button> */}
             </div>
           </div>
         ))}

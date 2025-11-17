@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Check } from 'lucide-react';
+import { ArrowLeft, Check, Search } from 'lucide-react';
 import ProductsPage from './ProductsPage';
 
 import { X } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -67,28 +68,47 @@ const SortMenu = ({ isOpen, onClose }: MobileMenuProps) => {
             ))}
           </div>
         </div>
-		<div className="absolute bottom-2 w-full px-4 pb-6">
-            <button
-              onClick={onClose}
-              className="w-full h-12 rounded-xl bg-[#4EBC73] text-white text-base font-semibold"
-            >
-              Выбрать
-            </button>
-          </div>
+        <div className='absolute bottom-2 w-full px-4 pb-6'>
+          <button
+            onClick={onClose}
+            className='w-full h-12 rounded-xl bg-[#4EBC73] text-white text-base font-semibold'
+          >
+            Выбрать
+          </button>
+        </div>
       </div>
     </>
   );
 };
 
-
 const ConfirmationPage = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div className='lg:hidden w-full h-full bg-gray-50 px-2 pt-20 flex flex-col gap-4'>
-		<div className='bg-white '>
-
-		</div>
+    <div className='lg:hidden w-full h-full bg-gray-50 px-2 pt-14 flex flex-col gap-4'>
+      <div className='bg-white p-2 flex items-center gap-3'>
+        <Link
+          to={'/catalog'}
+          className='p-2 bg-[#EAECED] rounded-lg transition-colors'
+        >
+          <ArrowLeft className='w-6 h-6 text-[#8C8C8C]' />
+        </Link>
+        <div className='flex-1 relative'>
+          <Search className='w-5 h-5 text-[#AEAEB2] absolute left-3 top-1/2 -translate-y-1/2' />
+          <input
+            type='text'
+            placeholder='Поиск запчастей'
+            className='w-full pl-10 pr-4 py-2 bg-[#EAECED] rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
+          />
+        </div>
+        <div className='p-3 bg-[#EAECED] rounded-lg transition-colors'>
+          <img
+            src={`${import.meta.env.BASE_URL}icon/discover_tune.svg`}
+            width={18}
+            height={18}
+          />
+        </div>
+      </div>
       {/* GREEN BLOCK */}
       <div className='bg-[#4EBC73] rounded-2xl p-4 shadow-md'>
         <div className='flex flex-row-reverse items-start gap-3'>
@@ -120,7 +140,11 @@ const ConfirmationPage = () => {
           onClick={() => setMenuOpen(true)}
           className='h-12 w-12 bg-[#EAECED] rounded-[10px] flex items-center justify-center'
         >
-          <img src={`${import.meta.env.BASE_URL}/icon/format_line_spacing.svg` }width={24} height={24} />
+          <img
+            src={`${import.meta.env.BASE_URL}icon/format_line_spacing.svg`}
+            width={24}
+            height={24}
+          />
         </button>
 
         <div className='flex flex-col items-start'>

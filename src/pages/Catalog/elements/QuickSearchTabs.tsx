@@ -41,7 +41,7 @@ const QuickSearchTabs = () => {
             placeholder={
               activeTab === 'catalog'
                 ? 'Поиск запчастей, например «фильтр»'
-                : 'Введите ваш VIN'
+                : 'Введите ваш VIN код'
             }
             className='w-full h-[42px] pl-10 pr-4 bg-[#EAECED] rounded-md text-base focus:outline-none focus:border-[#62C382]'
           />
@@ -57,13 +57,25 @@ const QuickSearchTabs = () => {
           {/* имитация select */}
           <button
             onClick={() => setIsCarSelectOpen(true)}
-            className='w-full h-[42px] px-3 bg-[#EAECED] rounded-md text-base text-left flex items-center justify-between'
+            className='w-full h-[42px] px-3 bg-[#EAECED] rounded-md text-base text-left flex items-center justify-between text-[#636366]'
           >
             {selectedCar.brand
               ? `${selectedCar.brand} ${selectedCar.model} ${selectedCar.year} ${selectedCar.modification}`
               : 'Выбрать марку'}
-            <ChevronDown className='pointer-events-none' />
+            <ChevronDown className='pointer-events-none' color='#8C8C8C' />
           </button>
+        </div>
+      )}
+
+      {activeTab === 'vin' && (
+        <div className='bg-[#EAECED] rounded-[10px] px-[11px] py-2.5 flex items-center gap-2 my-2'>
+          <img
+            src={`${import.meta.env.BASE_URL}icon/check_circle.svg`}
+            alt=''
+          />
+          <span className='text-sm text-[#636366]'>
+            Быстрый и точный подбор запчастей
+          </span>
         </div>
       )}
 
