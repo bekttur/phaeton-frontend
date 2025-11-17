@@ -16,7 +16,7 @@ interface Product {
 }
 
 function ProductsPage() {
-  const carName = 'Toyota 4Runner / Hilux';
+  // const carName = 'Toyota 4Runner / Hilux';
 
   // ⭐ избранные товары
   const [favorites, setFavorites] = useState<number[]>([]);
