@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Search, ArrowRight } from 'lucide-react';
+import { Search } from 'lucide-react';
 
 const DesktopHeader = () => {
+  // @ts-ignore
   const [activeTab, setActiveTab] = useState<'catalog' | 'vin' | 'model'>(
     'catalog'
   );
