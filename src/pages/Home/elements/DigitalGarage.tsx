@@ -269,7 +269,7 @@ const DigitalGarage = () => {
                     <div className='relative w-16 h-16'>
                       <div className='absolute inset-0 flex items-center justify-center bg-[#313C49] rounded-full m-2 text-white p-3'>
                         {/* @ts-ignore */}
-                        <img className='w-12 h-12' src={`${import.meta.env.BASE_URL}}${item.icon}`} />
+                        <img className='w-12 h-12' src={`${import.meta.env.BASE_URL}${item.icon}`} />
                       </div>
                     </div>
                     <div className='text-sm font-semibold text-white mb-1'>
