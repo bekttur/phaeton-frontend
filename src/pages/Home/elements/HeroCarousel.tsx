@@ -75,9 +75,9 @@ const HeroCarousel = () => {
               <p className='text-white text-[20px]/[36px] lg:text-2xl font-bold capitalize'>
                 {item.title}
               </p>
-              {/* <button className='w-fit h-fit px-2.5 py-1.5 rounded-[4.5px] bg-[#4EBC73] text-white text-sm'>
-                Подобрать запчасть
-              </button> */}
+              <button className='w-fit h-fit px-[12px] py-[7px] rounded-[10px] bg-gradient-to-br from-[#31825F] to-[#4EBC73] text-white text-sm border border-[#5AAE93]'>
+                Открыть AI Phaeton
+              </button>
             </div>
           </div>
         ))}
@@ -86,7 +86,7 @@ const HeroCarousel = () => {
       <div className='hidden lg:flex w-full h-[40vh]  flex-col gap-4'>
         <div className='w-full h-1/2 bg-white' />
         <div className='w-full min-h-1/2 h-fit bg-white px-5 py-4 rounded-2xl'>
-            <CatalogCategories />
+          <CatalogCategories />
         </div>
       </div>
     </div>

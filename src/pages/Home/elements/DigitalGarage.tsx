@@ -22,7 +22,6 @@ interface ServiceItem {
   progress: number;
 }
 
-
 const tabs = [
   { id: 'report', label: 'Отчет' },
   { id: 'auto', label: 'Авто ИИ' },
@@ -89,9 +88,8 @@ const serviceItems: ServiceItem[] = [
   },
 ];
 
-
 const DigitalGarage = () => {
-   const [activeTab, setActiveTab] = useState('report');
+  const [activeTab, setActiveTab] = useState('report');
 
   const cars: Car[] = [
     {
@@ -100,7 +98,7 @@ const DigitalGarage = () => {
       model: 'Toyota Prado',
       year: 2024,
       maintenanceKm: 1823,
-      image: 'images/car-placeholder.png',
+      image: 'images/car.png',
       services: [
         { name: 'Масляный фильтр', icon: 'garage/1.svg' },
         { name: 'Моторное масло', icon: 'garage/2.svg' },
@@ -114,7 +112,7 @@ const DigitalGarage = () => {
       model: 'BMW X5',
       year: 2023,
       maintenanceKm: 2450,
-      image: 'images/car-placeholder.png',
+      image: 'images/bmw.png',
       services: [
         { name: 'Масляный фильтр', icon: 'garage/1.svg' },
         { name: 'Моторное масло', icon: 'garage/2.svg' },
@@ -158,7 +156,7 @@ const DigitalGarage = () => {
           Ваш цифровой гараж
         </h2>
         <p className='text-gray-300 text-sm mb-6'>
-          Добавьте авто по VIN — покажем, что и когда менять
+          Точный подбор деталей и напоминания по обслуживанию — по вашему VIN
         </p>
 
         {/* <div className='grid grid-cols-4 gap-3 mb-6'>
@@ -205,7 +203,7 @@ const DigitalGarage = () => {
             </div>
           </div>
 
-          <div className='flex items-center justify-center relative h-full mt-16'>
+          <div className='flex items-center justify-center h-full mt-16 relative z-40'>
             <button
               onClick={handlePrev}
               disabled={isAnimating}
@@ -226,8 +224,8 @@ const DigitalGarage = () => {
               >
                 <div className='w-full h-48 bg-transparent rounded-lg flex items-center justify-center'>
                   <img
-                    className='w-80'
-                    src={`${import.meta.env.BASE_URL}images/car.png`}
+                    className='w-72 relative z-50'
+                    src={`${import.meta.env.BASE_URL}${currentCar.image}`}
                   />
                 </div>
               </div>
@@ -240,60 +238,65 @@ const DigitalGarage = () => {
             >
               <ChevronRight className='w-4 h-4 text-white' />
             </button>
-          </div>          
-        </div>
-        <div className='h-fit bg-[#28363B] px-6 pt-4'>
-            <div className='w-full mx-auto'>
-              <div className='flex gap-2 my-3 justify-between'>
-                {tabs.map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`w-1/4 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                      activeTab === tab.id
-                        ? 'bg-[#C0C0C057] text-white shadow-lg'
-                        : 'bg-[#C0C0C01A] text-gray-300 hover:bg-slate-650'
-                    }`}
-                  >
-                    {tab.label}
-                  </button>
-                ))}
-              </div>
+          </div>
 
-              <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-8'>
-                {serviceItems.map((item) => (
-                  <div
-                    key={item.id}
-                    className='bg-[#FFFFFF1A] rounded-[10px] px-3 py-2 flex flex-col items-center'
-                  >
-                    <div className='relative w-16 h-16'>
-                      <div className='absolute inset-0 flex items-center justify-center bg-[#313C49] rounded-full m-2 text-white p-3'>
-                        {/* @ts-ignore */}
-                        <img className='w-12 h-12' src={`${import.meta.env.BASE_URL}${item.icon}`} />
-                      </div>
-                    </div>
-                    <div className='text-sm font-semibold text-white mb-1'>
-                      {item.distance}
-                    </div>
-                    <div className='text-xs text-[#C0CCDD] text-center'>
-                      {item.title}
+          {/* <div className='absolute w-[200%] bg-gradient-to-b from-[#2B4744] to-[#28363B] h-[10vh] bottom-0 left-0 z-0' /> */}
+        </div>
+        <div className='h-fit bg-gradient-to-b from-[#2B4744] to-[#28363B] px-6 pt-8 relative z-30 mt-[-50px]'>
+          <div className='w-full mx-auto'>
+            <div className='flex gap-2 my-3 justify-between'>
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`w-1/4 px-2 py-2 rounded-lg text-sm font-medium transition-all ${
+                    activeTab === tab.id
+                      ? 'bg-[#C0C0C057] text-white shadow-lg'
+                      : 'bg-[#C0C0C01A] text-gray-300 hover:bg-slate-650'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-8'>
+              {serviceItems.map((item) => (
+                <div
+                  key={item.id}
+                  className='bg-[#FFFFFF1A] rounded-[10px] px-3 py-2 flex flex-col items-center'
+                >
+                  <div className='relative w-16 h-16'>
+                    <div className='absolute inset-0 flex items-center justify-center bg-[#313C49] rounded-full m-2 text-white p-3'>
+                      {/* @ts-ignore */}
+                      <img
+                        className='w-12 h-12'
+                        src={`${import.meta.env.BASE_URL}${item.icon}`}
+                      />
                     </div>
                   </div>
-                ))}
-              </div>
+                  <div className='text-sm font-semibold text-white mb-1'>
+                    {item.distance}
+                  </div>
+                  <div className='text-xs text-[#C0CCDD] text-center'>
+                    {item.title}
+                  </div>
+                </div>
+              ))}
+            </div>
 
-              <div className='bg-[#293B3E] rounded-[10px] p-3.5'>
-                <h2 className='text-xs font-semibold text-white mb-4'>
-                  Сократите поиск
-                </h2>
-                <p className='text-[#D2D2D2] text-sm leading-relaxed'>
-                  Это пример возможностей «Гаража».
-                  <br />
-                  Введите ваш VIN — покажем точные данные по вашему авто
-                </p>
-              </div>
+            <div className='bg-[#293B3E] rounded-[10px] p-3.5'>
+              <h2 className='text-xs font-semibold text-white mb-4'>
+                Сократите поиск
+              </h2>
+              <p className='text-[#D2D2D2] text-sm leading-relaxed'>
+                Это пример возможностей «Гаража».
+                <br />
+                Введите ваш VIN — покажем точные данные по вашему авто
+              </p>
             </div>
           </div>
+        </div>
       </div>
     </div>
   );
