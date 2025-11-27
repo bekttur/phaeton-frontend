@@ -16,6 +16,96 @@ interface Product {
   cashback: number;
 }
 
+export const products: Product[] = [
+  {
+    id: 1,
+    name: 'Название товара',
+    description: 'с запасом на 2 строки',
+    price: 32000,
+    rating: 4.5,
+    reviews: 132,
+    image: 'product/first-product.png',
+    discount: 10,
+    isFeatured: true,
+    installment: '0 - 0 - 24',
+    cashback: 95000,
+  },
+  {
+    id: 2,
+    name: 'Название товара',
+    description: 'с запасом на 2 строки',
+    price: 32000,
+    rating: 4.5,
+    reviews: 132,
+    image: 'product/first-product.png',
+    cashback: 95000,
+  },
+  {
+    id: 3,
+    name: 'Название товара',
+    description: 'с запасом на 2 строки',
+    price: 32000,
+    rating: 4.5,
+    reviews: 132,
+    image: 'product/first-product.png',
+    isFeatured: true,
+    cashback: 95000,
+  },
+  {
+    id: 4,
+    name: 'Название товара',
+    description: 'с запасом на 2 строки',
+    price: 32000,
+    rating: 4.5,
+    reviews: 132,
+    image: 'product/first-product.png',
+    installment: '0 - 0 - 24',
+    cashback: 95000,
+  },
+  {
+    id: 5,
+    name: 'Название товара',
+    description: 'с запасом на 2 строки',
+    price: 32000,
+    rating: 4.5,
+    reviews: 132,
+    image: 'product/first-product.png',
+    installment: '0 - 0 - 24',
+    cashback: 95000,
+  },
+  {
+    id: 6,
+    name: 'Название товара',
+    description: 'с запасом на 2 строки',
+    price: 32000,
+    rating: 4.5,
+    reviews: 132,
+    image: 'product/first-product.png',
+    installment: '0 - 0 - 24',
+    cashback: 95000,
+  },
+  {
+    id: 7,
+    name: 'Название товара',
+    description: 'с запасом на 2 строки',
+    price: 32000,
+    rating: 4.5,
+    reviews: 132,
+    image: 'product/first-product.png',
+    cashback: 95000,
+  },
+  {
+    id: 8,
+    name: 'Название товара',
+    description: 'с запасом на 2 строки',
+    price: 32000,
+    rating: 4.5,
+    reviews: 132,
+    image: 'product/first-product.png',
+    cashback: 95000,
+  },
+];
+
 function ProductsPage() {
   // const carName = 'Toyota 4Runner / Hilux';
 
@@ -27,54 +117,6 @@ function ProductsPage() {
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     );
   };
-
-  const products: Product[] = [
-    {
-      id: 1,
-      name: 'Название товара',
-      description: 'с запасом на 2 строки',
-      price: 32000,
-      rating: 4.5,
-      reviews: 132,
-      image: 'product/first-product.png',
-      discount: 10,
-      isFeatured: true,
-      installment: '0 - 0 - 24',
-      cashback: 95000,
-    },
-    {
-      id: 2,
-      name: 'Название товара',
-      description: 'с запасом на 2 строки',
-      price: 32000,
-      rating: 4.5,
-      reviews: 132,
-      image: 'product/first-product.png',
-      cashback: 95000,
-    },
-    {
-      id: 3,
-      name: 'Название товара',
-      description: 'с запасом на 2 строки',
-      price: 32000,
-      rating: 4.5,
-      reviews: 132,
-      image: 'product/first-product.png',
-      isFeatured: true,
-      cashback: 95000,
-    },
-    {
-      id: 4,
-      name: 'Название товара',
-      description: 'с запасом на 2 строки',
-      price: 32000,
-      rating: 4.5,
-      reviews: 132,
-      image: 'product/first-product.png',
-      installment: '0 - 0 - 24',
-      cashback: 95000,
-    },
-  ];
 
   return (
     <div className='lg:hidden w-full h-full bg-gray-50 px-2'>

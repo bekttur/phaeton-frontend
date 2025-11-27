@@ -146,3 +146,29 @@ fieldset {
     animation: slide-in 0.5s ease-in-out forwards;
   }
 }
+
+
+
+
+/* Скрыть скроллбар в Chrome, Safari */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Скрыть скроллбар в Firefox */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+
+
+
+/* Скрытие скроллбара (Webkit) */
+.scroll-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+/* Для Firefox */
+.scroll-hidden {
+  scrollbar-width: none;
+}

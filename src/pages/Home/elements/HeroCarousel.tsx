@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import CatalogCategories from './CatalogCategories';
 
 const HeroCarousel = () => {
   const [isLg, setIsLg] = useState(false);
@@ -46,8 +47,8 @@ const HeroCarousel = () => {
   }, []);
 
   return (
-    <div className='relative w-full h-full lg:h-full px-2 lg:px-0 bg-[#F6F6F6] lg:bg-transparent'>
-      <div className='absolute top-3 lg:top-5 right-4 lg:right-5 flex gap-1 z-10'>
+    <div className='relative w-full h-full px-2 lg:px-0 bg-[#F6F6F6] lg:bg-transparent'>
+      <div className='absolute top-4 lg:top-5 right-8 lg:right-5 flex gap-1 z-10'>
         {data.map((_, i) => (
           <span
             key={i}
@@ -60,12 +61,12 @@ const HeroCarousel = () => {
 
       <div
         ref={containerRef}
-        className='flex overflow-x-auto snap-x snap-mandatory scrollbar-hide h-full w-full rounded-2xl'
+        className='flex overflow-x-auto snap-x snap-mandatory scrollbar-hide h-full lg:h-[60vh] w-full rounded-2xl'
       >
         {data.map((item, i) => (
           <div
             key={i}
-            className='shrink-0 min-w-full min-h-[270px] lg:min-h-[560px] h-auto snap-start font-exo bg-cover lg:bg-cover bg-center bg-no-repeat rounded-2xl'
+            className='shrink-0 min-w-full min-h-[270px] lg:max-h-[560px] h-auto snap-start font-exo bg-cover lg:bg-cover bg-center bg-no-repeat rounded-2xl'
             style={{
               backgroundImage: `url(${import.meta.env.BASE_URL}${item.img})`,
             }}
@@ -80,6 +81,13 @@ const HeroCarousel = () => {
             </div>
           </div>
         ))}
+      </div>
+
+      <div className='hidden lg:flex w-full h-[40vh]  flex-col gap-4'>
+        <div className='w-full h-1/2 bg-white' />
+        <div className='w-full min-h-1/2 h-fit bg-white px-5 py-4 rounded-2xl'>
+            <CatalogCategories />
+        </div>
       </div>
     </div>
   );

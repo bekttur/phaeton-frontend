@@ -1,10 +1,8 @@
-import Button from '../../../components/ui/Button/Button';
-
 const CatalogCategories = () => {
   const data = [
     {
-      img: 'categories/1.png',
-      title: 'Ходовая часть',
+      img: 'categories/7.png',
+      title: 'Противоугон.  устройства',
       items: [
         'Подвеска',
         'Рулевое управление',
@@ -13,7 +11,7 @@ const CatalogCategories = () => {
     },
     {
       img: 'categories/2.png',
-      title: 'Электрика и свет',
+      title: 'Освещение',
       items: [
         'Фары и освещение',
         'Переключатели',
@@ -22,8 +20,8 @@ const CatalogCategories = () => {
     },
 
     {
-      img: 'categories/3.png',
-      title: 'Колёса и шины',
+      img: 'categories/1.png',
+      title: 'Шины',
       items: [
         'Подвеска',
         'Рулевое управление',
@@ -31,8 +29,8 @@ const CatalogCategories = () => {
       ],
     },
     {
-      img: 'categories/4.png',
-      title: 'Топливная система',
+      img: 'categories/11.png',
+      title: 'Автозапчасти',
       items: [
         'Подвеска',
         'Рулевое управление',
@@ -40,8 +38,8 @@ const CatalogCategories = () => {
       ],
     },
     {
-      img: 'categories/5.png',
-      title: 'Фильтры и расходники',
+      img: 'categories/10.png',
+      title: 'Масла и технические жидкости',
       items: [
         'Бамперы',
         'Панели',
@@ -49,8 +47,8 @@ const CatalogCategories = () => {
       ],
     },
     {
-      img: 'categories/6.png',
-      title: 'Кузов и интерьер',
+      img: 'categories/8.png',
+      title: 'Автохимия и автокосметика',
       items: [
         'АКПП',
         'Фильтр',
@@ -58,8 +56,8 @@ const CatalogCategories = () => {
       ],
     },
     {
-      img: 'categories/1.png',
-      title: 'Топливная система',
+      img: 'categories/9.png',
+      title: 'Комплекты дисков',
       items: [
         'ТНВД',
         'Бензонасос',
@@ -67,8 +65,8 @@ const CatalogCategories = () => {
       ],
     },
     {
-      img: 'categories/2.png',
-      title: 'Ходовая часть',
+      img: 'categories/5.png',
+      title: 'Все для ТО',
       items: [
         'Подвеска',
         'Рулевое управление',
@@ -78,32 +76,32 @@ const CatalogCategories = () => {
   ];
 
   return (
-    <div className='w-full h-fit flex flex-col gap-2 lg:gap-6 px-2 py-3 bg-[#F6F6F6] lg:px-32'>
-      <div className='w-full grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-6'>
+    <div className='w-full h-fit flex flex-col gap-2 lg:gap-6'>
+      <div className='w-full flex items-center justify-between px-2'>
+        <span className='block text-lg font-semibold'>
+          Популярные товары
+        </span>
+        <p className='text-sm text-[#4EBC73] font-semibold cursor-pointer'>
+          Показать все
+        </p>
+      </div>
+      <div className='w-full flex gap-2'>
         {data.map((item, idx) => (
           <div
             key={idx}
-            className='min-w-[166px] min-h-[176px] rounded-md bg-[#efefef] border border-[#DCE0E5]'
+            className='w-full h-full rounded-lg bg-[#FDFDFD] border border-[#EAECED]'
           >
             <div
-              className={`w-[100%] h-[100%] relative bg-contain bg-no-repeat px-2 py-1.5 lg:px-4 lg:py-5`}
+              className={`aspect-square relative bg-contain bg-no-repeat p-2`}
               style={{
                 backgroundImage: `url(${import.meta.env.BASE_URL}${item.img})`,
                 backgroundPosition: 'bottom right',
               }}
             >
-              <span className='text-base font-semibold'>{item.title}</span>
-              <ul className='mt-2 hidden lg:block'>
-                {item.items.map((desc) => (
-                  <li className='text-[15px] text-[#525E6F]'>{desc}</li>
-                ))}
-              </ul>
+             <p className='text-[#56625A] font-semibold' style={{fontSize: 14, lineHeight: 1.2}}>{item.title}</p>
             </div>
           </div>
         ))}
-      </div>
-      <div className='w-full flex items-center justify-center'>
-        <Button className='w-full text-base rounded-md'>Открыть полный каталог</Button>
       </div>
     </div>
   );

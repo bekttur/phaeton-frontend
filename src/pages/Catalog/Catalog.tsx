@@ -11,7 +11,7 @@ const Catalog = () => {
   const items = showAll ? catalog_data : catalog_data.slice(0, 6);
 
   return (
-    <div style={{ paddingTop: showAll ? '70px' : '0px' }} className='bg-[#F6F6F6]'>
+    <div style={{ paddingTop: showAll ? '70px' : '0px' }} className='block lg:hidden bg-[#F6F6F6]'>
       {!!showAll && <QuickSearchTabs />}
 
       {!!showAll && (

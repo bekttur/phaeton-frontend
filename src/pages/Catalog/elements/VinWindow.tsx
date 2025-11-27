@@ -66,15 +66,15 @@ const VinWindow = ({ handleCloseVin }: VinWindowProps) => {
           </p>
 
           <div className='sticky bottom-0 w-full bg-white flex flex-col gap-4 pb-4 pt-2'>
-            <Button onClick={handleClick} className='w-full h-10 rounded-[10px]'>
+            <Button className='w-full h-10 rounded-[10px]'>
               Добавить автомобиль
             </Button>
 
-            <Button className='w-full h-10 rounded-[10px] text-[#636366] bg-[#EBECED]  hover:bg-gray-500'>
-              <span className='text-[#636366]'>
-                {' '}
-                Спасибо, я сделаю потом
-              </span>
+            <Button
+              onClick={handleClick}
+              className='w-full h-10 rounded-[10px] text-[#636366] bg-[#EBECED]'
+            >
+              <span className='text-[#636366]'> Спасибо, я сделаю потом</span>
             </Button>
           </div>
 

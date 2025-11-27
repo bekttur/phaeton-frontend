@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowLeft, Check, Search } from 'lucide-react';
+import { ArrowLeft, Search } from 'lucide-react';
 import ProductsPage from './ProductsPage';
 
 import { X } from 'lucide-react';
@@ -119,12 +119,12 @@ const ConfirmationPage = () => {
           />
           <div className='flex-1'>
             <div className='flex items-center gap-2 mb-2'>
-              <div className='bg-white rounded-full p-1'>
-                <Check className='w-2 h-2 text-emerald-500' />
-              </div>
-              <h3 className='font-semibold text-white'>
-                Toyota 4Runner / Hilux
-              </h3>
+              <img
+                src={`${import.meta.env.BASE_URL}icon/check_circle_white.svg`}
+                width={22}
+                height={22}
+              />
+              <h3 className='font-semibold text-white'>Audi RS 6 2015</h3>
             </div>
             <p className='text-white text-xs leading-relaxed'>
               Мы определили вашу комплектацию — теперь показываем только

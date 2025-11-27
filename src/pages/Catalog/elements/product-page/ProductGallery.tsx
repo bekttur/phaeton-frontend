@@ -1,9 +1,42 @@
 import { Heart } from 'lucide-react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 export default function ProductGallery() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const totalSlides = 5;
+  const [favorite, setFavorite] = useState(false);
+
+  const slides = [
+    'product/first-product.png',
+    'product/first-product.png',
+    'product/first-product.png',
+    'product/first-product.png',
+  ];
+
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+
+  // 👉 обновление текущего слайда при скролле
+  const handleScroll = () => {
+    if (!scrollRef.current) return;
+    const el = scrollRef.current;
+    const index = Math.round(el.scrollLeft / el.clientWidth);
+    setCurrentSlide(index);
+  };
+
+  // 👉 переход на конкретный слайд
+  const goToSlide = (index: number) => {
+    if (!scrollRef.current) return;
+    scrollRef.current.scrollTo({
+      left: index * scrollRef.current.clientWidth,
+      behavior: 'smooth',
+    });
+    setCurrentSlide(index);
+  };
+
+  const toggleFavorite = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setFavorite((prev) => !prev);
+  };
 
   return (
     <div className='bg-white px-4 py-6'>
@@ -17,25 +50,51 @@ export default function ProductGallery() {
             -10%
           </span>
         </div>
-        <button className='p-2 bg-[#D8D8D899] rounded-[14px] transition-colors'>
-          <Heart className='w-6 h-6 text-[#83838399]' />
+        <button
+          onClick={toggleFavorite}
+          className='p-2 bg-[#D8D8D899] rounded-[14px] transition-colors'
+        >
+          <Heart
+            className={`w-6 h-6 transition ${
+              favorite ? 'text-[#5FCD84] fill-[#5FCD84]' : 'text-[#83838399]'
+            }`}
+          />
         </button>
       </div>
 
-      <div className='relative aspect-[4/3] mb-4 flex items-center justify-center'>
-        <img
-          src={`${import.meta.env.BASE_URL}product/first-product.png`}
-          alt='Мотоцикл'
-          className='w-[70%] h-full object-contain'
-        />
+      <div
+        ref={scrollRef}
+        onScroll={handleScroll}
+        className='
+          relative 
+          w-full 
+          overflow-x-auto 
+          snap-x 
+          snap-mandatory 
+          flex 
+          no-scrollbar
+        '
+      >
+        {slides.map((src, i) => (
+          <div
+            key={i}
+            className='snap-start flex-shrink-0 w-full flex items-center justify-center aspect-[4/3]'
+          >
+            <img
+              src={`${import.meta.env.BASE_URL}${src}`}
+              className='w-[70%] h-full object-contain'
+            />
+          </div>
+        ))}
       </div>
 
-      <div className='flex justify-center gap-2 mb-4'>
-        {Array.from({ length: totalSlides }).map((_, index) => (
+      {/* ===== DOTS ===== */}
+      <div className='flex justify-center gap-2 mt-3 mb-5'>
+        {slides.map((_, index) => (
           <button
             key={index}
-            onClick={() => setCurrentSlide(index)}
-            className={`w-2 h-2 rounded-full transition-colors ${
+            onClick={() => goToSlide(index)}
+            className={`w-2 h-2 rounded-full transition-all ${
               currentSlide === index ? 'bg-gray-800' : 'bg-gray-300'
             }`}
           />
