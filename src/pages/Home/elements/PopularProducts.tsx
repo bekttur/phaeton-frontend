@@ -14,7 +14,7 @@ const PopularProducts = () => {
   };
 
   return (
-    <div className='lg:px-32'>
+    <div className='hidden lg:block lg:px-32'>
       <div className='w-full h-fit flex flex-col bg-white gap-2 lg:gap-6 px-3 py-4 rounded-[20px]'>
         <div className='w-full flex items-center justify-between px-2'>
           <span className='block text-lg font-semibold'>Популярные товары</span>
