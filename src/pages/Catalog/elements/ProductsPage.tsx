@@ -119,7 +119,7 @@ function ProductsPage() {
   };
 
   return (
-    <div className='lg:hidden w-full h-full bg-gray-50 px-2'>
+    <div className='lg:hidden w-full h-full bg-gray-50'>
       {/* <Breadcrumb
         items={[
           { title: 'Главная', href: '/' },

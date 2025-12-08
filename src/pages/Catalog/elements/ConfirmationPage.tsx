@@ -85,7 +85,7 @@ const ConfirmationPage = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div className='lg:hidden w-full h-full bg-gray-50 px-2 pt-14 flex flex-col gap-4'>
+    <div className='lg:hidden w-full h-full bg-gray-50 px-4 pt-14 flex flex-col gap-4'>
       <div className='bg-white p-2 flex items-center gap-3'>
         <Link
           to={'/catalog'}

@@ -14,7 +14,7 @@ const Header = () => {
   return (
     <>
       <div className='lg:hidden fixed top-0 left-0 right-0 z-40 bg-white border-b'>
-        <div className='w-full min-h-14 flex items-center justify-between px-2'>
+        <div className='w-full min-h-14 flex items-center justify-between px-4'>
           <span className='text-xl font-semibold text-[#62C382]'>Phaeton</span>
 
           <div className='flex items-center gap-3 justify-between'>

@@ -32,7 +32,7 @@ const FindByBrand = () => {
   const data = isLg ? repeatedBrandsLg : repeatedBrands;
 
   return (
-    <div className='w-full h-fit flex flex-col gap-4 px-2 py-4 bg-[#F6F6F6] lg:px-32 lg:pt-20'>
+    <div className='w-full h-fit flex flex-col gap-4 px-4 py-4 bg-[#F6F6F6] lg:px-32 lg:pt-20'>
       <span className='text-xl lg:text-3xl font-bold'>Найдите запчасти по марке</span>
       <div
         className={`w-full grid ${

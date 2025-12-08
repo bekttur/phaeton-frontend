@@ -76,8 +76,8 @@ const DesktopHeader = () => {
       </div>
 
       {/* Нижняя строка */}
-      <div className='mx-auto px-32 py-4'>
-        <div className='flex items-center gap-8'>
+      <div className='mx-auto px-32 py-4 flex justify-between'>
+        <div className='flex items-center gap-6 lg:w-[70%]'>
           {/* Логотип */}
           <div className='flex-shrink-0'>
             <span className='text-3xl font-semibold text-[#62C382]'>
@@ -109,7 +109,7 @@ const DesktopHeader = () => {
           </button>
 
           {/* Поиск */}
-          <div className='flex-1 w-full flex items-center gap-4 bg-[#EAECED] py-1 px-1.5 rounded-[10px]'>
+          <div className='flex-1 flex items-center gap-4 bg-[#EAECED] py-1 px-1.5 rounded-[10px]'>
             {/* <div className='relative flex items-center gap-2'>
               <button
                 onClick={() => setActiveTab('catalog')}
@@ -165,6 +165,7 @@ const DesktopHeader = () => {
               </button> */}
             </div>
           </div>
+        </div>
           <div className='flex items-center justify-between gap-2'>
             <button className='flex items-center gap-2 px-4 py-2 bg-[#DEF2E3] text-sm text-[#42975D] font-semibold hover:bg-gray-50 rounded-[10px] transition'>
               <img
@@ -193,7 +194,6 @@ const DesktopHeader = () => {
               <span>Гараж</span>
             </button>
           </div>
-        </div>
       </div>
     </div>
   );

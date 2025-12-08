@@ -47,7 +47,7 @@ const HeroCarousel = () => {
   }, []);
 
   return (
-    <div className='relative w-full h-full px-2 lg:px-0 bg-[#F6F6F6] lg:bg-transparent'>
+    <div className='relative w-full h-full px-4 lg:px-0 bg-[#F6F6F6] lg:bg-transparent'>
       <div className='absolute top-4 lg:top-5 right-8 lg:right-5 flex gap-1 z-10'>
         {data.map((_, i) => (
           <span

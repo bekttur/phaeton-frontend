@@ -15,7 +15,7 @@ const Items = () => {
   const handleCloseVin = () => setIsVinOpen(false);
 
   return (
-    <div className="px-2 relative bg-[#F6F6F6]">
+    <div className="px-4 relative bg-[#F6F6F6] min-h-screen pt-20">
       <Breadcrumb
         items={[
           { title: 'Главная', href: '/' },

@@ -1,13 +1,14 @@
 import { ChevronDown, Search } from 'lucide-react';
 import { useState } from 'react';
-import MobileCarSelect from './MobileCarSelect'; // импортируем наш компонент
+import MobileModelSelect from '../../Search/elements/MobileModelSelect';
+import MobileSearch from '../../Search/MobileSearch';
+
 
 const QuickSearchTabs = () => {
   const [activeTab, setActiveTab] = useState<'catalog' | 'vin' | 'model'>(
     'catalog'
   );
 
-  // состояние для открытия модального выбора машины
   const [isCarSelectOpen, setIsCarSelectOpen] = useState(false);
   const [selectedCar, setSelectedCar] = useState({
     brand: '',
@@ -16,8 +17,15 @@ const QuickSearchTabs = () => {
     modification: '',
   });
 
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleInputClick = () => {
+    setIsSearchOpen(true);
+  };
+
   return (
-    <div className='lg:hidden w-full px-2 mb-3'>
+    <div className='lg:hidden w-full px-4 mb-3'>
       <fieldset className='w-full flex items-center gap-2 bg-[#EAECED] p-[3px] rounded-[10px]'>
         {['catalog', 'vin', 'model'].map((tab) => (
           <button
@@ -43,7 +51,11 @@ const QuickSearchTabs = () => {
                 ? 'Поиск запчастей, например «фильтр»'
                 : 'Введите ваш VIN код'
             }
-            className='w-full h-[42px] pl-10 pr-4 bg-[#EAECED] rounded-md text-base focus:outline-none focus:border-[#62C382]'
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onClick={handleInputClick}
+            readOnly={activeTab === 'catalog'}
+            className='w-full h-[42px] pl-10 pr-4 bg-[#EAECED] rounded-[10px] text-base focus:outline-none focus:border-[#62C382]'
           />
           <Search
             className='absolute left-3 top-1/2 -translate-y-1/2'
@@ -54,10 +66,9 @@ const QuickSearchTabs = () => {
         </div>
       ) : (
         <div className='w-full mt-3 relative'>
-          {/* имитация select */}
           <button
             onClick={() => setIsCarSelectOpen(true)}
-            className='w-full h-[42px] px-3 bg-[#EAECED] rounded-md text-base text-left flex items-center justify-between text-[#636366]'
+            className='w-full h-[42px] px-3 bg-[#EAECED] rounded-[10px] text-base text-left flex items-center justify-between text-[#636366]'
           >
             {selectedCar.brand
               ? `${selectedCar.brand} ${selectedCar.model} ${selectedCar.year} ${selectedCar.modification}`
@@ -79,8 +90,7 @@ const QuickSearchTabs = () => {
         </div>
       )}
 
-      {/* модальное окно выбора машины */}
-      <MobileCarSelect
+      <MobileModelSelect
         isOpen={isCarSelectOpen}
         onClose={() => {
           setIsCarSelectOpen(false);
@@ -89,6 +99,12 @@ const QuickSearchTabs = () => {
           setSelectedCar(selection);
           setIsCarSelectOpen(false);
         }}
+      />
+
+      <MobileSearch
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        initialQuery={searchQuery}
       />
     </div>
   );

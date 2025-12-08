@@ -15,7 +15,7 @@ const Catalog = () => {
       {!!showAll && <QuickSearchTabs />}
 
       {!!showAll && (
-        <div className='bg-[#4EBC73] rounded-2xl p-4 mb-4 mx-2'>
+        <div className='bg-[#4EBC73] rounded-2xl p-4 mb-4 mx-4'>
           <div className='flex flex-row-reverse items-start gap-3'>
             <img
               src={`${import.meta.env.BASE_URL}images/911.png`}
@@ -38,13 +38,13 @@ const Catalog = () => {
         </div>
       )}
 
-      <div className='px-2 bg-[#F6F6F6] mb-3'>
+      <div className='px-4 bg-[#F6F6F6] mb-3'>
         <div className='grid grid-cols-3 gap-[13px]'>
           {items.map((item) => (
             <Link
               to={`/${item.id}`}
               key={item.id}
-              className='aspect-square bg-[#FDFDFD] border border-[#E9EBEE] rounded-md px-2 py-1'
+              className='aspect-square bg-[#FDFDFD] border border-[#E9EBEE] rounded-[10px] px-2 py-1'
             >
               <div
                 className='w-full h-full bg-contain bg-bottom bg-no-repeat rounded-md flex items-start'

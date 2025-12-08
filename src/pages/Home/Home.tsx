@@ -13,15 +13,17 @@ const Home = () => {
     <div className='w-full bg-[#F6F6F6]'>
       <HeroSection />
       {/* <CatalogCategories /> */}
-      <span className='block lg:hidden px-2 mt-6 mb-2 text-lg font-semibold'>
+      <span className='block lg:hidden px-4 mt-6 mb-2 text-lg font-semibold'>
         Быстрый поиск запчасти
       </span>
       <QuickSearchTabs />
       <Catalog />
-      <span className='block lg:hidden px-2 mt-6 mb-2 text-lg font-semibold'>
+      <span className='block lg:hidden px-4 mt-6 mb-2 text-lg font-semibold'>
         Популярные товары
       </span>
+      <div className='px-4'>
       <ProductsPage />
+      </div>
 
       <PopularProducts />
 

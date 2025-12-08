@@ -14,7 +14,7 @@ const ServiceTipsCard = () => {
 
   return (
     <div
-      className='p-2 lg:px-32 lg:pt-20'
+      className='px-4 py-2 lg:px-32 lg:pt-20'
       style={{
         background:
           'linear-gradient(180deg,rgba(246, 246, 246, 1) 75%, rgba(255, 255, 255, 1) 75%)',
