@@ -1,7 +1,6 @@
 import { Search, X, ChevronLeft, ChevronDown, ChevronUp } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import ProductsPage from '../Catalog/elements/ProductsPage';
-import MobileMenu from '../../components/Header/MobileMenu';
 
 interface MobileSearchProps {
   isOpen: boolean;
@@ -24,8 +23,6 @@ const MobileSearch = ({
   const [showResults, setShowResults] = useState(false);
   const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([]);
   const [selectedFilter, setSelectedFilter] = useState('Шины');
-
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const baseFilters = ['Шины', 'Диски', 'Колпаки на диски'];
 
