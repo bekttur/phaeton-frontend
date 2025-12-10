@@ -107,17 +107,17 @@ export const products: Product[] = [
 ];
 
 interface IProductsPage {
-  items?: any[]
+  items?: any[];
+  article?: string;
+  brand?: string;
 }
 
-function ProductsPage({ items }: IProductsPage) {
+function ProductsPage({ items, article, brand }: IProductsPage) {
+
   // const carName = 'Toyota 4Runner / Hilux';
 
   // ⭐ избранные товары
   const [favorites, setFavorites] = useState<number[]>([]);
-
-  console.log(items);
-  
 
   const toggleFavorite = (id: number) => {
     setFavorites((prev) =>
@@ -179,42 +179,46 @@ function ProductsPage({ items }: IProductsPage) {
         </div> */}
 
         <div className='grid grid-cols-2 gap-3 pb-4'>
-          {!!items && items.map((product) => (
-            <Link
-              to={'/product/1'}
-              key={product.ItemId}
-              className='bg-white rounded-xl overflow-hidden shadow-sm'
-            >
-              <div className='relative bg-[#E9F0F3]'>
-                {/* {product.installment && (
+          {!!items &&
+            items.map((product) => (
+              // ProductsPage или там, где Link на ProductPage
+              <Link
+                to={`/product/${product.ItemId}?from=${encodeURIComponent(
+                  `/search?article=${article}&brand=${brand}`
+                )}`}
+                key={product.ItemId}
+                className='bg-white rounded-xl overflow-hidden shadow-sm'
+              >
+                <div className='relative bg-[#E9F0F3]'>
+                  {/* {product.installment && (
                   <span className='absolute top-2 left-2 px-2 py-0.5 bg-gradient-to-r from-[#207FC2] to-[#0ECE8D] text-white text-xs font-medium rounded-lg'>
                     0 - 0 - 24
                   </span>
                 )} */}
 
-                {/* сердечко */}
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    toggleFavorite(product.ItemId);
-                  }}
-                  className={`absolute top-2 right-2 p-1 ${
-                    favorites.includes(product.ItemId)
-                      ? 'bg-[#FFFFFF]'
-                      : 'bg-[#D8D8D899]'
-                  }  rounded-lg`}
-                >
-                  <Heart
-                    className={`w-5 h-5 transition ${
+                  {/* сердечко */}
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      toggleFavorite(product.ItemId);
+                    }}
+                    className={`absolute top-2 right-2 p-1 ${
                       favorites.includes(product.ItemId)
-                        ? 'text-[#5FCD84] fill-[#5FCD84]'
-                        : 'text-[#83838399]'
-                    }`}
-                  />
-                </button>
+                        ? 'bg-[#FFFFFF]'
+                        : 'bg-[#D8D8D899]'
+                    }  rounded-lg`}
+                  >
+                    <Heart
+                      className={`w-5 h-5 transition ${
+                        favorites.includes(product.ItemId)
+                          ? 'text-[#5FCD84] fill-[#5FCD84]'
+                          : 'text-[#83838399]'
+                      }`}
+                    />
+                  </button>
 
-                {/* {product.isFeatured && (
+                  {/* {product.isFeatured && (
                   <span
                     className={`absolute ${
                       product.discount ? 'top-10' : 'top-2'
@@ -224,55 +228,55 @@ function ProductsPage({ items }: IProductsPage) {
                   </span>
                 )} */}
 
-                <div className='flex items-center justify-center'>
-                  <img
-                    // src={`${import.meta.env.BASE_URL}${product.image}`}
-                    src={`${import.meta.env.BASE_URL}product/first-product.png`}
-                    
-                    alt={product.Name}
-                    className='w-[70%] h-40 object-contain'
-                  />
-                </div>
+                  <div className='flex items-center justify-center'>
+                    <img
+                      // src={`${import.meta.env.BASE_URL}${product.image}`}
+                      src={`${
+                        import.meta.env.BASE_URL
+                      }product/first-product.png`}
+                      alt={product.Name}
+                      className='w-[70%] h-40 object-contain'
+                    />
+                  </div>
 
-                {/* {product.installment && (
+                  {/* {product.installment && (
                   <span className='absolute bottom-2 left-2 px-2 py-0.5 bg-[#4EBC73] text-white text-xs font-medium rounded-lg'>
                     -10%
                   </span>
                 )} */}
-              </div>
+                </div>
 
-              <div className='p-2'>
-                <span className='text-sm font-medium text-[#3E3E3E] mb-1'>
-                  {product.Name}
-                </span>
-                {/* <h3 className='text-sm font-medium text-[#3E3E3E] mb-1'>
+                <div className='p-2'>
+                  <span className='text-sm font-medium text-[#3E3E3E] mb-1'>
+                    {product.Name}
+                  </span>
+                  {/* <h3 className='text-sm font-medium text-[#3E3E3E] mb-1'>
                   {product.description}
                 </h3> */}
 
-                <div className='flex items-center gap-1 mb-2'>
-                  <span className='text-sm font-semibold'>
-                    {/* {product.rating} */}
-                    4
-                  </span>
-                  <div className='text-xs flex text-[#4EBC73]'>★★★★★</div>
-                  <span className='text-xs text-[#6F7C8E]'>
-                    {/* ({product.reviews} отзыва) */}
-                    (134 отзыва)
-                  </span>
-                </div>
+                  <div className='flex items-center gap-1 mb-2'>
+                    <span className='text-sm font-semibold'>
+                      {/* {product.rating} */}4
+                    </span>
+                    <div className='text-xs flex text-[#4EBC73]'>★★★★★</div>
+                    <span className='text-xs text-[#6F7C8E]'>
+                      {/* ({product.reviews} отзыва) */}
+                      (134 отзыва)
+                    </span>
+                  </div>
 
-                <p className='text-lg font-bold text-[#3E3E3E] mb-2'>
-                  {product.Price.toLocaleString('ru-KZ')} ₸
-                </p>
+                  <p className='text-lg font-bold text-[#3E3E3E] mb-2'>
+                    {product.Price.toLocaleString('ru-KZ')} ₸
+                  </p>
 
-                {/* <button className='w-full bg-[#E3F2F8] text-white py-2 rounded-lg'>
+                  {/* <button className='w-full bg-[#E3F2F8] text-white py-2 rounded-lg'>
                   <span className='text-transparent bg-clip-text bg-gradient-to-r from-[#207FC2] to-[#0ECE8D] text-sm font-semibold '>
                     {product.cashback.toLocaleString('ru-KZ')} ₸ c кэшбеком
                   </span>
                 </button> */}
-              </div>
-            </Link>
-          ))}
+                </div>
+              </Link>
+            ))}
         </div>
       </div>
     </div>

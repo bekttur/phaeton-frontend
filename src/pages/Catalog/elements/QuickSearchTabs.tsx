@@ -2,7 +2,7 @@ import { ChevronDown, Search } from 'lucide-react';
 import { useState } from 'react';
 import MobileModelSelect from '../../Search/elements/MobileModelSelect';
 import MobileSearch from '../../Search/MobileSearch';
-
+import { useSearchModal } from '../../../context/SearchModalContext';
 
 const QuickSearchTabs = () => {
   const [activeTab, setActiveTab] = useState<'catalog' | 'vin' | 'model'>(
@@ -17,12 +17,8 @@ const QuickSearchTabs = () => {
     modification: '',
   });
 
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-
-  const handleInputClick = () => {
-    setIsSearchOpen(true);
-  };
+  const { open } = useSearchModal();
 
   return (
     <div className='lg:hidden w-full px-4 mb-3'>
@@ -46,14 +42,10 @@ const QuickSearchTabs = () => {
         <div className='relative mt-3'>
           <input
             type='text'
-            placeholder={
-              activeTab === 'catalog'
-                ? 'Поиск запчастей, например «фильтр»'
-                : 'Введите ваш VIN код'
-            }
+            placeholder='Поиск запчастей'
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            onClick={handleInputClick}
+            onClick={open}
             readOnly={activeTab === 'catalog'}
             className='w-full h-[42px] pl-10 pr-4 bg-[#EAECED] rounded-[10px] text-base focus:outline-none focus:border-[#62C382]'
           />
@@ -101,11 +93,7 @@ const QuickSearchTabs = () => {
         }}
       />
 
-      <MobileSearch
-        isOpen={isSearchOpen}
-        onClose={() => setIsSearchOpen(false)}
-        initialQuery={searchQuery}
-      />
+      <MobileSearch initialQuery={searchQuery} />
     </div>
   );
 };

@@ -19,6 +19,6 @@ export const useSearchByArticle = ({ article }: { article: string }) => {
   return useQuery<any, Error>({
     queryKey: ['searchByArticle', article],
     queryFn: () => fetchSearchByArticle({ article }),
-    enabled: false,
+    enabled: true,
   });
 };

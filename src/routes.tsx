@@ -7,6 +7,7 @@ import Items from './pages/Catalog/elements/Items';
 import ProductsPage from './pages/Catalog/elements/ProductsPage';
 import ConfirmationPage from './pages/Catalog/elements/ConfirmationPage';
 import ProductPage from './pages/Catalog/elements/product-page';
+import Search from './pages/Search/elements/Search';
 
 export const AppRoutes = () => (
   <Routes>
@@ -17,5 +18,6 @@ export const AppRoutes = () => (
     <Route path="/confirmation" element={<ConfirmationPage />} />
     <Route path="/products" element={<ProductsPage />} />
     <Route path="/product/:id" element={<ProductPage />} />
+    <Route path="/search" element={<Search />} />
   </Routes>
 );

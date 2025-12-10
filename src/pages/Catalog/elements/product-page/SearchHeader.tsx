@@ -1,10 +1,17 @@
 import { ArrowLeft, Search } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function SearchHeader() {
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const fromL = params.get('from') || '/catalog'; // fallback на /catalog
+
   return (
     <div className='bg-white p-4 flex items-center gap-3'>
-      <Link to={'/catalog'} className='p-2 bg-[#EAECED] rounded-lg transition-colors'>
+      <Link
+        to={fromL}
+        className='p-2 bg-[#EAECED] rounded-lg transition-colors'
+      >
         <ArrowLeft className='w-6 h-6 text-[#8C8C8C]' />
       </Link>
       <div className='flex-1 relative'>
