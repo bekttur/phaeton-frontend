@@ -17,6 +17,7 @@ const LoaderContext = createContext<LoaderContextType>({
 export const useLoader = () => useContext(LoaderContext);
 
 export const LoaderProvider = ({ children }: { children: React.ReactNode }) => {
+  // @ts-ignore
   const [loadingCount, setLoadingCount] = useState(0);
   const [progress, setProgress] = useState(0);
   const [loading, setLoading] = useState(false);
