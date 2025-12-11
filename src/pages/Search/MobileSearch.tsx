@@ -50,13 +50,13 @@ const MobileSearch = ({ initialQuery = '' }) => {
               className='w-full h-[42px] pl-10 pr-10 bg-[#EAECED] rounded-[10px]'
               autoFocus
             />
-            <Search className='absolute left-3 top-1/2 -translate-y-1/2' />
+            <Search color='#AEAEB2' className='w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2' />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
-                className='absolute right-3 top-1/2 -translate-y-1/2'
+                className='absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-[#AEAEB2] p-1'
               >
-                <X />
+                <X className='w-3 h-3' color='white' />
               </button>
             )}
           </div>
@@ -77,7 +77,7 @@ const MobileSearch = ({ initialQuery = '' }) => {
               onClick={() => handleSearch(s.text)}
               className='w-full px-4 py-4 flex items-center gap-3 border-b'
             >
-              <Search />
+              <Search color='#AEAEB2' className='w-5 h-5' />
               {/* @ts-ignore */}
               {s.text}
             </button>

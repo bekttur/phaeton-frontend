@@ -7,7 +7,10 @@ import ServiceTipsCard from './elements/ServiceTipsCard';
 import PopularProducts from './elements/PopularProducts';
 
 const Home = () => {
-  
+    // const { data: brandData, refetch: refetchBrand } = useSearch({
+    //   article,
+    //   brand: selectedBrand,
+    // });
 
   return (
     <div className='w-full bg-[#F6F6F6]'>
@@ -22,7 +25,7 @@ const Home = () => {
         Популярные товары
       </span>
       <div className='px-4'>
-      <ProductsPage />
+        <ProductsPage />
       </div>
 
       <PopularProducts />

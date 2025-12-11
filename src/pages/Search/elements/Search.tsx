@@ -10,7 +10,7 @@ import { useLoader } from '../../../context/LoaderContext';
 const SearchPage = () => {
   const navigate = useNavigate();
   const [params] = useSearchParams();
-  const { startRequest, finishRequest } = useLoader();
+  const { startRequest, finishRequest, loading } = useLoader();
 
   const article = params.get('article') || '';
   const urlBrand = params.get('brand') || '';
@@ -119,14 +119,14 @@ const SearchPage = () => {
         </div>
       </div>
 
-      {!selectedBrand && (
-        <div className='w-full bg-[#EAECED] flex items-center gap-2 rounded-[10px] p-3'>
+      {!loading && !selectedBrand && (
+        <div className='w-full bg-[#EAECED] flex items-start gap-2 rounded-[10px] p-3'>
           <div
             className={`${
               !!brandList && brandList.Items.length > 0
                 ? 'bg-[#4EBC73]'
                 : 'bg-[#B54C4C]'
-            } rounded-full p-1`}
+            } rounded-full p-1 mt-1`}
           >
             {!!brandList && brandList.Items.length > 0 ? (
               <Check className='w-3 h-3 text-white' />
@@ -148,7 +148,7 @@ const SearchPage = () => {
         </div>
       )}
 
-      {selectedBrand &&
+      {!loading && selectedBrand &&
       brandData &&
       brandData.Items.length !== 0 &&
       !isResettingBrand ? (
@@ -188,32 +188,39 @@ const SearchPage = () => {
         )}
 
       {/* BRAND LIST — скрываем, если бренд выбран */}
-      {!selectedBrand && (
-        <div className='flex flex-col gap-2'>
-          <h2 className='text-lg font-semibold mb-2'>
-            Выберите производителя товара
-          </h2>
+      {!loading && (
+        <>
+          {/* BRAND LIST */}
+          {!selectedBrand && (
+            <div className='flex flex-col gap-2'>
+              {!!brandList && (
+                <h2 className='text-lg font-semibold mb-2'>
+                  Выберите производителя товара
+                </h2>
+              )}
 
-          {!!brandList &&
-            brandList.Items.map((product: any) => (
-              <button
-                key={product.Brand}
-                onClick={() => handleBrandSelect(product.Brand)}
-                className='bg-white border p-3 rounded-xl text-left'
-              >
-                {product.Brand}
-              </button>
-            ))}
-        </div>
-      )}
+              {!!brandList &&
+                brandList.Items.map((product: any) => (
+                  <button
+                    key={product.Brand}
+                    onClick={() => handleBrandSelect(product.Brand)}
+                    className='bg-white border p-3 rounded-xl text-left'
+                  >
+                    {product.Brand}
+                  </button>
+                ))}
+            </div>
+          )}
 
-      {/* Показываем товары, если selectedBrand есть */}
-      {selectedBrand && brandData && (
-        <ProductsPage
-          items={brandData.Items}
-          article={article}
-          brand={selectedBrand}
-        />
+          {/* ITEMS */}
+          {selectedBrand && brandData && (
+            <ProductsPage
+              items={brandData.Items}
+              article={article}
+              brand={selectedBrand}
+            />
+          )}
+        </>
       )}
 
       <MobileSearch initialQuery={article} />

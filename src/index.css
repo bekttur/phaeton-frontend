@@ -172,3 +172,7 @@ fieldset {
 .scroll-hidden {
   scrollbar-width: none;
 }
+
+input:focus {
+  outline: none; /* Removes the default outline */
+}
