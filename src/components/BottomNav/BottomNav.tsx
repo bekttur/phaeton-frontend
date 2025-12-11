@@ -6,7 +6,7 @@ const BottomNav = () => {
   return (
     <div
       className={`grid lg:hidden grid-cols-4 gap-1 py-2 px-7 sticky bottom-0 bg-white border-t ${
-        pathname.startsWith('/product/')  || pathname.startsWith('/confirmation') ? 'hidden' : 'grid'
+        pathname.startsWith('/product/') || pathname.startsWith('/confirmation') || pathname.startsWith('/search') ? 'hidden' : 'grid'
       }`}
     >
       {/* Главное */}

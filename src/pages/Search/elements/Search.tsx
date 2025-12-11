@@ -1,4 +1,4 @@
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useSearch, useSearchByArticle } from '../../../hooks/useData';
 import ProductsPage from '../../Catalog/elements/ProductsPage';
@@ -6,6 +6,9 @@ import { Check, ChevronLeft, Search, X } from 'lucide-react';
 import { useSearchModal } from '../../../context/SearchModalContext';
 import MobileSearch from '../../Search/MobileSearch';
 import { useLoader } from '../../../context/LoaderContext';
+import Items from '../../Catalog/elements/Items';
+import Catalog from '../../Catalog/Catalog';
+import { catalog_data } from '../../Catalog/elements/catalog.data';
 
 const SearchPage = () => {
   const navigate = useNavigate();
@@ -120,35 +123,63 @@ const SearchPage = () => {
       </div>
 
       {!loading && !selectedBrand && (
-        <div className='w-full bg-[#EAECED] flex items-start gap-2 rounded-[10px] p-3'>
-          <div
-            className={`${
-              !!brandList && brandList.Items.length > 0
-                ? 'bg-[#4EBC73]'
-                : 'bg-[#B54C4C]'
-            } rounded-full p-1 mt-1`}
-          >
+        <>
+          <div className='w-full bg-[#EAECED] flex items-start gap-2 rounded-[10px] p-3'>
+            <div
+              className={`${
+                !!brandList && brandList.Items.length > 0
+                  ? 'bg-[#4EBC73]'
+                  : 'bg-[#B54C4C]'
+              } rounded-full p-1 mt-1`}
+            >
+              {!!brandList && brandList.Items.length > 0 ? (
+                <Check className='w-3 h-3 text-white' />
+              ) : (
+                <X className='w-3 h-3 text-white' />
+              )}
+            </div>
+
             {!!brandList && brandList.Items.length > 0 ? (
-              <Check className='w-3 h-3 text-white' />
+              <h3 className='font-semibold text-[#636366]'>
+                Мы нашли товар по артикулу
+              </h3>
             ) : (
-              <X className='w-3 h-3 text-white' />
+              <h3 className='font-semibold text-[#636366]'>
+                Нам не удалось найти товар по артикулу, попробуйте еще раз или
+                выберите по каталогу
+              </h3>
             )}
           </div>
 
-          {!!brandList && brandList.Items.length > 0 ? (
-            <h3 className='font-semibold text-[#636366]'>
-              Мы нашли товар по артикулу
-            </h3>
-          ) : (
-            <h3 className='font-semibold text-[#636366]'>
-              Нам не удалось найти товар по артикулу, попробуйте еще раз или
-              выберите по каталогу
-            </h3>
+          {brandList && brandList.Items.length === 0 && (
+            <div className='grid grid-cols-3 gap-[13px]'>
+              {catalog_data.map((item) => (
+                <Link
+                  to={`/${item.id}`}
+                  key={item.id}
+                  className='aspect-square bg-[#FDFDFD] border border-[#E9EBEE] rounded-[10px] px-2 py-1'
+                >
+                  <div
+                    className='w-full h-full bg-contain bg-bottom bg-no-repeat rounded-md flex items-start'
+                    style={{
+                      backgroundImage: `url(${import.meta.env.BASE_URL}${
+                        item.img
+                      })`,
+                    }}
+                  >
+                    <span className='text-sm font-medium text-[#56625A]'>
+                      {item.title}
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
           )}
-        </div>
+        </>
       )}
 
-      {!loading && selectedBrand &&
+      {!loading &&
+      selectedBrand &&
       brandData &&
       brandData.Items.length !== 0 &&
       !isResettingBrand ? (
@@ -170,8 +201,8 @@ const SearchPage = () => {
         brandData.Items.length === 0 &&
         !isResettingBrand && (
           <div className='w-full flex flex-col gap-3'>
-            <div className='w-full bg-[#EAECED] flex items-center gap-2 rounded-[10px] p-3'>
-              <div className='bg-[#B54C4C] rounded-full p-1'>
+            <div className='w-full bg-[#EAECED] flex items-start gap-2 rounded-[10px] p-3'>
+              <div className='bg-[#B54C4C] rounded-full p-1 mt-1'>
                 <X className='w-3 h-3 text-white' />
               </div>
               <h3 className='font-semibold text-[#636366]'>
@@ -193,7 +224,7 @@ const SearchPage = () => {
           {/* BRAND LIST */}
           {!selectedBrand && (
             <div className='flex flex-col gap-2'>
-              {!!brandList && (
+              {!!brandList && brandList.Items.length > 0 && (
                 <h2 className='text-lg font-semibold mb-2'>
                   Выберите производителя товара
                 </h2>

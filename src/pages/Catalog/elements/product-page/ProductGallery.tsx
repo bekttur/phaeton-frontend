@@ -1,7 +1,7 @@
 import { Heart } from 'lucide-react';
 import { useRef, useState } from 'react';
 
-export default function ProductGallery() {
+export default function ProductGallery({ product }: any) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [favorite, setFavorite] = useState(false);
 
@@ -108,9 +108,11 @@ export default function ProductGallery() {
           <span className='text-gray-600 text-sm'>132 отзыва</span>
         </div>
 
-        <h1 className='text-base font-semibold'>Мотоцикл кавасаки Врум-ВРУМ</h1>
+        <h1 className='text-base font-semibold'>{!!product && product.Name}</h1>
 
-        <div className='text-lg font-bold'>32 000 ₸</div>
+        <div className='text-lg font-bold'>
+          {!!product && product.Price.toLocaleString('ru-RU')} ₸
+        </div>
       </div>
 
       <div className='bg-[#efefef9e] rounded-[10px] px-[11px] py-2.5 flex items-center gap-2 my-4'>

@@ -11,7 +11,7 @@ export const useSearch = ({
   return useQuery<any, Error>({
     queryKey: [`search`],
     queryFn: () => fetchSearch({ article: article, brand: brand }),
-    enabled: false,
+    enabled: true,
   });
 };
 

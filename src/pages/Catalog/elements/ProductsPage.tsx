@@ -2,110 +2,6 @@ import { useState } from 'react';
 import { Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  rating: number;
-  reviews: number;
-  image: string;
-  discount?: number;
-  isFeatured?: boolean;
-  installment?: string;
-  cashback: number;
-}
-
-export const products: Product[] = [
-  {
-    id: 1,
-    name: 'Название товара',
-    description: 'с запасом на 2 строки',
-    price: 32000,
-    rating: 4.5,
-    reviews: 132,
-    image: 'product/first-product.png',
-    discount: 10,
-    isFeatured: true,
-    installment: '0 - 0 - 24',
-    cashback: 95000,
-  },
-  {
-    id: 2,
-    name: 'Название товара',
-    description: 'с запасом на 2 строки',
-    price: 32000,
-    rating: 4.5,
-    reviews: 132,
-    image: 'product/first-product.png',
-    cashback: 95000,
-  },
-  {
-    id: 3,
-    name: 'Название товара',
-    description: 'с запасом на 2 строки',
-    price: 32000,
-    rating: 4.5,
-    reviews: 132,
-    image: 'product/first-product.png',
-    isFeatured: true,
-    cashback: 95000,
-  },
-  {
-    id: 4,
-    name: 'Название товара',
-    description: 'с запасом на 2 строки',
-    price: 32000,
-    rating: 4.5,
-    reviews: 132,
-    image: 'product/first-product.png',
-    installment: '0 - 0 - 24',
-    cashback: 95000,
-  },
-  {
-    id: 5,
-    name: 'Название товара',
-    description: 'с запасом на 2 строки',
-    price: 32000,
-    rating: 4.5,
-    reviews: 132,
-    image: 'product/first-product.png',
-    installment: '0 - 0 - 24',
-    cashback: 95000,
-  },
-  {
-    id: 6,
-    name: 'Название товара',
-    description: 'с запасом на 2 строки',
-    price: 32000,
-    rating: 4.5,
-    reviews: 132,
-    image: 'product/first-product.png',
-    installment: '0 - 0 - 24',
-    cashback: 95000,
-  },
-  {
-    id: 7,
-    name: 'Название товара',
-    description: 'с запасом на 2 строки',
-    price: 32000,
-    rating: 4.5,
-    reviews: 132,
-    image: 'product/first-product.png',
-    cashback: 95000,
-  },
-  {
-    id: 8,
-    name: 'Название товара',
-    description: 'с запасом на 2 строки',
-    price: 32000,
-    rating: 4.5,
-    reviews: 132,
-    image: 'product/first-product.png',
-    cashback: 95000,
-  },
-];
-
 interface IProductsPage {
   items?: any[];
   article?: string;
@@ -162,7 +58,6 @@ function ProductsPage({ items, article, brand }: IProductsPage) {
                 to={`/product/${product.ItemId}?from=${encodeURIComponent(
                   `/search?article=${article}&brand=${brand}`
                 )}`}
-                key={product.ItemId}
                 className='bg-white rounded-xl overflow-hidden shadow-sm'
               >
                 <div className='relative bg-[#E9F0F3]'>
