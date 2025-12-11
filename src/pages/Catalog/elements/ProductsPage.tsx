@@ -9,7 +9,6 @@ interface IProductsPage {
 }
 
 function ProductsPage({ items, article, brand }: IProductsPage) {
-
   // const carName = 'Toyota 4Runner / Hilux';
 
   // ⭐ избранные товары
@@ -48,8 +47,6 @@ function ProductsPage({ items, article, brand }: IProductsPage) {
       </div> */}
 
       <div>
-
-
         <div className='grid grid-cols-2 gap-3 pb-4'>
           {!!items &&
             items.map((product) => (
@@ -61,8 +58,6 @@ function ProductsPage({ items, article, brand }: IProductsPage) {
                 className='bg-white rounded-xl overflow-hidden shadow-sm'
               >
                 <div className='relative bg-[#E9F0F3]'>
-
-
                   {/* сердечко */}
                   <button
                     onClick={(e) => {
@@ -97,7 +92,7 @@ function ProductsPage({ items, article, brand }: IProductsPage) {
                 </div>
 
                 <div className='p-2'>
-                  <span className='text-sm font-medium text-[#3E3E3E] mb-1'>
+                  <span className='text-sm font-medium text-[#3E3E3E] mb-1 line-clamp-2'>
                     {product.Name}
                   </span>
 
@@ -115,6 +110,12 @@ function ProductsPage({ items, article, brand }: IProductsPage) {
                   <p className='text-lg font-bold text-[#3E3E3E] mb-2'>
                     {product.Price.toLocaleString('ru-KZ')} ₸
                   </p>
+
+                  <div className='w-fit h-fit px-2 py-1 bg-[#E3F2F8] rounded-[10px]'>
+                    <span className='text-transparent bg-clip-text bg-gradient-to-r from-[#207FC2] to-[#0ECE8D] text-sm font-semibold'>
+                      18 924 ₸ c кэшбеком
+                    </span>
+                  </div>
                 </div>
               </Link>
             ))}
