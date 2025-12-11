@@ -6,8 +6,6 @@ import { Check, ChevronLeft, Search, X } from 'lucide-react';
 import { useSearchModal } from '../../../context/SearchModalContext';
 import MobileSearch from '../../Search/MobileSearch';
 import { useLoader } from '../../../context/LoaderContext';
-import Items from '../../Catalog/elements/Items';
-import Catalog from '../../Catalog/Catalog';
 import { catalog_data } from '../../Catalog/elements/catalog.data';
 
 const SearchPage = () => {
