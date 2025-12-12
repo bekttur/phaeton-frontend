@@ -5,13 +5,14 @@ import ProductTabs from './ProductTabs';
 import Reviews from './Reviews';
 import SearchHeader from './SearchHeader';
 import { useSearch } from '../../../../hooks/useData';
+import { useCity } from '../../../../context/CityContext';
 
 const ProductPage = () => {
   const { id } = useParams();
   const location = useLocation();
+  const { city: selectedCity } = useCity();
 
   const params = new URLSearchParams(location.search);
-
   const from = params.get('from');
   const decodedFrom = from ? decodeURIComponent(from) : null;
 
@@ -26,7 +27,11 @@ const ProductPage = () => {
 
   const { data: brandData, isLoading } = useSearch({ article, brand });
 
-  const product = brandData?.Items?.find((p: any) => p.ItemId == id) || null;
+  const filteredItems = brandData?.Items?.filter(
+    (item: any) => !selectedCity || item.Warehouse === selectedCity
+  );
+
+  const product = filteredItems?.find((p: any) => p.ItemId == id) || null;
 
   if (isLoading) return <div className='pt-14'>Загрузка...</div>;
   if (!product) return <div className='pt-14'>Товар не найден</div>;

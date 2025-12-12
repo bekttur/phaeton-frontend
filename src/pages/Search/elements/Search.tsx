@@ -1,5 +1,5 @@
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSearch, useSearchByArticle } from '../../../hooks/useData';
 import ProductsPage from '../../Catalog/elements/ProductsPage';
 import { Check, ChevronLeft, Search, X } from 'lucide-react';
@@ -7,10 +7,13 @@ import { useSearchModal } from '../../../context/SearchModalContext';
 import MobileSearch from '../../Search/MobileSearch';
 import { useLoader } from '../../../context/LoaderContext';
 import { catalog_data } from '../../Catalog/elements/catalog.data';
+import { useCity } from '../../../context/CityContext';
 
 const SearchPage = () => {
   const navigate = useNavigate();
   const [params] = useSearchParams();
+
+  const { city: selectedCity } = useCity();
   const { startRequest, finishRequest, loading } = useLoader();
 
   const article = params.get('article') || '';
@@ -28,6 +31,13 @@ const SearchPage = () => {
     article,
     brand: selectedBrand,
   });
+
+  const filteredItems = useMemo(() => {
+    if (!selectedCity) return brandData?.Items || [];
+    return (brandData?.Items || []).filter(
+      (item: any) => item.Warehouse === selectedCity
+    );
+  }, [brandData, selectedCity]);
 
   useEffect(() => {
     if (urlBrand) {
@@ -244,9 +254,10 @@ const SearchPage = () => {
           {/* ITEMS */}
           {selectedBrand && brandData && (
             <ProductsPage
-              items={brandData.Items}
+              items={filteredItems}
               article={article}
               brand={selectedBrand}
+              city={selectedCity}
             />
           )}
         </>

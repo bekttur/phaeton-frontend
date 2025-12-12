@@ -2,13 +2,15 @@ import { useState } from 'react';
 import { Menu, MapPin } from 'lucide-react';
 import MobileMenu from './MobileMenu';
 import MobileCitySelect from './MobileCitySelect';
+import { useCity } from '../../context/CityContext';
 
 const Header = () => {
+  const { city: confirmedCity, setCity } = useCity();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCitySelectOpen, setIsCitySelectOpen] = useState(false);
 
-  const [confirmedCity, setConfirmedCity] = useState('Алматы');
+  // const [confirmedCity, setConfirmedCity] = useState('Алматы');
   const [tempCity, setTempCity] = useState<string | null>(null);
 
   return (
@@ -37,8 +39,6 @@ const Header = () => {
         </div>
       </div>
 
-      
-
       <MobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
       <MobileCitySelect
         isOpen={isCitySelectOpen}
@@ -49,7 +49,8 @@ const Header = () => {
         selectedCity={tempCity ?? confirmedCity}
         onSelectTemp={setTempCity}
         onConfirm={(city) => {
-          setConfirmedCity(city);
+          setCity(city); 
+          setTempCity(null);
           setIsCitySelectOpen(false);
         }}
       />

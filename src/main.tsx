@@ -11,6 +11,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SearchModalProvider } from './context/SearchModalContext.tsx';
 import { LoaderProvider } from './context/LoaderContext.tsx';
 import { CartProvider } from './context/CartContext.tsx';
+import { CityProvider } from './context/CityContext.tsx';
 
 const queryClient = new QueryClient();
 
@@ -18,22 +19,24 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <Theme>
-        <CartProvider>
-        <SearchModalProvider>
-          <LoaderProvider>
-            <BrowserRouter
-              basename={
-                import.meta.env.MODE === 'production'
-                  ? '/phaeton-frontend'
-                  : '/'
-              }
-            >
-              <ScrollToTop />
-              <App />
-            </BrowserRouter>
-          </LoaderProvider>
-        </SearchModalProvider>
-        </CartProvider>
+        <CityProvider>
+          <CartProvider>
+            <SearchModalProvider>
+              <LoaderProvider>
+                <BrowserRouter
+                  basename={
+                    import.meta.env.MODE === 'production'
+                      ? '/phaeton-frontend'
+                      : '/'
+                  }
+                >
+                  <ScrollToTop />
+                  <App />
+                </BrowserRouter>
+              </LoaderProvider>
+            </SearchModalProvider>
+          </CartProvider>
+        </CityProvider>
       </Theme>
     </QueryClientProvider>
   </StrictMode>
