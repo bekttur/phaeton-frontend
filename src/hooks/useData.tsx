@@ -9,16 +9,16 @@ export const useSearch = ({
   brand: string;
 }) => {
   return useQuery<any, Error>({
-    queryKey: [`search`],
+    queryKey: ['search', article, brand],
     queryFn: () => fetchSearch({ article: article, brand: brand }),
-    enabled: true,
+    enabled: Boolean(article && brand),
   });
 };
 
 export const useSearchByArticle = ({ article }: { article: string }) => {
   return useQuery<any, Error>({
-    queryKey: ['searchByArticle', article],
+    queryKey: ['searchByArticle'],
     queryFn: () => fetchSearchByArticle({ article }),
-    enabled: true,
+    enabled: Boolean(article),
   });
 };

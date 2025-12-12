@@ -10,6 +10,7 @@ import ScrollToTop from './components/ui/ScrollToTop/ScrollToTop.tsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SearchModalProvider } from './context/SearchModalContext.tsx';
 import { LoaderProvider } from './context/LoaderContext.tsx';
+import { CartProvider } from './context/CartContext.tsx';
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,7 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <Theme>
+        <CartProvider>
         <SearchModalProvider>
           <LoaderProvider>
             <BrowserRouter
@@ -31,6 +33,7 @@ createRoot(document.getElementById('root')!).render(
             </BrowserRouter>
           </LoaderProvider>
         </SearchModalProvider>
+        </CartProvider>
       </Theme>
     </QueryClientProvider>
   </StrictMode>

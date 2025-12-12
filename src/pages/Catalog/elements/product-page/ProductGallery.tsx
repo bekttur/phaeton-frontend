@@ -14,7 +14,6 @@ export default function ProductGallery({ product }: any) {
 
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
-  // 👉 обновление текущего слайда при скролле
   const handleScroll = () => {
     if (!scrollRef.current) return;
     const el = scrollRef.current;
@@ -22,7 +21,6 @@ export default function ProductGallery({ product }: any) {
     setCurrentSlide(index);
   };
 
-  // 👉 переход на конкретный слайд
   const goToSlide = (index: number) => {
     if (!scrollRef.current) return;
     scrollRef.current.scrollTo({
@@ -75,7 +73,7 @@ export default function ProductGallery({ product }: any) {
           no-scrollbar
         '
       >
-        {slides.map((src, i) => (
+        {/* {slides.map((src, i) => (
           <div
             key={i}
             className='snap-start flex-shrink-0 w-full flex items-center justify-center aspect-[4/3]'
@@ -85,7 +83,10 @@ export default function ProductGallery({ product }: any) {
               className='w-[70%] h-full object-contain'
             />
           </div>
-        ))}
+        ))} */}
+        <div className='snap-start flex-shrink-0 w-full flex items-center justify-center aspect-[4/3]'>
+          <img src={product.PhotoItem} className='w-full h-fit' />
+        </div>
       </div>
 
       {/* ===== DOTS ===== */}
@@ -115,9 +116,26 @@ export default function ProductGallery({ product }: any) {
         </div>
       </div>
 
+      <div className='flex items-center w-full justify-between gap-3 mt-2'>
+        <div className='w-1/2 rounded-[10px] bg-[#efefef9e] p-2.5'>
+          <span className='text-[#636366] text-base font-medium'>
+            Склад: {!!product && product.Warehouse}
+          </span>
+        </div>
+        <div className='w-1/2 rounded-[10px] bg-[#efefef9e] p-2.5'>
+          <span className='text-[#636366] text-base font-medium'>
+            Доставка:{' '}
+            {!product ||
+            (product.ExpectedDelivery === 0 && product.GuaranteedDelivery === 0)
+              ? 'Сегодня'
+              : `${product.ExpectedDelivery} - ${product.GuaranteedDelivery}`}
+          </span>
+        </div>
+      </div>
+
       <div className='bg-[#efefef9e] rounded-[10px] px-[11px] py-2.5 flex items-center gap-2 my-4'>
         <img src={`${import.meta.env.BASE_URL}icon/check_circle.svg`} alt='' />
-        <span className='text-sm text-[#636366]'>
+        <span className='text-sm text-[#636366] font-medium'>
           Подходит вашему Автомобилю
         </span>
         <button className='ml-auto p-1 bg-[#8C8C8C] w-5 h-5 hover:bg-gray-100 rounded-full flex items-center justify-center'>
@@ -126,7 +144,7 @@ export default function ProductGallery({ product }: any) {
       </div>
 
       <div className='bg-[#efefef9e] rounded-[10px] px-[11px] py-2.5 flex flex-col gap-1'>
-        <div className='flex items-center justify-between mb-2'>
+        <div className='flex items-center justify-between'>
           <span className='text-transparent bg-clip-text bg-gradient-to-r from-[#207FC2] to-[#0ECE8D] text-xl font-black'>
             28 000 ₸
           </span>
@@ -134,10 +152,10 @@ export default function ProductGallery({ product }: any) {
             <span className=' text-white rounded-full'>?</span>
           </button>
         </div>
-        <p className='text-sm text-[#636366] mb-2'>Цена с учетом кэшбэка</p>
+        <p className='text-base text-[#636366] mb-2 font-medium'>Цена с учетом кэшбэка</p>
         <div className='bg-[#EAECED] w-full h-[1.5px]' />
         <div className='flex items-center justify-between mt-1'>
-          <span className='text-xs text-[#000000]'>
+          <span className='text-base text-[#000000] font-medium'>
             Кэшбэк "Большая разница"
           </span>
 

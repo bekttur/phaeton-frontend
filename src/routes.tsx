@@ -8,6 +8,7 @@ import ProductsPage from './pages/Catalog/elements/ProductsPage';
 import ConfirmationPage from './pages/Catalog/elements/ConfirmationPage';
 import ProductPage from './pages/Catalog/elements/product-page';
 import Search from './pages/Search/elements/Search';
+import CheckoutPage from './pages/Basket/elements/CheckoutPage';
 
 export const AppRoutes = () => (
   <Routes>
@@ -19,5 +20,6 @@ export const AppRoutes = () => (
     <Route path="/products" element={<ProductsPage />} />
     <Route path="/product/:id" element={<ProductPage />} />
     <Route path="/search" element={<Search />} />
+    <Route path="/basket" element={<CheckoutPage />} />
   </Routes>
 );

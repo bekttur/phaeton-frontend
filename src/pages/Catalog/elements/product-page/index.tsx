@@ -28,9 +28,6 @@ const ProductPage = () => {
 
   const product = brandData?.Items?.find((p: any) => p.ItemId == id) || null;
 
-  console.log(product);
-
-
   if (isLoading) return <div className='pt-14'>Загрузка...</div>;
   if (!product) return <div className='pt-14'>Товар не найден</div>;
 
@@ -38,9 +35,9 @@ const ProductPage = () => {
     <div className='min-h-screen bg-gray-100 pt-14'>
       <SearchHeader />
       <ProductGallery product={product} />
-      <ProductTabs />
+      <ProductTabs product={product} />
       <Reviews />
-      <FixedCartButton />
+      <FixedCartButton product={product} />
     </div>
   );
 };

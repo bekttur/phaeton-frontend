@@ -57,6 +57,7 @@ function ProductsPage({ items, article, brand }: IProductsPage) {
                 )}`}
                 className='bg-white rounded-xl overflow-hidden shadow-sm'
               >
+                
                 <div className='relative bg-[#E9F0F3]'>
                   {/* сердечко */}
                   <button
@@ -82,9 +83,7 @@ function ProductsPage({ items, article, brand }: IProductsPage) {
                   <div className='flex items-center justify-center'>
                     <img
                       // src={`${import.meta.env.BASE_URL}${product.image}`}
-                      src={`${
-                        import.meta.env.BASE_URL
-                      }product/first-product.png`}
+                      src={product.PhotoItem}
                       alt={product.Name}
                       className='w-[70%] h-40 object-contain'
                     />

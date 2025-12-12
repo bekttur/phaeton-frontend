@@ -1,14 +1,20 @@
 import { useState } from 'react';
 
-export default function ProductTabs() {
+interface SpecItem {
+  label: string;
+  value: string;
+}
+
+export default function ProductTabs({ product }: any) {
   const [activeTab, setActiveTab] = useState<'specs' | 'description'>('specs');
 
-  const specs = [
-    { label: 'Марка модель', value: 'Марка модель' },
-    { label: 'Марка модель', value: 'Марка модель' },
-    { label: 'Марка модель', value: 'Марка модель' },
-    { label: 'Марка модель', value: 'Марка модель' },
-  ];
+  // Преобразуем product.Parameters в массив
+  const specs: SpecItem[] = Object.entries(product?.Parameters ?? {}).map(
+    ([label, value]) => ({
+      label,
+      value: String(value),
+    })
+  );
 
   return (
     <div className='bg-white mt-2 rounded-xl mx-4 p-3'>
@@ -17,7 +23,7 @@ export default function ProductTabs() {
           onClick={() => setActiveTab('specs')}
           className={`flex-1 py-3 text-center font-medium transition-colors ${
             activeTab === 'specs'
-              ? 'bg-[#FFFFFF] text-black rounded-lg'
+              ? 'bg-white text-black rounded-lg'
               : 'text-gray-500'
           }`}
         >
@@ -27,7 +33,7 @@ export default function ProductTabs() {
           onClick={() => setActiveTab('description')}
           className={`flex-1 py-3 text-center font-medium transition-colors ${
             activeTab === 'description'
-              ? 'bg-[#FFFFFF] text-black rounded-lg'
+              ? 'bg-white text-black rounded-lg'
               : 'text-gray-500'
           }`}
         >
@@ -52,6 +58,7 @@ export default function ProductTabs() {
                 </div>
               ))}
             </div>
+
             <button className='text-green-600 text-sm font-medium mt-4'>
               показать всё
             </button>
@@ -59,8 +66,8 @@ export default function ProductTabs() {
         ) : (
           <div>
             <p className='text-gray-700 leading-relaxed'>
-              Описание товара будет здесь. Подробная информация о продукте, его
-              характеристиках и особенностях.
+              {product?.Description ??
+                'Описание товара будет здесь. Подробная информация о продукте.'}
             </p>
           </div>
         )}
