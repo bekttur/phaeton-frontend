@@ -85,7 +85,7 @@ export default function ProductGallery({ product }: any) {
           </div>
         ))} */}
         <div className='snap-start flex-shrink-0 w-full flex items-center justify-center aspect-[4/3]'>
-          <img src={product.PhotoItem} className='w-full h-fit' />
+          <img src={product.PhotoItem} className='w-50 h-auto' />
         </div>
       </div>
 
