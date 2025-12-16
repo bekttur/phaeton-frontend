@@ -3,7 +3,7 @@ import { X } from 'lucide-react';
 import { useState } from 'react';
 
 import YandexMap from './YandexMap';
-import { PICKUP_POINTS, type PickupPoint } from '../constants/pickupPoints';
+import { type PickupPoint } from '../constants/pickupPoints';
 
 type Props = {
   isOpen: boolean;

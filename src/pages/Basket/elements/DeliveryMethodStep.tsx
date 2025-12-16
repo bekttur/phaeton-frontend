@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
-import { MapPin } from 'lucide-react';
 import ShowInCartModal from './ShowInCartModal';
 import ShowInCartModalWithList from './ShowInCartModalWithList';
-import { PICKUP_POINTS, type PickupPoint } from '../constants/pickupPoints';
+import { PICKUP_POINTS } from '../constants/pickupPoints';
 import { MAILBOX_POINTS } from '../constants/mailboxPoints';
 
 interface DeliveryData {
@@ -36,7 +35,6 @@ export default function DeliveryMethodStep({
   const isValid = data.method && data.address;
 
   const [isOpenCartModel, setIsOpenCartModel] = useState(false);
-  const [isOpenCartModelWithList, setIsOpenCartModelWithList] = useState(false);
   const [isPickupModalOpen, setIsPickupModalOpen] = useState(false);
   const [isMailboxModalOpen, setIsMailboxModalOpen] = useState(false);
 

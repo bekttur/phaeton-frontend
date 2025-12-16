@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useCart } from '../../../context/CartContext';
 import Basket from '../Basket';
 import ContactDetailsStep from './ContactDetailsStep';
 import DeliveryMethodStep from './DeliveryMethodStep';
@@ -28,7 +27,6 @@ interface PaymentData {
 }
 
 export default function CheckoutPage() {
-  const { items } = useCart();
   const [currentStep, setCurrentStep] = useState<Step>('contact');
   const [deliveryCompleted, setDeliveryCompleted] = useState(false);
 
