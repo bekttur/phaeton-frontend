@@ -1,5 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { fetchSearch, fetchSearchByArticle } from '../api/services/search';
+import {
+  fetchCreateOrder,
+  fetchGettingContragent,
+  fetchPaybox,
+} from '../api/services/payment';
 
 export const useSearch = ({
   article,
@@ -20,5 +25,25 @@ export const useSearchByArticle = ({ article }: { article: string }) => {
     queryKey: ['searchByArticle'],
     queryFn: () => fetchSearchByArticle({ article }),
     enabled: Boolean(article),
+  });
+};
+
+export const useGettingContragent = () => {
+  return useQuery<any, Error>({
+    queryKey: ['gettingContragent'],
+    queryFn: () => fetchGettingContragent(),
+    enabled: true,
+  });
+};
+
+export const useCreateOrder = () => {
+  return useMutation({
+    mutationFn: fetchCreateOrder,
+  });
+};
+
+export const usePaybox = () => {
+  return useMutation({
+    mutationFn: fetchPaybox,
   });
 };

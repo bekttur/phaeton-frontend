@@ -2,11 +2,27 @@ import { createContext, useContext, useState, type ReactNode } from 'react';
 
 export interface CartItem {
   ItemId: string;
+
   Name: string;
-  Price: number;
   PhotoItem: string;
+
+  Brand: string;
+  Article: string;
+
+  WarehouseId: string;
+  Warehouse: string;
+
+  CategoryId: string;
+
+  Price: number;
+  CurrencyCode: string;
+
+  ExpectedDelivery: number;
+  GuaranteedDelivery: number;
+
   quantity: number;
 }
+
 
 interface CartContextType {
   items: CartItem[];
@@ -36,11 +52,16 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const addItem = (product: any) => {
     setItems((prev) => {
-      const existingItem = prev.find((item) => item.ItemId === product.ItemId);
+      const existingItem = prev.find(
+        (item) =>
+          item.ItemId === product.ItemId &&
+          item.WarehouseId === product.WarehouseId
+      );
 
       if (existingItem) {
         return prev.map((item) =>
-          item.ItemId === product.ItemId
+          item.ItemId === product.ItemId &&
+          item.WarehouseId === product.WarehouseId
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
@@ -50,9 +71,24 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         ...prev,
         {
           ItemId: product.ItemId,
+
           Name: product.Name,
-          Price: product.Price,
           PhotoItem: product.PhotoItem,
+
+          Brand: product.Brand,
+          Article: product.Article,
+
+          WarehouseId: product.WarehouseId,
+          Warehouse: product.Warehouse,
+
+          CategoryId: product.CategoryId,
+
+          Price: product.Price,
+          CurrencyCode: product.CurrencyCode,
+
+          ExpectedDelivery: product.ExpectedDelivery,
+          GuaranteedDelivery: product.GuaranteedDelivery,
+
           quantity: 1,
         },
       ];

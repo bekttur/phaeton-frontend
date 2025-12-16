@@ -1,4 +1,10 @@
 import { useCart } from '../../../context/CartContext';
+import { useLoader } from '../../../context/LoaderContext';
+import {
+  useCreateOrder,
+  useGettingContragent,
+  usePaybox,
+} from '../../../hooks/useData';
 
 interface PaymentData {
   promoCode: string;
@@ -17,6 +23,7 @@ export default function PaymentStep({
   isExpanded,
 }: PaymentStepProps) {
   const { items } = useCart();
+  const { startRequest, finishRequest, loading } = useLoader();
 
   const subtotal = items.reduce(
     (sum, item) => sum + item.Price * item.quantity,
@@ -25,7 +32,111 @@ export default function PaymentStep({
   const deliveryFee = data.expressDelivery ? 2000 : 0;
   const total = subtotal + deliveryFee;
 
-  if (!isExpanded) {
+  const { data: contragentData } = useGettingContragent();
+  const { mutateAsync: createOrder } = useCreateOrder();
+  const { mutateAsync: paybox } = usePaybox();
+
+  const handlePay = async () => {
+    startRequest();
+
+    if (!contragentData?.Contragents?.length || !items.length) return;
+
+    const contragentGuid = contragentData.Contragents[0].ContragentGuid;
+
+    try {
+      // 1️⃣ Создаём заказы (api/Order)
+      const orderResponses = await Promise.all(
+        items.map((item) =>
+          createOrder({
+            UserGuid: '32c61d6f-9571-11e3-b018-0025909bbfce',
+            ApiKey: 'TwIjwsvu5oitKSnQN9RS',
+            ContragentGuid: contragentGuid,
+
+            Brand: item.Brand,
+            Article: item.Article,
+            WarehouseId: item.WarehouseId,
+
+            Price: item.Price,
+            Count: item.quantity,
+
+            ExpectedDelivery: item.ExpectedDelivery,
+            GuaranteedDelivery: item.GuaranteedDelivery,
+
+            Name: 'Имя клиента',
+            Phone: '+77001234567',
+            Email: 'test@mail.kz',
+
+            Comment: 'Заказ с сайта',
+            Force: 0,
+          })
+        )
+      );
+
+      // 2️⃣ Собираем OrderItems
+      const orderItems = orderResponses.flatMap((r) => r.OrderItems ?? []);
+
+      if (!orderItems.length) {
+        throw new Error('OrderItems пустой');
+      }
+
+      // 3️⃣ Формируем Orders[] для PayBox
+      const payboxOrders = orderItems.map((orderItem) => {
+        const cartItem = items.find(
+          (i) =>
+            i.Article === orderItem.Article &&
+            i.Brand === orderItem.Brand &&
+            i.WarehouseId === orderItem.WarehouseId
+        );
+
+        return {
+          ProductCategoryGuid: cartItem!.CategoryId,
+          WarehouseGuid: orderItem.WarehouseId,
+          OrderGuid: orderItem.OrderGuid,
+          OrderNumber: orderItem.OrderNumber,
+          // ErrorCode: orderItem.Error ?? null,
+          // Result: orderItem.Error ? 'Error' : 'Ok',
+        };
+      });
+
+      const orderNumber = payboxOrders[0].OrderNumber;
+
+      const payboxResponse = await paybox({
+        Orders: payboxOrders,
+
+        Amount: total,
+        UserGuid: '32c61d6f-9571-11e3-b018-0025909bbfce',
+        AgentGuid: contragentGuid,
+        ContractGuid: contragentGuid,
+
+        Description: `Оплата заказа ${orderNumber}`,
+        Model: {
+          name: 'ФИО',
+          phone: '+77001234567',
+          email: 'ivan.petrov@example.com',
+          address: 'Алматы, пр. Абая 10',
+          comment: 'Позвонить за 30 минут',
+          routes: [],
+          route: '',
+        },
+      });
+
+      if (
+        typeof payboxResponse === 'string' &&
+        payboxResponse.startsWith('http')
+      ) {
+        window.location.href = payboxResponse;
+      } else {
+        throw new Error('payment_url не получен');
+      }
+    } catch (error) {
+      console.error('Ошибка оплаты:', error);
+      alert('Ошибка при переходе к оплате');
+    } finally {
+      finishRequest();
+    }
+  };
+
+  if (!isExpanded && !loading) {
     return (
       <div className='bg-white rounded-2xl p-4'>
         <div className='flex items-center gap-3'>
@@ -106,7 +217,10 @@ export default function PaymentStep({
         </div>
       </div>
 
-      <button className='w-full bg-[#4EBC73] hover:bg-green-600 text-white font-semibold py-3 rounded-xl transition-colors'>
+      <button
+        className='w-full bg-[#4EBC73] hover:bg-green-600 text-white font-semibold py-3 rounded-xl transition-colors'
+        onClick={handlePay}
+      >
         Оплатить картой
       </button>
     </div>
