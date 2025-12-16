@@ -257,7 +257,6 @@ const SearchPage = () => {
               items={filteredItems}
               article={article}
               brand={selectedBrand}
-              city={selectedCity}
             />
           )}
         </>

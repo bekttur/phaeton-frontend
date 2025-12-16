@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -6,10 +6,9 @@ interface IProductsPage {
   items?: any[];
   article?: string;
   brand?: string;
-  city?: string;
 }
 
-function ProductsPage({ items = [], article, brand, city }: IProductsPage) {
+function ProductsPage({ items, article, brand }: IProductsPage) {
   // const carName = 'Toyota 4Runner / Hilux';
 
   // ⭐ избранные товары
@@ -20,11 +19,6 @@ function ProductsPage({ items = [], article, brand, city }: IProductsPage) {
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     );
   };
-
-  const filteredItems = useMemo(() => {
-    if (!city) return items;
-    return items.filter((item: any) => item.Warehouse === city);
-  }, [items, city]);
 
   return (
     <div className='lg:hidden w-full h-full bg-gray-50'>
@@ -54,7 +48,8 @@ function ProductsPage({ items = [], article, brand, city }: IProductsPage) {
 
       <div>
         <div className='grid grid-cols-2 gap-3 pb-4'>
-          {filteredItems.map((product) => (
+          {!!items &&
+            items.map((product) => (
               // ProductsPage или там, где Link на ProductPage
               <Link
                 to={`/product/${product.ItemId}?from=${encodeURIComponent(

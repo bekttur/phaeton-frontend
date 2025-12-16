@@ -128,7 +128,7 @@ export default function ProductGallery({ product }: any) {
             {!product ||
             (product.ExpectedDelivery === 0 && product.GuaranteedDelivery === 0)
               ? 'Сегодня'
-              : `${product.ExpectedDelivery} - ${product.GuaranteedDelivery}`}
+              : `${product.ExpectedDelivery}-${product.GuaranteedDelivery} дней`}
           </span>
         </div>
       </div>
@@ -136,7 +136,7 @@ export default function ProductGallery({ product }: any) {
       <div className='bg-[#efefef9e] rounded-[10px] px-[11px] py-2.5 flex items-center gap-2 my-4'>
         <img src={`${import.meta.env.BASE_URL}icon/check_circle.svg`} alt='' />
         <span className='text-sm text-[#636366] font-medium'>
-          Подходит вашему Автомобилю
+          {!!product && product.Using}
         </span>
         <button className='ml-auto p-1 bg-[#8C8C8C] w-5 h-5 hover:bg-gray-100 rounded-full flex items-center justify-center'>
           <span className=' text-white rounded-full'>?</span>

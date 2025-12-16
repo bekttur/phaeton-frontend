@@ -15,8 +15,6 @@ const MobileSearch = ({ initialQuery = '' }) => {
   const handleSearch = (query?: string) => {
     const q = query ?? searchQuery;
 
-    if (!/^\d+$/.test(q)) return;
-
     navigate(`/search?article=${q}`);
     close();
   };

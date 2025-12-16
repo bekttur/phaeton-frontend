@@ -65,10 +65,44 @@ export default function ProductTabs({ product }: any) {
           </div>
         ) : (
           <div>
-            <p className='text-gray-700 leading-relaxed'>
+            {/* <p className='text-gray-700 leading-relaxed'>
               {product?.Description ??
                 'Описание товара будет здесь. Подробная информация о продукте.'}
-            </p>
+            </p> */}
+            <div className='flex justify-between items-center py-1 border-b'>
+              <span className='text-gray-600 text-sm'>Артикул</span>
+              <span className='text-gray-900 text-sm font-medium'>
+                {!!product && product.Article}
+              </span>
+            </div>
+            <div className='flex justify-between items-center py-1 border-b'>
+              <span className='text-gray-600 text-sm'>Бренд</span>
+              <span className='text-gray-900 text-sm font-medium'>
+                {!!product && product.Brand}
+              </span>
+            </div>
+            <div className='flex justify-between items-center py-1 border-b'>
+              <span className='text-gray-600 text-sm'>Склад</span>
+              <span className='text-gray-900 text-sm font-medium'>
+                {!!product && product.Warehouse}
+              </span>
+            </div>
+            <div className='flex justify-between items-start py-1 border-b'>
+              <span className='text-gray-600 text-sm'>На авто</span>
+              <span className='text-gray-900 text-sm font-medium whitespace-pre-line text-end'>
+                {product.Using?.replace(/;/g, '\n')}
+              </span>
+            </div>
+            <div className='flex justify-between items-center py-1 border-b'>
+              <span className='text-gray-600 text-sm'>Доставка</span>
+              <span className='text-gray-900 text-sm font-medium'>
+                {!product ||
+                (product.ExpectedDelivery === 0 &&
+                  product.GuaranteedDelivery === 0)
+                  ? 'Сегодня'
+                  : `${product.ExpectedDelivery}-${product.GuaranteedDelivery} дней`}
+              </span>
+            </div>
           </div>
         )}
       </div>
