@@ -1,0 +1,1 @@
+export const CONTACT_STORAGE_KEY = 'checkout_contact';

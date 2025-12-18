@@ -52,6 +52,7 @@ export default function YandexMap({
             ? points[0].coords
             : [43.238949, 76.889709],
         zoom: 12,
+        controls: ['fullscreenControl', 'zoomControl'],
       });
 
       mapInstance.current = map;
@@ -68,6 +69,34 @@ export default function YandexMap({
 
   /* ---------- CLICK MODE ---------- */
   const initClickMode = (map: any) => {
+    // 🔍 поиск
+    const searchControl = new window.ymaps.control.SearchControl({
+      options: {
+        noPlacemark: true,
+        placeholderContent: 'Введите адрес',
+        size: 'large', // влияет слабо, но оставим
+      },
+    });
+
+    map.controls.add(searchControl);
+
+    map.controls.add(searchControl);
+
+    // выбор адреса из поиска
+    searchControl.events.add('resultselect', async (e: any) => {
+      const index = e.get('index');
+      const result = await searchControl.getResult(index);
+
+      const coords = result.geometry.getCoordinates();
+      const address = result.getAddressLine();
+
+      setPlacemark(coords);
+      map.setCenter(coords, 16);
+
+      onAddressSelect?.(address);
+    });
+
+    // 📍 клик по карте
     map.events.add('click', (e: any) => {
       const coords = e.get('coords');
       setPlacemark(coords);

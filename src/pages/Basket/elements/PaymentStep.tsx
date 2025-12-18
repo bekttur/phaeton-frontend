@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useCart } from '../../../context/CartContext';
 import { useLoader } from '../../../context/LoaderContext';
 import {
@@ -15,12 +16,18 @@ interface PaymentStepProps {
   data: PaymentData;
   onUpdate: (data: PaymentData) => void;
   isExpanded: boolean;
+  contact: {
+    fullName: string;
+    email: string;
+    phone: string;
+  };
 }
 
 export default function PaymentStep({
   data,
   onUpdate,
   isExpanded,
+  contact,
 }: PaymentStepProps) {
   const { items } = useCart();
   const { startRequest, finishRequest, loading } = useLoader();
@@ -36,9 +43,11 @@ export default function PaymentStep({
   const { mutateAsync: createOrder } = useCreateOrder();
   const { mutateAsync: paybox } = usePaybox();
 
+  const [openLoader, setOpenLoader] = useState(false);
+
   const handlePay = async () => {
     startRequest();
-
+    setOpenLoader(true);
     if (!contragentData?.Contragents?.length || !items.length) return;
 
     const contragentGuid = contragentData.Contragents[0].ContragentGuid;
@@ -62,9 +71,12 @@ export default function PaymentStep({
             ExpectedDelivery: item.ExpectedDelivery,
             GuaranteedDelivery: item.GuaranteedDelivery,
 
-            Name: 'Имя клиента',
-            Phone: '+77001234567',
-            Email: 'test@mail.kz',
+            Name:
+              !!contact && contact.fullName
+                ? contact.fullName
+                : 'Тестовый заказ',
+            Phone: !!contact && contact.phone ? contact.phone : '+77001234567',
+            Email: !!contact && contact.email ? contact.email : 'test@mail.kz',
 
             Comment: 'Заказ с сайта',
             Force: 0,
@@ -133,6 +145,7 @@ export default function PaymentStep({
       alert('Ошибка при переходе к оплате');
     } finally {
       finishRequest();
+      setOpenLoader(false);
     }
   };
 
@@ -151,6 +164,13 @@ export default function PaymentStep({
 
   return (
     <div className='bg-white rounded-2xl p-4'>
+      {!!loading && openLoader && (
+        <div className='fixed inset-0 z-[9999] bg-black/40 flex items-center justify-center'>
+          <div className='w-12 h-12 p-1 bg-white rounded-full'>
+            <div className='w-10 h-10 border-[3px] border-t-[#4EBC73] border-l-[#4EBC73] border-b-[#4EBC73] border-white rounded-full animate-spin'></div>
+          </div>
+        </div>
+      )}
       <div className='flex items-center gap-3 mb-4'>
         <div className='w-8 h-8 rounded-full bg-[#4EBC73] text-white flex items-center justify-center font-bold text-sm'>
           3
@@ -169,7 +189,7 @@ export default function PaymentStep({
           />
         </div>
 
-        <div className='space-y-3 flex items-start justify-between'>
+        {/* <div className='space-y-3 flex items-start justify-between'>
           <div>
             <h4 className='font-semibold text-base'>Экспресс доставка</h4>
             <span className='text-base text-[#8E8E93]'>
@@ -187,7 +207,7 @@ export default function PaymentStep({
             />
             <span className='slider'></span>
           </label>
-        </div>
+        </div> */}
 
         <div className='space-y-2 pt-4'>
           <div className='flex justify-between items-center border-b border-gray-200 py-2'>
@@ -198,14 +218,14 @@ export default function PaymentStep({
               {subtotal.toLocaleString('ru-RU')} ₸
             </span>
           </div>
-          <div className='flex justify-between items-center border-b border-gray-200 py-2'>
+          {/* <div className='flex justify-between items-center border-b border-gray-200 py-2'>
             <span className='text-base font-semibold text-[#636366]'>
               Доставка
             </span>
             <span className='text-base font-semibold'>
               {deliveryFee.toLocaleString('ru-RU')} ₸
             </span>
-          </div>
+          </div> */}
           <div className='flex justify-between items-center border-b border-gray-200 py-2'>
             <span className='text-base font-semibold text-[#636366]'>
               Итого
