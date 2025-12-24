@@ -1,17 +1,22 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Menu, MapPin } from 'lucide-react';
 import MobileMenu from './MobileMenu';
 import MobileCitySelect from './MobileCitySelect';
 import { useCity } from '../../context/CityContext';
 
 const Header = () => {
-  const { city: confirmedCity, setCity } = useCity();
+  const { city, setCity } = useCity();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCitySelectOpen, setIsCitySelectOpen] = useState(false);
-
-  // const [confirmedCity, setConfirmedCity] = useState('Алматы');
   const [tempCity, setTempCity] = useState<string | null>(null);
+
+  // 🔥 АВТООТКРЫТИЕ ПРИ ПЕРВОМ ЗАПУСКЕ
+  useEffect(() => {
+    if (!city) {
+      setIsCitySelectOpen(true);
+    }
+  }, [city]);
 
   return (
     <>
@@ -19,19 +24,20 @@ const Header = () => {
         <div className='w-full min-h-14 flex items-center justify-between px-4'>
           <span className='text-xl font-semibold text-[#62C382]'>Phaeton</span>
 
-          <div className='flex items-center gap-3 justify-between'>
+          <div className='flex items-center gap-3'>
             <button
               onClick={() => setIsCitySelectOpen(true)}
-              className='w-fit h-fit rounded-[10px] py-2 px-2.5 bg-[#DEF2E3] flex items-center justify-center gap-1'
+              className='rounded-[10px] py-2 px-2.5 bg-[#DEF2E3] flex items-center gap-1'
             >
               <MapPin width={24} height={24} color='#7ED399' />
-              <span className='text-[15px] text-[#6ABF85] mb-0.5 font-medium'>
-                {confirmedCity}
+              <span className='text-[15px] text-[#6ABF85] font-medium'>
+                {city ?? 'Выберите город'}
               </span>
             </button>
+
             <button
               onClick={() => setIsMenuOpen(true)}
-              className='w-fit h-fit rounded-[10px] py-2 px-2.5 bg-[#DEF2E3] flex items-center justify-center gap-1'
+              className='rounded-[10px] py-2 px-2.5 bg-[#DEF2E3]'
             >
               <Menu width={24} height={24} color='#7ED399' />
             </button>
@@ -40,16 +46,14 @@ const Header = () => {
       </div>
 
       <MobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
+
       <MobileCitySelect
         isOpen={isCitySelectOpen}
-        onClose={() => {
-          setTempCity(null);
-          setIsCitySelectOpen(false);
-        }}
-        selectedCity={tempCity ?? confirmedCity}
+        onClose={() => setIsCitySelectOpen(false)}
+        selectedCity={tempCity ?? city ?? ''}
         onSelectTemp={setTempCity}
         onConfirm={(city) => {
-          setCity(city); 
+          setCity(city);
           setTempCity(null);
           setIsCitySelectOpen(false);
         }}

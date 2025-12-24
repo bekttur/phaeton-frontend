@@ -5,6 +5,8 @@ import {
   fetchGettingContragent,
   fetchPaybox,
 } from '../api/services/payment';
+import { fetchRetailCity } from '../api/services/base';
+import { fetchRegisterUser, type ContactDetails, type NewUser } from '../api/services/register';
 
 export const useSearch = ({
   article,
@@ -45,5 +47,18 @@ export const useCreateOrder = () => {
 export const usePaybox = () => {
   return useMutation({
     mutationFn: fetchPaybox,
+  });
+};
+
+export const useRetailCity = () => {
+  return useQuery<any, Error>({
+    queryKey: ['retailCity'],
+    queryFn: () => fetchRetailCity(),
+    enabled: true,
+  });
+};
+export const useRegisterUser = () => {
+  return useMutation<NewUser, Error, ContactDetails>({
+    mutationFn: (data) => fetchRegisterUser(data),
   });
 };

@@ -5,12 +5,14 @@ import HeroSection from './elements/HeroSection';
 import MissionAndPartners from './elements/MissionAndPartners';
 import ServiceTipsCard from './elements/ServiceTipsCard';
 import PopularProducts from './elements/PopularProducts';
+import { useRetailCity } from '../../hooks/useData';
 
 const Home = () => {
-    // const { data: brandData, refetch: refetchBrand } = useSearch({
-    //   article,
-    //   brand: selectedBrand,
-    // });
+    const { data } = useRetailCity();
+
+    console.log(data);
+    
+
 
   return (
     <div className='w-full bg-[#F6F6F6]'>

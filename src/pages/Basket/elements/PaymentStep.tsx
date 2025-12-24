@@ -1,11 +1,7 @@
 import { useState } from 'react';
 import { useCart } from '../../../context/CartContext';
 import { useLoader } from '../../../context/LoaderContext';
-import {
-  useCreateOrder,
-  useGettingContragent,
-  usePaybox,
-} from '../../../hooks/useData';
+import { useCreateOrder, usePaybox } from '../../../hooks/useData';
 
 interface PaymentData {
   promoCode: string;
@@ -21,6 +17,16 @@ interface PaymentStepProps {
     email: string;
     phone: string;
   };
+  delivery: DeliveryData;
+}
+
+interface DeliveryData {
+  method: 'courier' | 'pickup' | 'mailbox' | '';
+  address: string;
+  building: string;
+  entrance: string;
+  floor: string;
+  comments: string;
 }
 
 export default function PaymentStep({
@@ -28,9 +34,19 @@ export default function PaymentStep({
   onUpdate,
   isExpanded,
   contact,
+  delivery,
 }: PaymentStepProps) {
   const { items } = useCart();
   const { startRequest, finishRequest, loading } = useLoader();
+
+  const fullAddress = [
+    delivery.address,
+    delivery.building && `дом ${delivery.building}`,
+    delivery.entrance && `подъезд ${delivery.entrance}`,
+    delivery.floor && `этаж ${delivery.floor}`,
+  ]
+    .filter(Boolean)
+    .join(', ');
 
   const subtotal = items.reduce(
     (sum, item) => sum + item.Price * item.quantity,
@@ -39,7 +55,7 @@ export default function PaymentStep({
   const deliveryFee = data.expressDelivery ? 2000 : 0;
   const total = subtotal + deliveryFee;
 
-  const { data: contragentData } = useGettingContragent();
+  // const { data: contragentData } = useGettingContragent();
   const { mutateAsync: createOrder } = useCreateOrder();
   const { mutateAsync: paybox } = usePaybox();
 
@@ -48,17 +64,27 @@ export default function PaymentStep({
   const handlePay = async () => {
     startRequest();
     setOpenLoader(true);
-    if (!contragentData?.Contragents?.length || !items.length) return;
 
-    const contragentGuid = contragentData.Contragents[0].ContragentGuid;
+    const contragentGuid = '0c2d2a4f-c5be-11f0-bbdb-bc97e1b23a0b';
 
     try {
-      // 1️⃣ Создаём заказы (api/Order)
       const orderResponses = await Promise.all(
         items.map((item) =>
           createOrder({
-            UserGuid: '32c61d6f-9571-11e3-b018-0025909bbfce',
-            ApiKey: 'TwIjwsvu5oitKSnQN9RS',
+            Contact: {
+              UserGuid: '906f6c86-e0db-11f0-bbbd-f8f21e092c7d',
+              OrderType: 1,
+              Name:
+                !!contact && contact.fullName
+                  ? contact.fullName
+                  : 'Тестовый заказ',
+              Phone:
+                !!contact && contact.phone ? contact.phone : '+77001234567',
+              Email:
+                !!contact && contact.email ? contact.email : 'test@mail.kz',
+            },
+            UserGuid: '9A6DAC71-DC40-11F0-BBDB-BC97E1B23A0B',
+            ApiKey: 'ihUOF5RTrO5wAHhQfbQW',
             ContragentGuid: contragentGuid,
 
             Brand: item.Brand,
@@ -71,15 +97,15 @@ export default function PaymentStep({
             ExpectedDelivery: item.ExpectedDelivery,
             GuaranteedDelivery: item.GuaranteedDelivery,
 
-            Name:
-              !!contact && contact.fullName
-                ? contact.fullName
-                : 'Тестовый заказ',
-            Phone: !!contact && contact.phone ? contact.phone : '+77001234567',
-            Email: !!contact && contact.email ? contact.email : 'test@mail.kz',
-
             Comment: 'Заказ с сайта',
             Force: 0,
+
+            Address: fullAddress || 'Адрес не указан',
+
+            CoordinateX: '43.247369',
+            CoordinateY: '76.967546',
+            Courier: '0',
+            Code: '0',
           })
         )
       );
@@ -90,6 +116,7 @@ export default function PaymentStep({
       if (!orderItems.length) {
         throw new Error('OrderItems пустой');
       }
+      console.log(orderResponses);
 
       // 3️⃣ Формируем Orders[] для PayBox
       const payboxOrders = orderItems.map((orderItem) => {
@@ -112,11 +139,13 @@ export default function PaymentStep({
 
       const orderNumber = payboxOrders[0].OrderNumber;
 
+      console.log(payboxOrders);
+
       const payboxResponse = await paybox({
         Orders: payboxOrders,
 
         Amount: total,
-        UserGuid: '32c61d6f-9571-11e3-b018-0025909bbfce',
+        UserGuid: '9A6DAC71-DC40-11F0-BBDB-BC97E1B23A0B',
         AgentGuid: contragentGuid,
         ContractGuid: contragentGuid,
 

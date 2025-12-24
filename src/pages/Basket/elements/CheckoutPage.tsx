@@ -58,24 +58,6 @@ export default function CheckoutPage() {
     expressDelivery: false,
   });
 
-  // if (items.length === 0) {
-  //   return (
-  //     <div className='min-h-screen bg-gray-100 flex items-center justify-center'>
-  //       <div className='text-center'>
-  //         <p className='text-xl font-semibold text-gray-700 mb-4'>
-  //           Корзина пуста
-  //         </p>
-  //         <a
-  //           href='/catalog'
-  //           className='text-[#4EBC73] font-medium hover:underline'
-  //         >
-  //           Вернуться к покупкам
-  //         </a>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
   const handleContactNext = () => {
     setCurrentStep('delivery');
   };
@@ -118,7 +100,9 @@ export default function CheckoutPage() {
           onUpdate={setPayment}
           isExpanded={currentStep === 'payment'}
           contact={contact}
+          delivery={delivery}
         />
+
         {/* )} */}
       </div>
     </div>
