@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useRegisterUser } from '../../../hooks/useData';
 import { CONTACT_STORAGE_KEY } from '../constants/storage';
 import type { ContactDetails } from '../../../api/services/register';
-import { useCity } from '../../../context/CityContext';
 
 interface ContactDetailsStepProps {
   data: ContactDetails;
@@ -23,7 +22,6 @@ export default function ContactDetailsStep({
 
   const isValid = !!data.fullName && !!data.email && !!data.phone;
 
-  const { city } = useCity();
 
   const handleChange = (field: keyof ContactDetails, value: string) => {
     onUpdate({ ...data, [field]: value });
