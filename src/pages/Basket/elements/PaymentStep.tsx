@@ -151,11 +151,13 @@ export default function PaymentStep({
 
         Description: `Оплата заказа ${orderNumber}`,
         Model: {
-          name: 'ФИО',
-          phone: '+77001234567',
-          email: 'ivan.petrov@example.com',
-          address: 'Алматы, пр. Абая 10',
-          comment: 'Позвонить за 30 минут',
+          name: !!contact && contact.fullName
+                  ? contact.fullName
+                  : 'Тестовый заказ',
+          phone: !!contact && contact.phone ? contact.phone : '77001234567',
+          email: !!contact && contact.email ? contact.email : 'test@mail.kz',
+          address: fullAddress || 'Адрес не указан',
+          comment: fullAddress || 'Адрес не указан',
           routes: [],
           route: '',
         },

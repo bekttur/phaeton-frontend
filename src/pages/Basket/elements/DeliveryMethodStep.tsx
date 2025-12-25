@@ -4,6 +4,7 @@ import ShowInCartModalWithList from './ShowInCartModalWithList';
 import { PICKUP_POINTS } from '../constants/pickupPoints';
 import { MAILBOX_POINTS } from '../constants/mailboxPoints';
 import { useCity } from '../../../context/CityContext';
+import { DELIVERY_STORAGE_KEY } from '../constants/storage';
 
 interface DeliveryData {
   method: 'courier' | 'pickup' | 'mailbox' | '';
@@ -60,6 +61,30 @@ export default function DeliveryMethodStep({
   };
 
   useEffect(() => {
+    if (data.method !== 'courier') return;
+
+    const saved = localStorage.getItem(DELIVERY_STORAGE_KEY);
+    if (!saved) return;
+
+    try {
+      const parsed: DeliveryData = JSON.parse(saved);
+
+      if (
+        parsed.method === 'courier' &&
+        parsed.address &&
+        parsed.address !== data.address
+      ) {
+        onUpdate((prev) => ({
+          ...prev,
+          ...parsed,
+        }));
+      }
+    } catch {
+      localStorage.removeItem(DELIVERY_STORAGE_KEY);
+    }
+  }, [data.method]);
+
+  useEffect(() => {
     console.log('Адрес обновился:', data.address);
   }, [data.address]);
 
@@ -76,6 +101,10 @@ export default function DeliveryMethodStep({
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
+    }
+
+    if (data.method === 'courier') {
+      localStorage.setItem(DELIVERY_STORAGE_KEY, JSON.stringify(data));
     }
 
     onNext();
@@ -99,6 +128,8 @@ export default function DeliveryMethodStep({
       </div>
     );
   }
+
+  
 
   return (
     <div className='bg-white rounded-2xl p-4'>

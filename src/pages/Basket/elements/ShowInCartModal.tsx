@@ -1,7 +1,9 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { X } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+
 import YandexMap from './YandexMap';
+import { useRetailCity } from '../../../hooks/useData';
 
 type Props = {
   isOpen: boolean;
@@ -9,29 +11,48 @@ type Props = {
   city?: string | null;
   onSelect: (address: string) => void;
 };
-const CITY_COORDS: Record<string, [number, number]> = {
-  Алматы: [43.238949, 76.889709],
-  Астана: [51.169392, 71.449074],
-  Шымкент: [42.315514, 69.586907],
-  Актобе: [50.283937, 57.166978],
-};
 
+const parseLatLng = (latLng?: string): [number, number] | undefined => {
+  if (!latLng) return undefined;
+  const [lat, lng] = latLng.split(',').map(Number);
+  return Number.isFinite(lat) && Number.isFinite(lng) ? [lat, lng] : undefined;
+};
 
 const ShowInCartModal = ({ isOpen, onClose, city, onSelect }: Props) => {
   const [address, setAddress] = useState('');
-  const cityCenter = city && CITY_COORDS[city] ? CITY_COORDS[city] : undefined;
+
+  const { data: cities } = useRetailCity();
+
+  const cityCenter = useMemo(() => {
+    if (!city || !cities) return undefined;
+
+    const cityObj = cities.find((c: any) => c.Name === city);
+    return parseLatLng(cityObj?.LatLng);
+  }, [city, cities]);
+
+  const getCityBounds = (
+    center?: [number, number],
+    delta = 0.25
+  ): [[number, number], [number, number]] | undefined => {
+    if (!center) return;
+
+    const [lat, lng] = center;
+
+    return [
+      [lat - delta, lng - delta],
+      [lat + delta, lng + delta],
+    ];
+  };
 
   return (
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* backdrop */}
           <motion.div
             className='fixed inset-0 bg-black bg-opacity-50 z-40'
             onClick={onClose}
           />
 
-          {/* modal */}
           <motion.div
             className='fixed bottom-0 left-0 right-0 bg-white rounded-t-3xl z-50 h-[80vh] flex flex-col'
             onClick={(e) => e.stopPropagation()}
@@ -50,23 +71,23 @@ const ShowInCartModal = ({ isOpen, onClose, city, onSelect }: Props) => {
                 mode='click'
                 center={cityCenter}
                 zoom={12}
-                onAddressSelect={(addr) => {
-                  setAddress(addr);
-                }}
+                bounds={getCityBounds(cityCenter)}
+                onAddressSelect={setAddress}
               />
             </div>
 
             {/* selected address */}
             <div className='p-4 border-t text-sm font-medium'>
-              {(address && (
+              {address ? (
                 <div className='flex items-center gap-2'>
                   <img src='icon/mobile-menu/location_on.svg' />
                   <span className='font-semibold text-base text-black'>
                     {address}
                   </span>
                 </div>
-              )) ||
-                'Кликните по карте'}
+              ) : (
+                'Кликните по карте'
+              )}
             </div>
 
             {/* confirm */}

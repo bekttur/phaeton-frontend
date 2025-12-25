@@ -20,7 +20,7 @@ export default function ContactDetailsStep({
   const [errors, setErrors] = useState<Record<string, string>>({});
   // @ts-ignore
   const { mutateAsync: registerUser, isLoading } = useRegisterUser();
-  const { city } = useCity(); // city: string | null
+  const { city } = useCity()
 
   const isValid = !!data.fullName && !!data.email && !!data.phone;
 
