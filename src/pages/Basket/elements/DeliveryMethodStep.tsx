@@ -3,6 +3,7 @@ import ShowInCartModal from './ShowInCartModal';
 import ShowInCartModalWithList from './ShowInCartModalWithList';
 import { PICKUP_POINTS } from '../constants/pickupPoints';
 import { MAILBOX_POINTS } from '../constants/mailboxPoints';
+import { useCity } from '../../../context/CityContext';
 
 interface DeliveryData {
   method: 'courier' | 'pickup' | 'mailbox' | '';
@@ -33,6 +34,7 @@ export default function DeliveryMethodStep({
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const isValid = data.method && data.address;
+  const { city } = useCity();
 
   const [isOpenCartModel, setIsOpenCartModel] = useState(false);
   const [isPickupModalOpen, setIsPickupModalOpen] = useState(false);
@@ -152,6 +154,7 @@ export default function DeliveryMethodStep({
             <ShowInCartModal
               isOpen={isOpenCartModel}
               onClose={() => setIsOpenCartModel(false)}
+              city={city}
               onSelect={(address) => {
                 handleChange('address', address);
                 handleChange('building', '');

@@ -11,16 +11,21 @@ type Props = {
   mode: 'click' | 'points';
   points?: PickupPoint[];
 
-  // для режима click
+  center?: [number, number];
+  zoom?: number;
+
+  // click
   onAddressSelect?: (address: string) => void;
 
-  // для режима points
+  // points
   onPointSelect?: (point: PickupPoint) => void;
 };
 
 export default function YandexMap({
   mode,
   points = [],
+  center,
+  zoom,
   onAddressSelect,
   onPointSelect,
 }: Props) {
@@ -48,10 +53,11 @@ export default function YandexMap({
 
       const map = new window.ymaps.Map(mapRef.current, {
         center:
-          mode === 'points' && points.length
+          center ??
+          (mode === 'points' && points.length
             ? points[0].coords
-            : [43.238949, 76.889709],
-        zoom: 12,
+            : [43.238949, 76.889709]),
+        zoom: zoom ?? 12,
         controls: ['fullscreenControl', 'zoomControl'],
       });
 
@@ -141,6 +147,13 @@ export default function YandexMap({
       map.geoObjects.add(placemark);
     });
   };
+
+  useEffect(() => {
+  if (mapInstance.current && center) {
+    mapInstance.current.setCenter(center, zoom ?? 12, { duration: 300 });
+  }
+}, [center, zoom]);
+
 
   return <div ref={mapRef} style={{ width: '100%', height: 300 }} />;
 }

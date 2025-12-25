@@ -15,15 +15,17 @@ export interface NewUser {
   CityId?: number;
 }
 
-export const fetchRegisterUser = async (data: ContactDetails): Promise<NewUser> => {
+export const fetchRegisterUser = async (
+  data: ContactDetails
+): Promise<NewUser> => {
   const response = await axios.post<NewUser>(
     'https://api.phaeton.kz/api/RetailRegister',
     {
       Fullname: data.fullName,
-      Phone: data.phone,
+      Phone: `7${data.phone}`,
       Email: data.email,
-      Password: '', 
-      ConfirmPassword: '', 
+      Password: '',
+      ConfirmPassword: '',
       City: data.cityId || 1,
     }
   );

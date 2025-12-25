@@ -6,11 +6,20 @@ import YandexMap from './YandexMap';
 type Props = {
   isOpen: boolean;
   onClose: () => void;
+  city?: string | null;
   onSelect: (address: string) => void;
 };
+const CITY_COORDS: Record<string, [number, number]> = {
+  Алматы: [43.238949, 76.889709],
+  Астана: [51.169392, 71.449074],
+  Шымкент: [42.315514, 69.586907],
+  Актобе: [50.283937, 57.166978],
+};
 
-const ShowInCartModal = ({ isOpen, onClose, onSelect }: Props) => {
+
+const ShowInCartModal = ({ isOpen, onClose, city, onSelect }: Props) => {
   const [address, setAddress] = useState('');
+  const cityCenter = city && CITY_COORDS[city] ? CITY_COORDS[city] : undefined;
 
   return (
     <AnimatePresence>
@@ -39,6 +48,8 @@ const ShowInCartModal = ({ isOpen, onClose, onSelect }: Props) => {
             <div className='p-4'>
               <YandexMap
                 mode='click'
+                center={cityCenter}
+                zoom={12}
                 onAddressSelect={(addr) => {
                   setAddress(addr);
                 }}

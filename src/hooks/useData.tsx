@@ -6,7 +6,7 @@ import {
   fetchPaybox,
 } from '../api/services/payment';
 import { fetchRetailCity } from '../api/services/base';
-import { fetchRegisterUser, type ContactDetails, type NewUser } from '../api/services/register';
+import { fetchRegisterUser, type NewUser } from '../api/services/register';
 
 export const useSearch = ({
   article,
@@ -58,7 +58,7 @@ export const useRetailCity = () => {
   });
 };
 export const useRegisterUser = () => {
-  return useMutation<NewUser, Error, ContactDetails>({
+  return useMutation<NewUser, Error, any>({
     mutationFn: (data) => fetchRegisterUser(data),
   });
 };

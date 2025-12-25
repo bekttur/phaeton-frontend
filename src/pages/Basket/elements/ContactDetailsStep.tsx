@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useRegisterUser } from '../../../hooks/useData';
 import { CONTACT_STORAGE_KEY } from '../constants/storage';
 import type { ContactDetails } from '../../../api/services/register';
+import { useCity } from '../../../context/CityContext';
 
 interface ContactDetailsStepProps {
   data: ContactDetails;
@@ -19,9 +20,9 @@ export default function ContactDetailsStep({
   const [errors, setErrors] = useState<Record<string, string>>({});
   // @ts-ignore
   const { mutateAsync: registerUser, isLoading } = useRegisterUser();
+  const { city } = useCity(); // city: string | null
 
   const isValid = !!data.fullName && !!data.email && !!data.phone;
-
 
   const handleChange = (field: keyof ContactDetails, value: string) => {
     onUpdate({ ...data, [field]: value });
@@ -45,7 +46,19 @@ export default function ContactDetailsStep({
     localStorage.setItem(CONTACT_STORAGE_KEY, JSON.stringify(data));
 
     try {
-      const users = await registerUser(data);
+      const res = await fetch(
+        'https://api.phaeton.kz/api/RetailCity?UserGuid=9A6DAC71-DC40-11F0-BBDB-BC97E1B23A0B&ApiKey=ihUOF5RTrO5wAHhQfbQW'
+      );
+      const cities: { Id: number; Name: string }[] = await res.json();
+
+      const cityObj = cities.find((c) => c.Name === city);
+      const cityId = cityObj?.Id ?? 1;
+
+      const users = await registerUser({
+        ...data,
+        cityId: cityId,
+      });
+
       // @ts-ignore
       const newUser = users[0];
 
@@ -158,13 +171,26 @@ export default function ContactDetailsStep({
 
         <input
           type='tel'
-          placeholder='Номер телефона'
-          value={data.phone}
-          onChange={(e) => handleChange('phone', e.target.value)}
+          placeholder='+7'
+          value={`+7${data.phone ?? ''}`}
+          onChange={(e) => {
+            let value = e.target.value;
+
+            value = value.replace(/\D/g, '');
+
+            if (value.startsWith('7')) {
+              value = value.slice(1);
+            }
+
+            value = value.slice(0, 10);
+
+            handleChange('phone', value);
+          }}
           className={`w-full px-4 py-3 bg-[#EAECED] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4EBC73] ${
             errors.phone ? 'ring-2 ring-red-500' : ''
           }`}
         />
+
         {errors.phone && (
           <p className='text-red-500 text-xs mt-1'>{errors.phone}</p>
         )}
