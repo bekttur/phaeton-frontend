@@ -79,7 +79,7 @@ export default function PaymentStep({
                   ? contact.fullName
                   : 'Тестовый заказ',
               Phone:
-                !!contact && contact.phone ? contact.phone : '+77001234567',
+                !!contact && contact.phone ? `7${contact.phone}` : '77001234567',
               Email:
                 !!contact && contact.email ? contact.email : 'test@mail.kz',
             },
@@ -109,6 +109,8 @@ export default function PaymentStep({
           })
         )
       );
+
+      
 
       // 2️⃣ Собираем OrderItems
       const orderItems = orderResponses.flatMap((r) => r.OrderItems ?? []);
@@ -154,7 +156,7 @@ export default function PaymentStep({
           name: !!contact && contact.fullName
                   ? contact.fullName
                   : 'Тестовый заказ',
-          phone: !!contact && contact.phone ? contact.phone : '77001234567',
+          phone: !!contact && contact.phone ? `7${contact.phone}` : '77001234567',
           email: !!contact && contact.email ? contact.email : 'test@mail.kz',
           address: fullAddress || 'Адрес не указан',
           comment: fullAddress || 'Адрес не указан',
