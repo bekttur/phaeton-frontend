@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useCart } from '../../../context/CartContext';
 import { useLoader } from '../../../context/LoaderContext';
 import { useCreateOrder, usePaybox } from '../../../hooks/useData';
+import type { DeliveryData } from './CheckoutPage';
 
 interface PaymentData {
   promoCode: string;
@@ -18,15 +19,6 @@ interface PaymentStepProps {
     phone: string;
   };
   delivery: DeliveryData;
-}
-
-interface DeliveryData {
-  method: 'courier' | 'pickup' | 'mailbox' | '';
-  address: string;
-  building: string;
-  entrance: string;
-  floor: string;
-  comments: string;
 }
 
 export default function PaymentStep({
@@ -79,7 +71,9 @@ export default function PaymentStep({
                   ? contact.fullName
                   : 'Тестовый заказ',
               Phone:
-                !!contact && contact.phone ? `7${contact.phone}` : '77001234567',
+                !!contact && contact.phone
+                  ? `7${contact.phone}`
+                  : '77001234567',
               Email:
                 !!contact && contact.email ? contact.email : 'test@mail.kz',
             },
@@ -106,21 +100,24 @@ export default function PaymentStep({
             CoordinateY: '76.967546',
             Courier: '0',
             Code: '0',
+
+            ...(delivery.method === 'pickup' && {
+              SelectedPvzAddress: delivery.address,
+              SelectedPvzId: delivery.pickupId,
+              SelectedPvzLat: delivery.pickupLat,
+              SelectedPvzLon: delivery.pickupLng,
+              SelectedPvzName: delivery.pickupName,
+            }),
           })
         )
       );
 
-      
-
-      // 2️⃣ Собираем OrderItems
       const orderItems = orderResponses.flatMap((r) => r.OrderItems ?? []);
 
       if (!orderItems.length) {
         throw new Error('OrderItems пустой');
       }
-      console.log(orderResponses);
 
-      // 3️⃣ Формируем Orders[] для PayBox
       const payboxOrders = orderItems.map((orderItem) => {
         const cartItem = items.find(
           (i) =>
@@ -141,8 +138,6 @@ export default function PaymentStep({
 
       const orderNumber = payboxOrders[0].OrderNumber;
 
-      console.log(payboxOrders);
-
       const payboxResponse = await paybox({
         Orders: payboxOrders,
 
@@ -153,10 +148,10 @@ export default function PaymentStep({
 
         Description: `Оплата заказа ${orderNumber}`,
         Model: {
-          name: !!contact && contact.fullName
-                  ? contact.fullName
-                  : 'Тестовый заказ',
-          phone: !!contact && contact.phone ? `7${contact.phone}` : '77001234567',
+          name:
+            !!contact && contact.fullName ? contact.fullName : 'Тестовый заказ',
+          phone:
+            !!contact && contact.phone ? `7${contact.phone}` : '77001234567',
           email: !!contact && contact.email ? contact.email : 'test@mail.kz',
           address: fullAddress || 'Адрес не указан',
           comment: fullAddress || 'Адрес не указан',

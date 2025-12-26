@@ -53,12 +53,11 @@ export default function YandexMap({
     window.ymaps.ready(() => {
       if (!mapRef.current || mapInstance.current) return;
 
-     const map = new window.ymaps.Map(mapRef.current, {
-  center: center ?? [43.238949, 76.889709],
-  zoom: zoom ?? 12,
-  controls: ['fullscreenControl', 'zoomControl'],
-});
-
+      const map = new window.ymaps.Map(mapRef.current, {
+        center: center ?? [43.238949, 76.889709],
+        zoom: zoom ?? 12,
+        controls: ['fullscreenControl', 'zoomControl'],
+      });
 
       mapInstance.current = map;
 
@@ -72,40 +71,39 @@ export default function YandexMap({
     });
   };
 
-
   const initClickMode = (map: any) => {
-  const searchControl = new window.ymaps.control.SearchControl({
-    options: {
-      noPlacemark: true,
-      placeholderContent: 'Введите адрес',
-      boundedBy: bounds,
-      strictBounds: true, // ⬅️ КРИТИЧНО
-    },
-  });
+    // 🔍 поиск
+    const searchControl = new window.ymaps.control.SearchControl({
+      options: {
+        noPlacemark: true,
+        placeholderContent: 'Введите адрес',
+        boundedBy: bounds,
+        size: 'large',
+        searchOnTyping: true,
+      },
+    });
 
-  map.controls.add(searchControl);
+    map.controls.add(searchControl);
 
-  searchControl.events.add('resultselect', async (e: any) => {
-    const index = e.get('index');
-    const result = await searchControl.getResult(index);
-    if (!result) return;
+    searchControl.events.add('resultselect', async (e: any) => {
+      const index = e.get('index');
+      const result = await searchControl.getResult(index);
 
-    const coords = result.geometry.getCoordinates();
-    const address = result.getAddressLine();
+      const coords = result.geometry.getCoordinates();
+      const address = result.getAddressLine();
 
-    setPlacemark(coords);
-    map.setCenter(coords, 16);
+      setPlacemark(coords);
+      map.setCenter(coords, 16);
 
-    onAddressSelect?.(address);
-  });
+      onAddressSelect?.(address);
+    });
 
-  map.events.add('click', (e: any) => {
-    const coords = e.get('coords');
-    setPlacemark(coords);
-    geocode(coords);
-  });
-};
-
+    map.events.add('click', (e: any) => {
+      const coords = e.get('coords');
+      setPlacemark(coords);
+      geocode(coords);
+    });
+  };
 
   const setPlacemark = (coords: number[]) => {
     if (!placemarkRef.current) {

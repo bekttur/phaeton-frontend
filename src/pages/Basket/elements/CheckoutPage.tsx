@@ -7,13 +7,20 @@ import { CONTACT_STORAGE_KEY } from '../constants/storage';
 
 type Step = 'contact' | 'delivery' | 'payment';
 
-interface DeliveryData {
+export interface DeliveryData {
   method: 'courier' | 'pickup' | 'mailbox' | '';
   address: string;
+
   building: string;
   entrance: string;
   floor: string;
   comments: string;
+
+  // (PVZ)
+  pickupId?: string;
+  pickupName?: string;
+  pickupLat?: string;
+  pickupLng?: string;
 }
 
 interface PaymentData {
@@ -32,6 +39,8 @@ export default function CheckoutPage() {
   const [deliveryCompleted, setDeliveryCompleted] = useState(false);
 
   const [contact, setContact] = useState(defaultContact);
+
+  
 
   useEffect(() => {
     const saved = localStorage.getItem(CONTACT_STORAGE_KEY);
@@ -52,6 +61,7 @@ export default function CheckoutPage() {
     floor: '',
     comments: '',
   });
+
 
   const [payment, setPayment] = useState<PaymentData>({
     promoCode: '',

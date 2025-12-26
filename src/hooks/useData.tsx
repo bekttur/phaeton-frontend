@@ -7,6 +7,7 @@ import {
 } from '../api/services/payment';
 import { fetchRetailCity } from '../api/services/base';
 import { fetchRegisterUser, type NewUser } from '../api/services/register';
+import { fetchRetailPvz } from '../api/services/delivery';
 
 export const useSearch = ({
   article,
@@ -60,5 +61,14 @@ export const useRetailCity = () => {
 export const useRegisterUser = () => {
   return useMutation<NewUser, Error, any>({
     mutationFn: (data) => fetchRegisterUser(data),
+  });
+};
+
+export const useRetailPvz = () => {
+  return useQuery<any, Error>({
+    queryKey: ['retailPvz'],
+    queryFn: fetchRetailPvz,
+    enabled: true,
+    staleTime: 1000 * 60 * 5,
   });
 };

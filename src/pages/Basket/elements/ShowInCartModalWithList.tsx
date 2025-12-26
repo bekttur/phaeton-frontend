@@ -32,7 +32,7 @@ export default function ShowInCartModalWithList({
           />
 
           <motion.div
-            className='fixed bottom-0 left-0 right-0 bg-[#F6F6F6] rounded-t-3xl z-50 min-h-[80vh] flex flex-col'
+            className='fixed bottom-0 left-0 right-0 bg-[#F6F6F6] rounded-t-3xl z-50 min-h-[80vh]  max-h-[95vh] flex flex-col'
             onClick={(e) => e.stopPropagation()}
           >
             {/* header */}

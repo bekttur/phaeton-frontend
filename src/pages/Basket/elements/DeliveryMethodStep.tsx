@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import ShowInCartModal from './ShowInCartModal';
 import ShowInCartModalWithList from './ShowInCartModalWithList';
-import { PICKUP_POINTS } from '../constants/pickupPoints';
+import { type PickupPoint } from '../constants/pickupPoints';
 import { MAILBOX_POINTS } from '../constants/mailboxPoints';
 import { useCity } from '../../../context/CityContext';
 import { DELIVERY_STORAGE_KEY } from '../constants/storage';
+import { useRetailPvz } from '../../../hooks/useData';
 
 interface DeliveryData {
   method: 'courier' | 'pickup' | 'mailbox' | '';
@@ -13,6 +14,11 @@ interface DeliveryData {
   entrance: string;
   floor: string;
   comments: string;
+
+  pickupId?: string;
+  pickupName?: string;
+  pickupLat?: string;
+  pickupLng?: string;
 }
 
 interface DeliveryMethodStepProps {
@@ -36,10 +42,25 @@ export default function DeliveryMethodStep({
 
   const isValid = data.method && data.address;
   const { city } = useCity();
+  const { data: pvzData, isLoading } = useRetailPvz();
 
   const [isOpenCartModel, setIsOpenCartModel] = useState(false);
   const [isPickupModalOpen, setIsPickupModalOpen] = useState(false);
   const [isMailboxModalOpen, setIsMailboxModalOpen] = useState(false);
+
+  const pickupPoints: PickupPoint[] = useMemo(() => {
+    if (!pvzData?.PvzList || !city) return [];
+
+    return pvzData.PvzList.filter((p: any) => p.regionRu === city).map(
+      (p: any) => ({
+        id: p.id,
+        address: p.addStreetRu,
+        name: p.nameStore,
+        lon: p.locLongitude,
+        lat: p.locLatitude,
+      })
+    );
+  }, [pvzData, city]);
 
   const handleMethodChange = (method: 'courier' | 'pickup' | 'mailbox') => {
     onUpdate({
@@ -54,10 +75,40 @@ export default function DeliveryMethodStep({
   };
 
   const handleChange = (field: keyof DeliveryData, value: string) => {
-    onUpdate((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
+    onUpdate((prev) => {
+      let updated: DeliveryData = { ...prev, [field]: value };
+
+      if (prev.method === 'pickup' && field === 'address') {
+        const point = pickupPoints.find((p) => p.address === value);
+        if (point) {
+          updated = {
+            ...updated,
+            address: point.address,
+            pickupId: point.id,
+            pickupName: point.name,
+            pickupLat: point.lat,
+            pickupLng: point.lon,
+
+            building: '',
+            entrance: '',
+            floor: '',
+            comments: '',
+          };
+        }
+      }
+
+      if (prev.method === 'courier') {
+        updated = {
+          ...updated,
+          pickupId: '',
+          pickupName: '',
+          pickupLat: '',
+          pickupLng: '',
+        };
+      }
+
+      return updated;
+    });
   };
 
   useEffect(() => {
@@ -128,8 +179,6 @@ export default function DeliveryMethodStep({
       </div>
     );
   }
-
-  
 
   return (
     <div className='bg-white rounded-2xl p-4'>
@@ -266,11 +315,17 @@ export default function DeliveryMethodStep({
           <ShowInCartModalWithList
             isOpen={isPickupModalOpen}
             onClose={() => setIsPickupModalOpen(false)}
-            points={PICKUP_POINTS}
+            points={pickupPoints}
             onSelect={(address: string) => {
               handleChange('address', address);
             }}
           />
+
+          {isLoading && (
+            <p className='text-sm text-gray-500 mt-2'>
+              Загрузка пунктов выдачи...
+            </p>
+          )}
         </div>
       )}
 

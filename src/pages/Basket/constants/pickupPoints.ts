@@ -4,6 +4,8 @@ export interface PickupPoint {
   address: string;
   coords: [number, number];
   workTime?: string;
+  lat?: string;
+  lon?: string;
 }
 
 export const PICKUP_POINTS: PickupPoint[] = [

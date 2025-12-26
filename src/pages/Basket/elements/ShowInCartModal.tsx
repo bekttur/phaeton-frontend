@@ -5,6 +5,7 @@ import { useMemo, useState } from 'react';
 import YandexMap from './YandexMap';
 import { useRetailCity } from '../../../hooks/useData';
 
+
 type Props = {
   isOpen: boolean;
   onClose: () => void;
@@ -15,7 +16,9 @@ type Props = {
 const parseLatLng = (latLng?: string): [number, number] | undefined => {
   if (!latLng) return undefined;
   const [lat, lng] = latLng.split(',').map(Number);
-  return Number.isFinite(lat) && Number.isFinite(lng) ? [lat, lng] : undefined;
+  return Number.isFinite(lat) && Number.isFinite(lng)
+    ? [lat, lng]
+    : undefined;
 };
 
 const ShowInCartModal = ({ isOpen, onClose, city, onSelect }: Props) => {
