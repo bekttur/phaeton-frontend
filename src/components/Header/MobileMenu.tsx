@@ -1,4 +1,5 @@
 import { X, ChevronRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -6,6 +7,8 @@ interface MobileMenuProps {
 }
 
 const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
+  const navigate = useNavigate();
+
   const menuItems = [
     {
       icon: 'icon/mobile-menu/location_on.svg',
@@ -20,6 +23,11 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
     {
       icon: 'icon/shopping_cart.svg',
       title: 'Корзина',
+    },
+    {
+      icon: 'icon/mobile-menu/bucket_check.svg',
+      title: 'Мои заказы',
+      href: '/my-orders',
     },
     {
       icon: 'icon/mobile-menu/favorite.svg',
@@ -42,6 +50,13 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
       title: 'Вопросы и ответы',
     },
   ];
+
+  const handleNavigation = (href?: string) => {
+    if (href) {
+      navigate(href);
+    }
+    onClose();
+  };
 
   return (
     <>
@@ -73,6 +88,7 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
             {menuItems.map((item, index) => (
               <button
                 key={index}
+                onClick={() => handleNavigation(item.href)}
                 className='w-full flex items-center gap-4 px-2 py-2 rounded-xl hover:bg-gray-50 transition'
               >
                 <div className='w-12 h-12 rounded-md bg-[#DEF2E3] flex items-center justify-center flex-shrink-0'>
