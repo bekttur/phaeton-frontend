@@ -29,6 +29,7 @@ interface DeliveryMethodStepProps {
   completed: boolean;
   onNext: () => void;
   isExpanded: boolean;
+  onHeaderClick?: () => void;
 }
 
 export default function DeliveryMethodStep({
@@ -37,6 +38,7 @@ export default function DeliveryMethodStep({
   completed,
   onNext,
   isExpanded,
+  onHeaderClick,
 }: DeliveryMethodStepProps) {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -54,10 +56,10 @@ export default function DeliveryMethodStep({
     return pvzData.PvzList.filter((p: any) => p.regionRu === city).map(
       (p: any) => ({
         id: p.id,
+        coords: [Number(p.locLatitude), Number(p.locLongitude)],
         address: p.addStreetRu,
         name: p.nameStore,
-        lon: p.locLongitude,
-        lat: p.locLatitude,
+        workTime: p.locTime,
       })
     );
   }, [pvzData, city]);
@@ -80,6 +82,8 @@ export default function DeliveryMethodStep({
 
       if (prev.method === 'pickup' && field === 'address') {
         const point = pickupPoints.find((p) => p.address === value);
+
+
         if (point) {
           updated = {
             ...updated,
@@ -87,7 +91,9 @@ export default function DeliveryMethodStep({
             pickupId: point.id,
             pickupName: point.name,
             pickupLat: point.lat,
+            // pickupLat: String(point.coords[0]),
             pickupLng: point.lon,
+            // pickupLng: String(point.coords[1]),
 
             building: '',
             entrance: '',
@@ -163,7 +169,7 @@ export default function DeliveryMethodStep({
 
   if (!isExpanded) {
     return (
-      <div className='bg-white rounded-2xl p-4'>
+      <div className='bg-white rounded-2xl p-4' onClick={onHeaderClick}>
         <div className='flex items-center gap-3'>
           <div
             className={`w-8 h-8 rounded-full ${

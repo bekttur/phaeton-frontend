@@ -9,6 +9,7 @@ interface ContactDetailsStepProps {
   onUpdate: (data: ContactDetails) => void;
   onNext: () => void;
   isExpanded: boolean;
+  onHeaderClick?: () => void;
 }
 
 export default function ContactDetailsStep({
@@ -16,6 +17,7 @@ export default function ContactDetailsStep({
   onUpdate,
   onNext,
   isExpanded,
+  onHeaderClick
 }: ContactDetailsStepProps) {
   const [errors, setErrors] = useState<Record<string, string>>({});
   // @ts-ignore
@@ -92,17 +94,21 @@ export default function ContactDetailsStep({
   }, []);
 
   if (!isExpanded) {
-    return (
-      <div className='bg-white rounded-2xl p-4'>
-        <div className='flex items-center gap-3'>
-          <div className='w-8 h-8 rounded-full bg-[#4EBC73] text-white flex items-center justify-center font-bold text-sm'>
-            1
-          </div>
-          <h3 className='text-lg font-semibold'>Контактные данные</h3>
+  return (
+    <div
+      className="bg-white rounded-2xl p-4 cursor-pointer"
+      onClick={onHeaderClick}
+    >
+      <div className="flex items-center gap-3">
+        <div className="w-8 h-8 rounded-full bg-[#4EBC73] text-white flex items-center justify-center font-bold text-sm">
+          1
         </div>
+        <h3 className="text-lg font-semibold">Контактные данные</h3>
       </div>
-    );
-  }
+    </div>
+  );
+}
+
 
   return (
     <div className='bg-white rounded-2xl p-4 relative'>

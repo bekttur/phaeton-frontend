@@ -40,8 +40,6 @@ export default function CheckoutPage() {
 
   const [contact, setContact] = useState(defaultContact);
 
-  
-
   useEffect(() => {
     const saved = localStorage.getItem(CONTACT_STORAGE_KEY);
     if (saved) {
@@ -62,7 +60,6 @@ export default function CheckoutPage() {
     comments: '',
   });
 
-
   const [payment, setPayment] = useState<PaymentData>({
     promoCode: '',
     expressDelivery: false,
@@ -75,6 +72,16 @@ export default function CheckoutPage() {
   const handleDeliveryNext = () => {
     setCurrentStep('payment');
     setDeliveryCompleted(true);
+  };
+
+  const goToContact = () => {
+    setCurrentStep('contact');
+  };
+
+  const goToDelivery = () => {
+    if (currentStep === 'payment' || currentStep === 'delivery') {
+      setCurrentStep('delivery');
+    }
   };
 
   const updateContact = (data: typeof contact) => {
@@ -92,16 +99,18 @@ export default function CheckoutPage() {
           onUpdate={updateContact}
           onNext={handleContactNext}
           isExpanded={currentStep === 'contact'}
+          onHeaderClick={goToContact}
         />
 
-        {/* {currentStep !== 'contact' && ( */}
         <DeliveryMethodStep
           data={delivery}
           onUpdate={setDelivery}
           completed={deliveryCompleted}
           onNext={handleDeliveryNext}
           isExpanded={currentStep === 'delivery'}
+          onHeaderClick={goToDelivery}
         />
+
         {/* )} */}
 
         {/* {currentStep === 'payment' && ( */}
