@@ -91,14 +91,14 @@ export default function PaymentStep({
             ExpectedDelivery: item.ExpectedDelivery,
             GuaranteedDelivery: item.GuaranteedDelivery,
 
-            Comment: 'Заказ с сайта',
+            Comment: fullAddress || 'Адрес не указан',
             Force: 0,
 
             Address: fullAddress || 'Адрес не указан',
 
             CoordinateX: '43.247369',
             CoordinateY: '76.967546',
-            Courier: '0',
+            Courier: delivery.method === 'pickup' ? '2' : '0',
             Code: '0',
 
             ...(delivery.method === 'pickup' && {
