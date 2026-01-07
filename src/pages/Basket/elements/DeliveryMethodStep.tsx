@@ -6,20 +6,7 @@ import { MAILBOX_POINTS } from '../constants/mailboxPoints';
 import { useCity } from '../../../context/CityContext';
 import { DELIVERY_STORAGE_KEY } from '../constants/storage';
 import { useRetailPvz } from '../../../hooks/useData';
-
-interface DeliveryData {
-  method: 'courier' | 'pickup' | 'mailbox' | '';
-  address: string;
-  building: string;
-  entrance: string;
-  floor: string;
-  comments: string;
-
-  pickupId?: string;
-  pickupName?: string;
-  pickupLat?: string;
-  pickupLng?: string;
-}
+import type { DeliveryData } from './CheckoutPage';
 
 interface DeliveryMethodStepProps {
   data: DeliveryData;

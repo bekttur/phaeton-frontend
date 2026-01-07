@@ -23,13 +23,7 @@ createRoot(document.getElementById('root')!).render(
           <CartProvider>
             <SearchModalProvider>
               <LoaderProvider>
-                <BrowserRouter
-                  basename={
-                    import.meta.env.MODE === 'production'
-                      ? '/phaeton-frontend'
-                      : '/'
-                  }
-                >
+                <BrowserRouter>
                   <ScrollToTop />
                   <App />
                 </BrowserRouter>

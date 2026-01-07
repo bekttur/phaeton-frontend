@@ -96,8 +96,8 @@ export default function PaymentStep({
 
             Address: fullAddress || 'Адрес не указан',
 
-            CoordinateX: '43.247369',
-            CoordinateY: '76.967546',
+            CoordinateX: delivery.method === 'pickup' ? String(delivery.pickupLng) : '43.247369',
+            CoordinateY: delivery.method === 'pickup' ? String(delivery.pickupLng) : '76.967546',
             Courier: delivery.method === 'pickup' ? '2' : '0',
             Code: '0',
 
@@ -138,36 +138,36 @@ export default function PaymentStep({
 
       const orderNumber = payboxOrders[0].OrderNumber;
 
-      const payboxResponse = await paybox({
-        Orders: payboxOrders,
+      // const payboxResponse = await paybox({
+      //   Orders: payboxOrders,
 
-        Amount: total,
-        UserGuid: '9A6DAC71-DC40-11F0-BBDB-BC97E1B23A0B',
-        AgentGuid: contragentGuid,
-        ContractGuid: contragentGuid,
+      //   Amount: total,
+      //   UserGuid: '9A6DAC71-DC40-11F0-BBDB-BC97E1B23A0B',
+      //   AgentGuid: contragentGuid,
+      //   ContractGuid: contragentGuid,
 
-        Description: `Оплата заказа ${orderNumber}`,
-        Model: {
-          name:
-            !!contact && contact.fullName ? contact.fullName : 'Тестовый заказ',
-          phone:
-            !!contact && contact.phone ? `7${contact.phone}` : '77001234567',
-          email: !!contact && contact.email ? contact.email : 'test@mail.kz',
-          address: fullAddress || 'Адрес не указан',
-          comment: fullAddress || 'Адрес не указан',
-          routes: [],
-          route: '',
-        },
-      });
+      //   Description: `Оплата заказа ${orderNumber}`,
+      //   Model: {
+      //     name:
+      //       !!contact && contact.fullName ? contact.fullName : 'Тестовый заказ',
+      //     phone:
+      //       !!contact && contact.phone ? `7${contact.phone}` : '77001234567',
+      //     email: !!contact && contact.email ? contact.email : 'test@mail.kz',
+      //     address: fullAddress || 'Адрес не указан',
+      //     comment: fullAddress || 'Адрес не указан',
+      //     routes: [],
+      //     route: '',
+      //   },
+      // });
 
-      if (
-        typeof payboxResponse === 'string' &&
-        payboxResponse.startsWith('http')
-      ) {
-        window.location.href = payboxResponse;
-      } else {
-        throw new Error('payment_url не получен');
-      }
+      // if (
+      //   typeof payboxResponse === 'string' &&
+      //   payboxResponse.startsWith('http')
+      // ) {
+      //   window.location.href = payboxResponse;
+      // } else {
+      //   throw new Error('payment_url не получен');
+      // }
     } catch (error) {
       console.error('Ошибка оплаты:', error);
       alert('Ошибка при переходе к оплате');
