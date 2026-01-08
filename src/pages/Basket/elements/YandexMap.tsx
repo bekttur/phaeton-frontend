@@ -6,6 +6,12 @@ declare global {
     ymaps: any;
   }
 }
+export type SelectedAddress = {
+  address: string;
+  lat: string;
+  lng: string;
+};
+
 
 type Props = {
   mode: 'click' | 'points';
@@ -16,7 +22,7 @@ type Props = {
   bounds?: [[number, number], [number, number]];
 
   // click
-  onAddressSelect?: (address: string) => void;
+    onAddressSelect?: (data: SelectedAddress) => void;
 
   // points
   onPointSelect?: (point: PickupPoint) => void;
@@ -86,17 +92,22 @@ export default function YandexMap({
     map.controls.add(searchControl);
 
     searchControl.events.add('resultselect', async (e: any) => {
-      const index = e.get('index');
-      const result = await searchControl.getResult(index);
+  const index = e.get('index');
+  const result = await searchControl.getResult(index);
 
-      const coords = result.geometry.getCoordinates();
-      const address = result.getAddressLine();
+  const coords = result.geometry.getCoordinates();
+  const address = result.getAddressLine();
 
-      setPlacemark(coords);
-      map.setCenter(coords, 16);
+  setPlacemark(coords);
+  map.setCenter(coords, 16);
 
-      onAddressSelect?.(address);
-    });
+  onAddressSelect?.({
+    address,
+    lat: coords[0],
+    lng: coords[1],
+  });
+});
+
 
     map.events.add('click', (e: any) => {
       const coords = e.get('coords');
@@ -115,12 +126,18 @@ export default function YandexMap({
   };
 
   const geocode = (coords: number[]) => {
-    window.ymaps.geocode(coords).then((res: any) => {
-      const firstGeoObject = res.geoObjects.get(0);
-      const address = firstGeoObject.getAddressLine();
-      onAddressSelect?.(address);
+  window.ymaps.geocode(coords).then((res: any) => {
+    const firstGeoObject = res.geoObjects.get(0);
+    const address = firstGeoObject.getAddressLine();
+
+    onAddressSelect?.({
+      address,
+      lat: String(coords[0]),
+      lng: String(coords[1]),
     });
-  };
+  });
+};
+
 
   const initPointsMode = (map: any) => {
     points.forEach((point) => {

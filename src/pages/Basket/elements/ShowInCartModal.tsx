@@ -5,24 +5,25 @@ import { useMemo, useState } from 'react';
 import YandexMap from './YandexMap';
 import { useRetailCity } from '../../../hooks/useData';
 
-
 type Props = {
   isOpen: boolean;
   onClose: () => void;
   city?: string | null;
-  onSelect: (address: string) => void;
+  onSelect: (data: { address: string; lat: string; lng: string }) => void;
 };
 
 const parseLatLng = (latLng?: string): [number, number] | undefined => {
   if (!latLng) return undefined;
   const [lat, lng] = latLng.split(',').map(Number);
-  return Number.isFinite(lat) && Number.isFinite(lng)
-    ? [lat, lng]
-    : undefined;
+  return Number.isFinite(lat) && Number.isFinite(lng) ? [lat, lng] : undefined;
 };
 
 const ShowInCartModal = ({ isOpen, onClose, city, onSelect }: Props) => {
-  const [address, setAddress] = useState('');
+  const [selected, setSelected] = useState<{
+    address: string;
+    lat: string;
+    lng: string;
+  } | null>(null);
 
   const { data: cities } = useRetailCity();
 
@@ -75,17 +76,17 @@ const ShowInCartModal = ({ isOpen, onClose, city, onSelect }: Props) => {
                 center={cityCenter}
                 zoom={12}
                 bounds={getCityBounds(cityCenter)}
-                onAddressSelect={setAddress}
+                onAddressSelect={setSelected}
               />
             </div>
 
             {/* selected address */}
             <div className='p-4 border-t text-sm font-medium'>
-              {address ? (
+              {selected ? (
                 <div className='flex items-center gap-2'>
                   <img src='icon/mobile-menu/location_on.svg' />
                   <span className='font-semibold text-base text-black'>
-                    {address}
+                    {selected.address}
                   </span>
                 </div>
               ) : (
@@ -96,9 +97,10 @@ const ShowInCartModal = ({ isOpen, onClose, city, onSelect }: Props) => {
             {/* confirm */}
             <div className='px-4 pb-4'>
               <button
-                disabled={!address}
+                disabled={!selected}
                 onClick={() => {
-                  onSelect(address);
+                  if (!selected) return;
+                  onSelect(selected);
                   onClose();
                 }}
                 className='w-full bg-[#4EBC73] text-white py-3 rounded-xl disabled:bg-gray-300'

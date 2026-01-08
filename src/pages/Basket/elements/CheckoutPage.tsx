@@ -16,6 +16,9 @@ export interface DeliveryData {
   floor: string;
   comments: string;
 
+  lat?: string;
+  lng?: string;
+
   // (PVZ)
   pickupId?: string;
   pickupName?: string;

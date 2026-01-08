@@ -96,8 +96,8 @@ export default function PaymentStep({
 
             Address: fullAddress || 'Адрес не указан',
 
-            CoordinateX: delivery.method === 'pickup' ? String(delivery.pickupLng) : '43.247369',
-            CoordinateY: delivery.method === 'pickup' ? String(delivery.pickupLng) : '76.967546',
+            CoordinateX: delivery.method === 'pickup' ? String(delivery.pickupLng) : String(delivery.lng),
+            CoordinateY: delivery.method === 'pickup' ? String(delivery.pickupLat) : String(delivery.lat),
             Courier: delivery.method === 'pickup' ? '2' : '0',
             Code: '0',
 

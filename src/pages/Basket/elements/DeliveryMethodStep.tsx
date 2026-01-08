@@ -70,7 +70,6 @@ export default function DeliveryMethodStep({
       if (prev.method === 'pickup' && field === 'address') {
         const point = pickupPoints.find((p) => p.address === value);
 
-
         if (point) {
           updated = {
             ...updated,
@@ -97,6 +96,8 @@ export default function DeliveryMethodStep({
           pickupName: '',
           pickupLat: '',
           pickupLng: '',
+          lat: '',
+          lng: '',
         };
       }
 
@@ -228,11 +229,17 @@ export default function DeliveryMethodStep({
               isOpen={isOpenCartModel}
               onClose={() => setIsOpenCartModel(false)}
               city={city}
-              onSelect={(address) => {
-                handleChange('address', address);
-                handleChange('building', '');
-                handleChange('entrance', '');
-                handleChange('floor', '');
+              onSelect={({ address, lat, lng }) => {
+                onUpdate((prev) => ({
+                  ...prev,
+                  address,
+                  lat,
+                  lng,
+                  building: '',
+                  entrance: '',
+                  floor: '',
+                  comments: '',
+                }));
               }}
             />
 
