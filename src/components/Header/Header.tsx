@@ -3,6 +3,7 @@ import { Menu, MapPin } from 'lucide-react';
 import MobileMenu from './MobileMenu';
 import MobileCitySelect from './MobileCitySelect';
 import { useCity } from '../../context/CityContext';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   const { city, setCity } = useCity();
@@ -22,7 +23,7 @@ const Header = () => {
     <>
       <div className='lg:hidden fixed top-0 left-0 right-0 z-40 bg-white border-b'>
         <div className='w-full min-h-14 flex items-center justify-between px-4'>
-          <span className='text-xl font-semibold text-[#62C382]'>Phaeton</span>
+          <Link to={'/'} className='text-xl font-semibold text-[#62C382]'>Phaeton</Link>
 
           <div className='flex items-center gap-3'>
             <button

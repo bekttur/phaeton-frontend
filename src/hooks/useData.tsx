@@ -18,7 +18,10 @@ export const useSearch = ({
 }) => {
   return useQuery<any, Error>({
     queryKey: ['search', article, brand],
-    queryFn: () => fetchSearch({ article: article, brand: brand }),
+    queryFn: () => {
+      console.log(`api/Search?Article=${article}&Brand=${brand}`);
+      return fetchSearch({ article, brand });
+    },
     enabled: Boolean(article && brand),
   });
 };
@@ -26,7 +29,10 @@ export const useSearch = ({
 export const useSearchByArticle = ({ article }: { article: string }) => {
   return useQuery<any, Error>({
     queryKey: ['searchByArticle'],
-    queryFn: () => fetchSearchByArticle({ article }),
+    queryFn: () => {
+      console.log(`api/Search?Article=${article}`);
+      return fetchSearchByArticle({ article });
+    },
     enabled: Boolean(article),
   });
 };
@@ -34,33 +40,49 @@ export const useSearchByArticle = ({ article }: { article: string }) => {
 export const useGettingContragent = () => {
   return useQuery<any, Error>({
     queryKey: ['gettingContragent'],
-    queryFn: () => fetchGettingContragent(),
+    queryFn: () => {
+      console.log(`api/Dictionary`);
+      return fetchGettingContragent();
+    },
     enabled: true,
   });
 };
 
 export const useCreateOrder = () => {
   return useMutation({
-    mutationFn: fetchCreateOrder,
+    mutationFn: (data: any) => {
+      console.log('api/RetailOrder');
+      return fetchCreateOrder(data);
+    },
   });
 };
 
 export const usePaybox = () => {
   return useMutation({
-    mutationFn: fetchPaybox,
+    mutationFn: (data: any) => {
+      console.log('api/PayBoxRetail', data);
+      return fetchPaybox(data);
+    },
   });
 };
 
 export const useRetailCity = () => {
   return useQuery<any, Error>({
     queryKey: ['retailCity'],
-    queryFn: () => fetchRetailCity(),
+    queryFn: () => {
+      console.log(`api/RetailCity`);
+      return fetchRetailCity();
+    },
     enabled: true,
   });
 };
+
 export const useRegisterUser = () => {
   return useMutation<NewUser, Error, any>({
-    mutationFn: (data) => fetchRegisterUser(data),
+    mutationFn: (data) => {
+      console.log('api/RetailRegister', data);
+      return fetchRegisterUser(data);
+    },
   });
 };
 

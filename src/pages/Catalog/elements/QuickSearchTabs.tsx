@@ -33,7 +33,7 @@ const QuickSearchTabs = () => {
                 : ' text-[#858588]'
             }`}
           >
-            {tab === 'catalog' ? 'Каталог' : tab === 'vin' ? 'VIN' : 'Модель'}
+            {tab === 'catalog' ? 'Каталог' : tab === 'vin' ? 'VIN' : 'По марке'}
           </button>
         ))}
       </fieldset>
@@ -87,7 +87,7 @@ const QuickSearchTabs = () => {
         onClose={() => {
           setIsCarSelectOpen(false);
         }}
-        onConfirm={(selection) => {
+        onConfirm={(selection: any) => {
           setSelectedCar(selection);
           setIsCarSelectOpen(false);
         }}

@@ -176,7 +176,7 @@ const MobileCitySelect = ({
         </div>
 
         {selectedCity && (
-          <div className='absolute bottom-2 w-full px-4 pb-6'>
+          <div className='absolute bottom-5 w-full px-4'>
             <button
               onClick={() => onConfirm(selectedCity)}
               className='w-full h-12 rounded-xl bg-[#4EBC73] text-white text-base font-semibold'

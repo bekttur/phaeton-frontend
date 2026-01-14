@@ -14,7 +14,6 @@ function App() {
         <CartModal />
       </main>
       <BottomNav />
-      <div className='w-full bg-[#E3E6E8] h-52 hidden lg:block mt-20'></div>
     </>
   );
 }

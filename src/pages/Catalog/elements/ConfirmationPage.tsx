@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { ArrowLeft, Search } from 'lucide-react';
-import ProductsPage from './ProductsPage';
+import { useEffect, useState } from 'react';
 
-import { X } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { ArrowLeft, Search, X } from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useArticlesTree } from '../../../hooks/useModel';
+import VehicleBlock from './VehicleBlock';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -83,16 +83,39 @@ const SortMenu = ({ isOpen, onClose }: MobileMenuProps) => {
 
 const ConfirmationPage = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const state = location.state as any;
+
+  if (!state) return null;
+
+  const { ktype, node, vehicle, treeData } = state;
+
+  const [currentNode, setCurrentNode] = useState(node);
+
+  const { data, isLoading } = useArticlesTree({
+    ktype,
+    nodeId: currentNode.id,
+  });
+
+  const children = treeData.filter(
+    (item: any) => item.parentId === currentNode.id
+  );
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentNode.id]);
 
   return (
-    <div className='lg:hidden w-full h-full bg-gray-50 px-4 pt-14 flex flex-col gap-4'>
+    <div className='lg:hidden w-full h-full min-h-screen bg-[#F6F6F6] px-4 pt-14 flex flex-col gap-4'>
       <div className='bg-white p-2 flex items-center gap-3'>
-        <Link
-          to={'/catalog'}
-          className='p-2 bg-[#EAECED] rounded-lg transition-colors'
+        <button
+          onClick={() => navigate(-1)}
+          className='p-2 bg-[#EAECED] rounded-lg'
         >
           <ArrowLeft className='w-6 h-6 text-[#8C8C8C]' />
-        </Link>
+        </button>
+
         <div className='flex-1 relative'>
           <Search className='w-5 h-5 text-[#AEAEB2] absolute left-3 top-1/2 -translate-y-1/2' />
           <input
@@ -109,32 +132,31 @@ const ConfirmationPage = () => {
           />
         </div>
       </div>
-      {/* GREEN BLOCK */}
-      <div className='bg-[#4EBC73] rounded-2xl p-4 shadow-md'>
-        <div className='flex flex-row-reverse items-start gap-3'>
-          <img
-            src={`${import.meta.env.BASE_URL}images/911.png`}
-            alt='Car top view'
-            className='w-12 h-full rounded-lg object-cover'
-          />
-          <div className='flex-1'>
-            <div className='flex items-center gap-2 mb-2'>
-              <img
-                src={`${import.meta.env.BASE_URL}icon/check_circle_white.svg`}
-                width={22}
-                height={22}
-              />
-              <h3 className='font-semibold text-white'>Audi RS 6 2015</h3>
-            </div>
-            <p className='text-white text-xs leading-relaxed'>
-              Мы определили вашу комплектацию — теперь показываем только
-              совместимые товары
-            </p>
-          </div>
-        </div>
-      </div>
 
-      {/* BUTTON THAT OPENS MENU */}
+      {vehicle && <VehicleBlock vehicle={vehicle} />}
+
+      {children.length > 0 && (
+        <div className='flex gap-2 overflow-x-auto pb-2'>
+          {children.map((item: any) => (
+            <button
+              key={item.id}
+              onClick={() => setCurrentNode(item)}
+              className={`
+          px-3 py-2 rounded-xl text-sm font-medium whitespace-nowrap
+          transition-colors
+          ${
+            currentNode.id === item.id
+              ? 'bg-[#4EBC73] text-white'
+              : 'bg-white text-black'
+          }
+        `}
+            >
+              {item.name}
+            </button>
+          ))}
+        </div>
+      )}
+
       <div className='flex items-center justify-start gap-3.5'>
         <button
           onClick={() => setMenuOpen(true)}
@@ -149,15 +171,59 @@ const ConfirmationPage = () => {
 
         <div className='flex flex-col items-start'>
           <span className='text-base font-semibold text-black'>
-            Колпаки на диски
+            {currentNode.name}
           </span>
+
           <span className='text-[#8C8C8C] font-semibold text-xs'>
-            224 товара
+            {/* @ts-ignore */}
+            {isLoading ? 'Загрузка...' : `${data?.total ?? 0} товаров`}
           </span>
         </div>
       </div>
 
-      <ProductsPage />
+      <div className='grid grid-cols-2 gap-3 pb-4'>
+        {!!data &&
+          // @ts-ignore
+          data.items?.map((product: any) => (
+            <div className='bg-white rounded-xl overflow-hidden shadow-sm'>
+              <div className='relative bg-[#E9F0F3]'>
+                <div className='flex items-center justify-center'>
+                  <img
+                    // src={`${import.meta.env.BASE_URL}${product.image}`}
+                    src={product.image}
+                    alt={product.name}
+                    className='w-[70%] h-40 object-contain'
+                  />
+                </div>
+              </div>
+
+              <div className='p-2'>
+                <span className='text-sm font-medium text-[#3E3E3E] mb-1 line-clamp-2'>
+                  {product.name}
+                </span>
+
+                <div className='flex items-center gap-1 mb-2'>
+                  <span className='text-sm font-semibold'>
+                    {/* {product.rating} */}4
+                  </span>
+                  <div className='text-xs flex text-[#4EBC73]'>★★★★★</div>
+                  <span className='text-xs text-[#6F7C8E]'>
+                    {/* ({product.reviews} отзыва) */}
+                    (134 отзыва)
+                  </span>
+                </div>
+
+                <p className='text-lg font-bold text-[#3E3E3E] mb-2'>₸</p>
+
+                <div className='w-fit h-fit px-2 py-1 bg-[#E3F2F8] rounded-[10px]'>
+                  <span className='text-transparent bg-clip-text bg-gradient-to-r from-[#207FC2] to-[#0ECE8D] text-sm font-semibold'>
+                    18 924 ₸ c кэшбеком
+                  </span>
+                </div>
+              </div>
+            </div>
+          ))}
+      </div>
 
       {/* MOBILE MENU */}
       <SortMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />

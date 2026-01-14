@@ -129,10 +129,6 @@ export default function DeliveryMethodStep({
     }
   }, [data.method]);
 
-  useEffect(() => {
-    console.log('Адрес обновился:', data.address);
-  }, [data.address]);
-
   const validateAndSubmit = () => {
     const newErrors: Record<string, string> = {};
 

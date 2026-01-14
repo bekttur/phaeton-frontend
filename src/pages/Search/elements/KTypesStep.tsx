@@ -1,0 +1,116 @@
+import { useMemo, useState } from 'react';
+import { useKTypes, useShowVehicleByKType } from '../../../hooks/useModel';
+import { ChevronLeft, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+
+interface Props {
+  brand: any;
+  series: any;
+  onBack: () => void;
+  onConfirm: (ktype: any) => void;
+  onClose: () => void;
+}
+
+const KTypesStep = ({ brand, series, onBack, onClose }: Props) => {
+  const [selected, setSelected] = useState<any | null>(null);
+
+  const navigate = useNavigate();
+  const { data: ktypes, isLoading } = useKTypes(brand.id, series.id, true);
+  const showVehicleMutation = useShowVehicleByKType();
+
+  const grouped = useMemo(() => {
+    if (!ktypes) return {};
+    return ktypes.reduce((acc: Record<string, any[]>, item: any) => {
+      const key = item.engine?.type || 'Другое';
+      if (!acc[key]) acc[key] = [];
+      acc[key].push(item);
+      return acc;
+    }, {});
+  }, [ktypes]);
+
+  const handleConfirm = async () => {
+    if (!selected) return;
+
+    try {
+      const data = await showVehicleMutation.mutateAsync(selected.ktype);
+	  onClose()
+      navigate('/catalog', {
+        state: {
+          vehicle: data,
+          brand,
+          series,
+          ktype: selected,
+        },
+      });
+    } catch (e) {
+      console.error('Ошибка получения автомобиля', e);
+    }
+  };
+
+  return (
+    <div className='flex flex-col flex-1 overflow-hidden'>
+      <div className='flex items-center mb-3 justify-between'>
+        <button onClick={onBack}>
+          <ChevronLeft size={24} color='#8E8E93' />
+        </button>
+        <h2 className='text-lg font-semibold'>Модификация</h2>
+        <button
+          onClick={onClose}
+          className='w-6 h-6 flex items-center justify-center rounded-full bg-[#E3E6E8]'
+        >
+          <X width={16} height={16} color='#8C8C8C' />
+        </button>
+      </div>
+
+      <div className='flex-1 overflow-y-auto'>
+        {isLoading && <p>Загрузка...</p>}
+
+        {Object.entries(grouped).map(([type, items]: any) => (
+          <div key={type} className='mb-4 bg-white rounded-xl mt-3'>
+            <div className='text-base font-semibold text-gray-500 p-3 pb-0'>
+              {type}
+            </div>
+
+            {items.map((item: any) => {
+              const checked = selected?.ktype === item.ktype;
+
+              return (
+                <button
+                  key={item.ktype}
+                  onClick={() => setSelected(item)}
+                  className='w-full flex items-center justify-between px-4 py-4 border-b last:border-none'
+                >
+                  <div className='text-base'>{item.desc}</div>
+
+                  <span
+                    className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                      checked ? 'border-[#4EBC73]' : 'border-gray-300'
+                    }`}
+                  >
+                    {checked && (
+                      <span className='w-2.5 h-2.5 rounded-full bg-[#4EBC73]' />
+                    )}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        ))}
+      </div>
+
+      <div className='pt-3 bg-white sticky bottom-0'>
+        <button
+          disabled={!selected || showVehicleMutation.isPending}
+          onClick={handleConfirm}
+          className={`w-full py-3 rounded-xl text-white font-semibold ${
+            selected ? 'bg-[#4EBC73]' : 'bg-gray-300'
+          }`}
+        >
+          {showVehicleMutation.isPending ? 'Загрузка...' : 'Выбрать'}
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default KTypesStep;
