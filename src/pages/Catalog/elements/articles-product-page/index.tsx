@@ -24,7 +24,13 @@ const ArticlesProductPage = () => {
   });
 
   if (isLoading) {
-    return <div className='pt-14'>Загрузка...</div>;
+    return (
+      <div className='fixed inset-0 z-[9999] bg-black/40 flex items-center justify-center'>
+        <div className='w-12 h-12 p-1 bg-white rounded-full'>
+          <div className='w-10 h-10 border-[3px] border-t-[#4EBC73] border-l-[#4EBC73] border-b-[#4EBC73] border-white rounded-full animate-spin'></div>
+        </div>
+      </div>
+    );
   }
 
   return (
