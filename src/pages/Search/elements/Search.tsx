@@ -10,11 +10,12 @@ import { catalog_data } from '../../Catalog/elements/catalog.data';
 import { useCity } from '../../../context/CityContext';
 
 const SearchPage = () => {
+  const { startRequest, finishRequest, loading } = useLoader();
+
   const navigate = useNavigate();
   const [params] = useSearchParams();
-
   const { city: selectedCity } = useCity();
-  const { startRequest, finishRequest, loading } = useLoader();
+  const { open } = useSearchModal();
 
   const article = params.get('article') || '';
   const urlBrand = params.get('brand') || '';
@@ -22,15 +23,34 @@ const SearchPage = () => {
   const [selectedBrand, setSelectedBrand] = useState(urlBrand);
   const [isResettingBrand, setIsResettingBrand] = useState(false);
 
-  const { open } = useSearchModal();
-
-  const { data: brandList, refetch: brandListRefetch } = useSearchByArticle({
-    article,
-  });
-  const { data: brandData, refetch: refetchBrand } = useSearch({
+  const { data: brandList, isFetching: isFetchingBrandList } =
+    useSearchByArticle({ article });
+  const { data: brandData, isFetching: isFetchingBrand } = useSearch({
     article,
     brand: selectedBrand,
   });
+
+  useEffect(() => {
+    const isLoading =
+      (!brandList && isFetchingBrandList) ||
+      (!!selectedBrand && !brandData && isFetchingBrand);
+
+    if (isLoading) {
+      startRequest();
+    }
+
+    return () => {
+      if (isLoading) {
+        finishRequest();
+      }
+    };
+  }, [
+    isFetchingBrandList,
+    isFetchingBrand,
+    brandList,
+    brandData,
+    selectedBrand,
+  ]);
 
   const filteredItems = useMemo(() => {
     if (!selectedCity) return brandData?.Items || [];
@@ -39,66 +59,35 @@ const SearchPage = () => {
     );
   }, [brandData, selectedCity]);
 
-  useEffect(() => {
-    if (urlBrand) {
-      setSelectedBrand(urlBrand);
-    }
-  }, [urlBrand]);
-
-  const fetchBrandData = async () => {
-    startRequest();
-    try {
-      await brandListRefetch();
-      if (selectedBrand) {
-        await refetchBrand();
-      }
-    } finally {
-      finishRequest();
-    }
-  };
-
-  useEffect(() => {
-    fetchBrandData();
-  }, [selectedBrand, article]);
-
   const handleBrandSelect = (brand: string) => {
     setSelectedBrand(brand);
-
     navigate(`/search?article=${article}&brand=${brand}`, { replace: true });
-
-    setTimeout(() => refetchBrand(), 0);
-  };
-
-  const handleInputClick = () => {
-    open();
   };
 
   const handleChoosingOther = () => {
     setIsResettingBrand(true);
     setSelectedBrand('');
-
     navigate(`/search?article=${article}`, { replace: true });
-
-    setTimeout(() => {
-      setIsResettingBrand(false);
-    }, 0);
+    setIsResettingBrand(false);
   };
 
   const handleBack = () => {
-    const hasBrand = params.get('brand');
-    const hasArticle = params.get('article');
-
-    if (hasBrand) {
-      navigate(`/search?article=${article}`, { replace: true });
+    if (params.get('brand')) {
       setSelectedBrand('');
+      navigate(`/search?article=${article}`, { replace: true });
       return;
     }
 
-    if (hasArticle) {
+    if (params.get('article')) {
       navigate(`/`, { replace: true });
       return;
     }
+
     navigate(-1);
+  };
+
+  const handleInputClick = () => {
+    open();
   };
 
   return (
@@ -226,7 +215,6 @@ const SearchPage = () => {
           </div>
         )}
 
-      {/* BRAND LIST — скрываем, если бренд выбран */}
       {!loading && (
         <>
           {/* BRAND LIST */}

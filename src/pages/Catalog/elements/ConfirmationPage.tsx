@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { ArrowLeft, Search, X } from 'lucide-react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useArticlesTree } from '../../../hooks/useModel';
 import VehicleBlock from './VehicleBlock';
 
@@ -185,14 +185,24 @@ const ConfirmationPage = () => {
         {!!data &&
           // @ts-ignore
           data.items?.map((product: any) => (
-            <div className='bg-white rounded-xl overflow-hidden shadow-sm'>
-              <div className='relative bg-[#E9F0F3]'>
-                <div className='flex items-center justify-center'>
+            <Link
+              key={`${product.id}-${product.number}-${product.mfrId}`}
+              to={`/articles-product/${product.id}`}
+              state={{
+                id: product.id,
+                number: product.number,
+                mfrId: product.mfrId,
+                ktype,
+              }}
+              className='bg-white rounded-xl overflow-hidden shadow-sm'
+            >
+              <div className='relative bg-[#E9F0F3] border-b-[1px] border-b-gray-100'>
+                <div className='flex items-center justify-center bg-[#fff]'>
                   <img
                     // src={`${import.meta.env.BASE_URL}${product.image}`}
                     src={product.image}
                     alt={product.name}
-                    className='w-[70%] h-40 object-contain'
+                    className='w-[82%] h-40 object-contain'
                   />
                 </div>
               </div>
@@ -213,7 +223,9 @@ const ConfirmationPage = () => {
                   </span>
                 </div>
 
-                <p className='text-lg font-bold text-[#3E3E3E] mb-2'>₸</p>
+                <p className='text-lg font-bold text-[#3E3E3E] mb-2'>
+                  32 000 ₸
+                </p>
 
                 <div className='w-fit h-fit px-2 py-1 bg-[#E3F2F8] rounded-[10px]'>
                   <span className='text-transparent bg-clip-text bg-gradient-to-r from-[#207FC2] to-[#0ECE8D] text-sm font-semibold'>
@@ -221,7 +233,7 @@ const ConfirmationPage = () => {
                   </span>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
       </div>
 

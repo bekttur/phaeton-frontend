@@ -11,7 +11,6 @@ interface IProductsPage {
 function ProductsPage({ items, article, brand }: IProductsPage) {
   // const carName = 'Toyota 4Runner / Hilux';
 
-  // ⭐ избранные товары
   const [favorites, setFavorites] = useState<number[]>([]);
 
   const toggleFavorite = (id: number) => {
@@ -50,11 +49,15 @@ function ProductsPage({ items, article, brand }: IProductsPage) {
         <div className='grid grid-cols-2 gap-3 pb-4'>
           {!!items &&
             items.map((product) => (
-              // ProductsPage или там, где Link на ProductPage
               <Link
-                to={`/product/${product.ItemId}?from=${encodeURIComponent(
-                  `/search?article=${article}&brand=${brand}`
-                )}`}
+                to={`/product/${product.ItemId}`}
+                state={{
+                  product,
+                  from: {
+                    article,
+                    brand,
+                  },
+                }}
                 className='bg-white rounded-xl overflow-hidden shadow-sm'
               >
                 <div className='relative bg-[#E9F0F3]'>

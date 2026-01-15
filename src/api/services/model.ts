@@ -1,5 +1,12 @@
 import { api } from './api';
 
+interface FetchArticleDetailsParams {
+  articleId: number;
+  ktype: number;
+  number: string;
+  mfrId: number;
+}
+
 export const fetchBrands = async () => {
   const { data } = await api.get('/TecDoc/Makes');
   return data;
@@ -60,7 +67,7 @@ export const fetchTreeVehicleByKType = async (ktype: number) => {
 
 export const fetchArticlesTree = async (ktype: number, nodeId: number, page: number, perPage: number) => {
   const { data } = await api.get(
-    'https://api-tecdoc.phaeton.kz/TecDoc/ArticlesTree',
+    '/TecDoc/ArticlesTree',
     {
       params: {
         ktype,
@@ -72,6 +79,26 @@ export const fetchArticlesTree = async (ktype: number, nodeId: number, page: num
       },
     }
   );
+
+  return data;
+};
+
+export const fetchArticleDetails = async ({
+  articleId,
+  ktype,
+  number,
+  mfrId,
+}: FetchArticleDetailsParams) => {
+  const { data } = await api.get('/TecDoc/DetailsArticles', {
+    params: {
+      articleId,
+      ktype,
+      number,
+      mfrId,
+      country: 'UA',
+      lang: 'ru',
+    },
+  });
 
   return data;
 };

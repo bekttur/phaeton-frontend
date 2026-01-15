@@ -8,7 +8,6 @@ interface SpecItem {
 export default function ProductTabs({ product }: any) {
   const [activeTab, setActiveTab] = useState<'specs' | 'description'>('specs');
 
-  // Преобразуем product.Parameters в массив
   const specs: SpecItem[] = Object.entries(product?.Parameters ?? {}).map(
     ([label, value]) => ({
       label,

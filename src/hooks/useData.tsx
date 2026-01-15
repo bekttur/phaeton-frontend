@@ -23,17 +23,31 @@ export const useSearch = ({
       return fetchSearch({ article, brand });
     },
     enabled: Boolean(article && brand),
+
+    staleTime: 5 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
+
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 };
 
 export const useSearchByArticle = ({ article }: { article: string }) => {
   return useQuery<any, Error>({
-    queryKey: ['searchByArticle'],
+    queryKey: ['searchByArticle', article],
     queryFn: () => {
       console.log(`api/Search?Article=${article}`);
       return fetchSearchByArticle({ article });
     },
     enabled: Boolean(article),
+
+    staleTime: 5 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
+
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 };
 
@@ -74,6 +88,8 @@ export const useRetailCity = () => {
       return fetchRetailCity();
     },
     enabled: true,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 60,
   });
 };
 
@@ -92,5 +108,6 @@ export const useRetailPvz = () => {
     queryFn: fetchRetailPvz,
     enabled: true,
     staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 60,
   });
 };

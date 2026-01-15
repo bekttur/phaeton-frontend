@@ -10,6 +10,7 @@ import ProductPage from './pages/Catalog/elements/product-page';
 import Search from './pages/Search/elements/Search';
 import CheckoutPage from './pages/Basket/elements/CheckoutPage';
 import MyOrders from './pages/MyOrders/MyOrders';
+import ArticlesProductPage from './pages/Catalog/elements/articles-product-page';
 
 export const AppRoutes = () => (
   <Routes>
@@ -20,6 +21,7 @@ export const AppRoutes = () => (
     <Route path="/confirmation" element={<ConfirmationPage />} />
     <Route path="/products" element={<ProductsPage />} />
     <Route path="/product/:id" element={<ProductPage />} />
+    <Route path="/articles-product/:id" element={<ArticlesProductPage />} />
     <Route path="/search" element={<Search />} />
     <Route path="/basket" element={<CheckoutPage />} />
     <Route path="/my-orders" element={<MyOrders />} />

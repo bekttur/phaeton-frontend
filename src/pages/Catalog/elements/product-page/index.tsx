@@ -1,40 +1,26 @@
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import FixedCartButton from './FixedCartButton';
 import ProductGallery from './ProductGallery';
 import ProductTabs from './ProductTabs';
 import Reviews from './Reviews';
 import SearchHeader from './SearchHeader';
-import { useSearch } from '../../../../hooks/useData';
-import { useCity } from '../../../../context/CityContext';
 
 const ProductPage = () => {
-  const { id } = useParams();
   const location = useLocation();
-  const { city: selectedCity } = useCity();
 
-  const params = new URLSearchParams(location.search);
-  const from = params.get('from');
-  const decodedFrom = from ? decodeURIComponent(from) : null;
+  const state = location.state as {
+    product?: any;
+    from?: {
+      article?: string;
+      brand?: string;
+    };
+  };
 
-  let article = '';
-  let brand = '';
+  const product = state?.product;
 
-  if (decodedFrom) {
-    const url = new URL(decodedFrom, window.location.origin);
-    article = url.searchParams.get('article') || '';
-    brand = url.searchParams.get('brand') || '';
+  if (!product) {
+    return <div className='pt-14'>Товар не найден</div>;
   }
-
-  const { data: brandData, isLoading } = useSearch({ article, brand });
-
-  const filteredItems = brandData?.Items?.filter(
-    (item: any) => !selectedCity || item.Warehouse === selectedCity
-  );
-
-  const product = filteredItems?.find((p: any) => p.ItemId == id) || null;
-
-  if (isLoading) return <div className='pt-14'>Загрузка...</div>;
-  if (!product) return <div className='pt-14'>Товар не найден</div>;
 
   return (
     <div className='min-h-screen bg-gray-100 pt-14'>

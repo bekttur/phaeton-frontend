@@ -26,33 +26,10 @@ export const LoaderProvider = ({ children }: { children: React.ReactNode }) => {
 
   const startRequest = () => {
     setLoadingCount((prev) => prev + 1);
-
-    if (!loading) {
-      setLoading(true);
-      setProgress(0);
-
-      intervalRef.current = setInterval(() => {
-        setProgress((prev) => (prev < 90 ? prev + Math.random() * 10 : prev));
-      }, 200);
-    }
   };
 
   const finishRequest = () => {
-    setLoadingCount((prev) => {
-      const newCount = Math.max(prev - 1, 0);
-
-      if (newCount === 0 && intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-        setProgress(100);
-        setTimeout(() => {
-          setProgress(0);
-          setLoading(false);
-        }, 300);
-      }
-
-      return newCount;
-    });
+    setLoadingCount((prev) => Math.max(prev - 1, 0));
   };
 
   useEffect(() => {
@@ -63,15 +40,42 @@ export const LoaderProvider = ({ children }: { children: React.ReactNode }) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (loadingCount > 0) {
+      if (!intervalRef.current) {
+        setLoading(true);
+        setProgress(0);
+
+        intervalRef.current = setInterval(() => {
+          setProgress((prev) => (prev < 90 ? prev + Math.random() * 10 : prev));
+        }, 200);
+      }
+    } else {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+
+      setProgress(100);
+      setTimeout(() => {
+        setLoading(false);
+        setProgress(0);
+      }, 300);
+    }
+  }, [loadingCount]);
+
   return (
-    <LoaderContext.Provider value={{ startRequest, finishRequest, progress, loading }}>
+    <LoaderContext.Provider
+      value={{ startRequest, finishRequest, progress, loading }}
+    >
       {loading && (
-        <div className="fixed top-0 left-0 w-full h-[3px] z-50 bg-gray-100">
+        <div className='fixed top-0 left-0 w-full h-[3px] z-50 bg-gray-100'>
           <div
-            className="h-full bg-green-500 transition-all duration-300 ease-out shadow-[0_0_10px_rgba(34,197,94,0.5)]"
+            className='h-full bg-green-500 transition-all duration-300 ease-out shadow-[0_0_10px_rgba(34,197,94,0.5)]'
             style={{
               width: `${progress}%`,
-              maskImage: 'linear-gradient(to right, rgba(0,0,0,1), rgba(0,0,0,1) 40%, transparent)',
+              maskImage:
+                'linear-gradient(to right, rgba(0,0,0,1), rgba(0,0,0,1) 40%, transparent)',
             }}
           />
         </div>

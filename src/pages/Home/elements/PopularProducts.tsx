@@ -223,7 +223,6 @@ const PopularProducts = () => {
           <div className='grid grid-cols-2 gap-3 pb-4'>
             {!!products &&
               products.map((product) => (
-                // ProductsPage или там, где Link на ProductPage
                 <div
                   className='bg-white rounded-xl overflow-hidden shadow-sm'
                 >
