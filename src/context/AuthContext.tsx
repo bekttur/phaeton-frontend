@@ -35,7 +35,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return new Date(expiresAt).getTime() > Date.now();
   }, [accessToken, expiresAt]);
 
-  // ❌ logout при истёкшем токене
   useEffect(() => {
     if (!expiresAt) return;
 
@@ -80,7 +79,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem(TECDOC_EXPIRES_KEY);
   };
 
-  // 🔑 Авто-логин при старте приложения, если токена нет или просрочен
   useEffect(() => {
     if (!isAuthenticated) {
       login('admin', '1234').catch(console.error);

@@ -384,3 +384,13 @@ input:focus {
     stroke-dasharray: 0 380 320 40 320 40;
   }
 }
+
+
+.overflow-x-auto::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
+
+.overflow-x-auto {
+  -ms-overflow-style: none; /* IE 10+ */
+  scrollbar-width: none; /* Firefox */
+}

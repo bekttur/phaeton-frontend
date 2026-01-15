@@ -7,12 +7,17 @@ interface SpecItem {
 
 export default function ProductTabs({ product }: any) {
   const [activeTab, setActiveTab] = useState<'specs' | 'description'>('specs');
+  const [showAllSpecs, setShowAllSpecs] = useState(false);
 
   const specs: SpecItem[] = product?.attributes ?? [];
 
+  // Показываем первые 7 или все, если showAllSpecs
+  const visibleSpecs = showAllSpecs ? specs : specs.slice(0, 7);
+
   return (
     <div className='bg-white mt-2 rounded-xl mx-4 p-3'>
-      <div className='flex bg-[#EAECED] p-1 rounded-[10px]'>
+      {/* Вкладки */}
+      <div className='flex bg-[#EAECED] p-1 rounded-[10px] '>
         <button
           onClick={() => setActiveTab('specs')}
           className={`flex-1 py-3 text-center font-medium transition-colors ${
@@ -37,35 +42,39 @@ export default function ProductTabs({ product }: any) {
 
       <div className='pt-2'>
         {activeTab === 'specs' ? (
-          <div>
+          <div className='min-h-[30vh]'>
             <h3 className='font-semibold mb-4'>Основные характеристики</h3>
             <div className='space-y-1'>
-              {specs.map((spec, index) => (
+              {visibleSpecs.map((spec, index) => (
                 <div
                   key={index}
                   className='flex justify-between items-center py-1 border-b'
                 >
                   <span className='text-gray-600 text-sm'>{spec.key}</span>
-                  <span className='text-gray-900 text-sm font-medium'>
+                  <span className='text-gray-900 text-sm font-medium text-end'>
                     {spec.value}
                   </span>
                 </div>
               ))}
             </div>
 
-            <button className='text-green-600 text-sm font-medium mt-4'>
-              показать всё
-            </button>
+            {/* Кнопка показать всё только если больше 7 */}
+            {!showAllSpecs && specs.length > 7 && (
+              <button
+                className='text-green-600 text-sm font-medium mt-4'
+                onClick={() => setShowAllSpecs(true)}
+              >
+                показать всё
+              </button>
+            )}
           </div>
         ) : (
-          <div>
+          <div className='min-h-[30vh]'>
             <h3 className='font-semibold mb-4'>Описание товара</h3>
             <p className='text-gray-700 leading-relaxed'>
-				{product.brand} {' '} {product.number}
+              {product.brand} {product.number}
             </p>
-			<p className='text-gray-700 leading-relaxed'>
-				{product.description}
-            </p>
+            <p className='text-gray-700 leading-relaxed'>{product.description}</p>
           </div>
         )}
       </div>

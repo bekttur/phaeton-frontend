@@ -7,6 +7,7 @@ interface SpecItem {
 
 export default function ProductTabs({ product }: any) {
   const [activeTab, setActiveTab] = useState<'specs' | 'description'>('specs');
+  const [showAllSpecs, setShowAllSpecs] = useState(false);
 
   const specs: SpecItem[] = Object.entries(product?.Parameters ?? {}).map(
     ([label, value]) => ({
@@ -15,8 +16,12 @@ export default function ProductTabs({ product }: any) {
     })
   );
 
+  // Показываем первые 7 или все
+  const visibleSpecs = showAllSpecs ? specs : specs.slice(0, 7);
+
   return (
     <div className='bg-white mt-2 rounded-xl mx-4 p-3'>
+      {/* Вкладки */}
       <div className='flex bg-[#EAECED] p-1 rounded-[10px]'>
         <button
           onClick={() => setActiveTab('specs')}
@@ -42,10 +47,10 @@ export default function ProductTabs({ product }: any) {
 
       <div className='pt-2'>
         {activeTab === 'specs' ? (
-          <div>
+          <div className='min-h-[20vh]'>
             <h3 className='font-semibold mb-4'>Основные характеристики</h3>
             <div className='space-y-1'>
-              {specs.map((spec, index) => (
+              {visibleSpecs.map((spec, index) => (
                 <div
                   key={index}
                   className='flex justify-between items-center py-1 border-b'
@@ -58,38 +63,40 @@ export default function ProductTabs({ product }: any) {
               ))}
             </div>
 
-            <button className='text-green-600 text-sm font-medium mt-4'>
-              показать всё
-            </button>
+            {/* Кнопка показать всё только если больше 7 */}
+            {!showAllSpecs && specs.length > 7 && (
+              <button
+                className='text-green-600 text-sm font-medium mt-4'
+                onClick={() => setShowAllSpecs(true)}
+              >
+                показать всё
+              </button>
+            )}
           </div>
         ) : (
-          <div>
-            {/* <p className='text-gray-700 leading-relaxed'>
-              {product?.Description ??
-                'Описание товара будет здесь. Подробная информация о продукте.'}
-            </p> */}
+          <div className='min-h-[20vh] space-y-1'>
             <div className='flex justify-between items-center py-1 border-b'>
               <span className='text-gray-600 text-sm'>Артикул</span>
               <span className='text-gray-900 text-sm font-medium'>
-                {!!product && product.Article}
+                {product?.Article}
               </span>
             </div>
             <div className='flex justify-between items-center py-1 border-b'>
               <span className='text-gray-600 text-sm'>Бренд</span>
               <span className='text-gray-900 text-sm font-medium'>
-                {!!product && product.Brand}
+                {product?.Brand}
               </span>
             </div>
             <div className='flex justify-between items-center py-1 border-b'>
               <span className='text-gray-600 text-sm'>Склад</span>
               <span className='text-gray-900 text-sm font-medium'>
-                {!!product && product.Warehouse}
+                {product?.Warehouse}
               </span>
             </div>
             <div className='flex justify-between items-start py-1 border-b'>
               <span className='text-gray-600 text-sm'>На авто</span>
               <span className='text-gray-900 text-sm font-medium whitespace-pre-line text-end'>
-                {product.Using?.replace(/;/g, '\n')}
+                {product?.Using?.replace(/;/g, '\n')}
               </span>
             </div>
             <div className='flex justify-between items-center py-1 border-b'>

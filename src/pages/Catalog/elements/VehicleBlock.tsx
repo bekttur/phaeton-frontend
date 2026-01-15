@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Check, X } from 'lucide-react';
+import MobileModelSelect from '../../Search/elements/MobileModelSelect';
 
 interface Props {
   vehicle: any;
@@ -7,6 +8,8 @@ interface Props {
 
 const VehicleBlock = ({ vehicle }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [isSelectOpen, setIsSelectOpen] = useState(false);
 
   const formatYearMonth = (value?: string) => {
     if (!value) return '';
@@ -50,13 +53,24 @@ const VehicleBlock = ({ vehicle }: Props) => {
               >
                 Подробнее
               </button>
-              <button className='text-[14px] px-3 py-1 bg-[#F5F5F5] text-[#636366] rounded-full font-medium'>
+              <button
+                className='text-[14px] px-3 py-1 bg-[#F5F5F5] text-[#636366] rounded-full font-medium'
+                onClick={() => setIsSelectOpen(true)}
+              >
                 Изменить
               </button>
             </div>
           </div>
         </div>
       </div>
+
+      {isSelectOpen && (
+        <MobileModelSelect
+          isOpen={isSelectOpen}
+          onClose={() => setIsSelectOpen(false)}
+          selectedVehicle={vehicle}
+        />
+      )}
 
       {isModalOpen && (
         <>
@@ -83,7 +97,10 @@ const VehicleBlock = ({ vehicle }: Props) => {
                   <h2 className='text-lg font-semibold'>
                     {vehicle.mfrName} {vehicle.vehicleModelSeriesName}
                   </h2>
-                  <button className='w-6 h-6 flex items-center justify-center rounded-full bg-[#E3E6E8] hover:bg-gray-100'>
+                  <button
+                    className='w-6 h-6 flex items-center justify-center rounded-full bg-[#E3E6E8] hover:bg-gray-100'
+                    onClick={() => setIsModalOpen(false)}
+                  >
                     <X width={16} height={16} color='#8C8C8C' />
                   </button>
                 </div>

@@ -19,16 +19,19 @@ const HeroCarousel = () => {
 
   const data = [
     {
-      title: 'AI-ассистент запчастей',
-      img: isLg ? 'images/hero-lg.png' : 'images/hero.png',
+      title: 'Найдите запчасть ',
+      title2: 'с помощью AI-Phaeton',
+      img: isLg ? 'images/hero-lg.png' : 'images/hero2.png',
     },
     {
-      title: 'AI-ассистент запчастей',
-      img: isLg ? 'images/hero-lg.png' : 'images/hero.png',
+      title: 'Найдите запчасть',
+      title2: 'с помощью AI-Phaeton',
+      img: isLg ? 'images/hero-lg.png' : 'images/hero2.png',
     },
     {
-      title: 'AI-ассистент запчастей',
-      img: isLg ? 'images/hero-lg.png' : 'images/hero.png',
+      title: 'Найдите запчасть',
+      title2: 'с помощью AI-Phaeton',
+      img: isLg ? 'images/hero-lg.png' : 'images/hero2.png',
     },
   ];
 
@@ -66,18 +69,19 @@ const HeroCarousel = () => {
         {data.map((item, i) => (
           <div
             key={i}
-            className='shrink-0 min-w-full min-h-[270px] lg:max-h-[560px] h-auto snap-start font-exo bg-cover lg:bg-cover bg-center bg-no-repeat rounded-2xl'
+            className='shrink-0 min-w-full min-h-[300px] lg:max-h-[560px] h-auto snap-start font-exo bg-cover lg:bg-cover bg-center bg-no-repeat rounded-2xl'
             style={{
               backgroundImage: `url(${import.meta.env.BASE_URL}${item.img})`,
             }}
           >
-            <div className='w-full h-full flex flex-col items-start justify-between pt-1 lg:pt-5 pb-3 lg:pb-8 px-3 lg:px-10 rounded-lg'>
-              <p className='text-white text-[20px]/[36px] lg:text-2xl font-bold capitalize'>
-                {item.title}
+            <div className='w-full h-full flex flex-col items-start justify-between pt-3 lg:pt-5 pb-3 lg:pb-8 px-4 lg:px-10 rounded-lg'>
+              <p className='text-white text-[20px]/[30px] lg:text-2xl font-semibold capitalize whitespace-nowrap'>
+                {item.title} <br/>
+                {item.title2}
               </p>
-              <button className='w-fit h-fit px-[12px] py-[7px] rounded-[10px] bg-gradient-to-br from-[#31825F] to-[#4EBC73] text-white text-sm border border-[#5AAE93]'>
+              {/* <button className='w-fit h-fit px-[12px] py-[7px] rounded-[10px] bg-gradient-to-br from-[#31825F] to-[#4EBC73] text-white text-sm border border-[#5AAE93]'>
                 Открыть AI Phaeton
-              </button>
+              </button> */}
             </div>
           </div>
         ))}

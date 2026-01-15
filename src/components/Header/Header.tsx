@@ -20,7 +20,7 @@ const Header = () => {
 
   return (
     <>
-      <div className='lg:hidden fixed top-0 left-0 right-0 z-40 bg-white border-b'>
+      <div className='lg:hidden fixed top-0 left-0 right-0 z-40 bg-white'>
         <div className='w-full min-h-14 flex items-center justify-between px-4'>
           <Link to={'/'} className='text-xl font-semibold text-[#62C382]'>
             Phaeton

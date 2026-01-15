@@ -54,8 +54,11 @@ const Catalog = () => {
                       }}
                     >
                       <span className='text-sm font-medium text-[#56625A]'>
-                        {item.name}
+                        {item.name?.includes('/')
+                          ? item.name.split('/')[0].trim()
+                          : item.name}
                       </span>
+
                       {item.children > 0 && (
                         <span className='text-xs text-[#9A9A9A]'>
                           {item.children} разделов

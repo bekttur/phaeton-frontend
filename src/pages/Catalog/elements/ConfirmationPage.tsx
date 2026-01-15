@@ -102,17 +102,26 @@ const ConfirmationPage = () => {
     (item: any) => item.parentId === currentNode.id
   );
 
+  const handleBack = () => {
+    const parentNode = treeData.find(
+      (item: any) => item.id === currentNode.parentId
+    );
+
+    if (parentNode && parentNode.parentId !== null) {
+      setCurrentNode(parentNode);
+    } else {
+      navigate(-1);
+    }
+  };
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentNode.id]);
 
   return (
-    <div className='lg:hidden w-full h-full min-h-screen bg-[#F6F6F6] px-4 pt-14 flex flex-col gap-4'>
-      <div className='bg-white p-2 flex items-center gap-3'>
-        <button
-          onClick={() => navigate(-1)}
-          className='p-2 bg-[#EAECED] rounded-lg'
-        >
+    <div className='lg:hidden w-full h-full min-h-screen pt-14'>
+      <div className='bg-white px-4 py-2 flex items-center gap-3'>
+        <button onClick={handleBack} className='p-2 bg-[#EAECED] rounded-lg'>
           <ArrowLeft className='w-6 h-6 text-[#8C8C8C]' />
         </button>
 
@@ -133,108 +142,111 @@ const ConfirmationPage = () => {
         </div>
       </div>
 
-      {vehicle && <VehicleBlock vehicle={vehicle} />}
+      <div className='bg-[#F6F6F6] px-4 flex flex-col gap-4 pt-4'>
+        {vehicle && <VehicleBlock vehicle={vehicle} />}
 
-      {children.length > 0 && (
-        <div className='flex gap-2 overflow-x-auto pb-2'>
-          {children.map((item: any) => (
-            <button
-              key={item.id}
-              onClick={() => setCurrentNode(item)}
-              className={`
-          px-3 py-2 rounded-xl text-sm font-medium whitespace-nowrap
-          transition-colors
-          ${
-            currentNode.id === item.id
-              ? 'bg-[#4EBC73] text-white'
-              : 'bg-white text-black'
-          }
-        `}
-            >
-              {item.name}
-            </button>
-          ))}
+        {children.length > 0 && (
+          <div className='flex gap-2 overflow-x-auto pb-2'>
+            {children.map((item: any) => (
+              <button
+                key={item.id}
+                onClick={() => setCurrentNode(item)}
+                className={`
+                px-3 py-2 rounded-xl text-sm font-medium whitespace-nowrap
+                transition-colors
+                ${
+                  currentNode.id === item.id
+                    ? 'bg-[#4EBC73] text-white'
+                    : 'bg-white text-black'
+                }
+              `}
+              >
+                {item.name}
+              </button>
+            ))}
+          </div>
+        )}
+
+        <div className='flex items-center justify-start gap-3.5'>
+          <button
+            onClick={() => setMenuOpen(true)}
+            className='h-12 w-12 bg-[#EAECED] rounded-[10px] flex items-center justify-center'
+          >
+            <img
+              src={`${import.meta.env.BASE_URL}icon/format_line_spacing.svg`}
+              width={24}
+              height={24}
+            />
+          </button>
+
+          <div className='flex flex-col items-start'>
+            <span className='text-base font-semibold text-black'>
+              {currentNode.name}
+            </span>
+
+            <span className='text-[#8C8C8C] font-semibold text-xs'>
+              {/* @ts-ignore */}
+              {isLoading ? 'Загрузка...' : `${data?.total ?? 0} товаров`}
+            </span>
+          </div>
         </div>
-      )}
 
-      <div className='flex items-center justify-start gap-3.5'>
-        <button
-          onClick={() => setMenuOpen(true)}
-          className='h-12 w-12 bg-[#EAECED] rounded-[10px] flex items-center justify-center'
-        >
-          <img
-            src={`${import.meta.env.BASE_URL}icon/format_line_spacing.svg`}
-            width={24}
-            height={24}
-          />
-        </button>
+        <div className='grid grid-cols-2 gap-3 pb-4'>
+          {!!data &&
+            // @ts-ignore
+            data.items?.map((product: any) => (
+              <Link
+                key={`${product.id}-${product.number}-${product.mfrId}`}
+                to={`/articles-product/${product.id}`}
+                state={{
+                  id: product.id,
+                  number: product.number,
+                  mfrId: product.mfrId,
+                  ktype,
+                }}
+                className='bg-white rounded-xl overflow-hidden shadow-sm'
+              >
+                <div className='relative bg-[#E9F0F3] border-b-[1px] border-b-gray-100'>
+                  <div className='flex items-center justify-center bg-[#fff]'>
+                    <img
+                      // src={`${import.meta.env.BASE_URL}${product.image}`}
+                      src={product.image}
+                      alt={product.name}
+                      className='w-[82%] h-40 object-contain'
+                    />
+                  </div>
+                </div>
 
-        <div className='flex flex-col items-start'>
-          <span className='text-base font-semibold text-black'>
-            {currentNode.name}
-          </span>
+                <div className='p-2'>
+                  <span className='text-sm font-medium text-[#3E3E3E] mb-1 line-clamp-2'>
+                    {!!product && product.name} {!!product && product.brand}{' '}
+                    {!!product && product.number}
+                  </span>
 
-          <span className='text-[#8C8C8C] font-semibold text-xs'>
-            {/* @ts-ignore */}
-            {isLoading ? 'Загрузка...' : `${data?.total ?? 0} товаров`}
-          </span>
+                  <div className='flex items-center gap-1 mb-2'>
+                    <span className='text-sm font-semibold'>
+                      {/* {product.rating} */}4
+                    </span>
+                    <div className='text-xs flex text-[#4EBC73]'>★★★★★</div>
+                    <span className='text-xs text-[#6F7C8E]'>
+                      {/* ({product.reviews} отзыва) */}
+                      (134 отзыва)
+                    </span>
+                  </div>
+
+                  <p className='text-lg font-bold text-[#3E3E3E] mb-2'>
+                    32 000 ₸
+                  </p>
+
+                  <div className='w-fit h-fit px-2 py-1 bg-[#E3F2F8] rounded-[10px]'>
+                    <span className='text-transparent bg-clip-text bg-gradient-to-r from-[#207FC2] to-[#0ECE8D] text-sm font-semibold'>
+                      18 924 ₸ c кэшбеком
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
         </div>
-      </div>
-
-      <div className='grid grid-cols-2 gap-3 pb-4'>
-        {!!data &&
-          // @ts-ignore
-          data.items?.map((product: any) => (
-            <Link
-              key={`${product.id}-${product.number}-${product.mfrId}`}
-              to={`/articles-product/${product.id}`}
-              state={{
-                id: product.id,
-                number: product.number,
-                mfrId: product.mfrId,
-                ktype,
-              }}
-              className='bg-white rounded-xl overflow-hidden shadow-sm'
-            >
-              <div className='relative bg-[#E9F0F3] border-b-[1px] border-b-gray-100'>
-                <div className='flex items-center justify-center bg-[#fff]'>
-                  <img
-                    // src={`${import.meta.env.BASE_URL}${product.image}`}
-                    src={product.image}
-                    alt={product.name}
-                    className='w-[82%] h-40 object-contain'
-                  />
-                </div>
-              </div>
-
-              <div className='p-2'>
-                <span className='text-sm font-medium text-[#3E3E3E] mb-1 line-clamp-2'>
-                  {product.name}
-                </span>
-
-                <div className='flex items-center gap-1 mb-2'>
-                  <span className='text-sm font-semibold'>
-                    {/* {product.rating} */}4
-                  </span>
-                  <div className='text-xs flex text-[#4EBC73]'>★★★★★</div>
-                  <span className='text-xs text-[#6F7C8E]'>
-                    {/* ({product.reviews} отзыва) */}
-                    (134 отзыва)
-                  </span>
-                </div>
-
-                <p className='text-lg font-bold text-[#3E3E3E] mb-2'>
-                  32 000 ₸
-                </p>
-
-                <div className='w-fit h-fit px-2 py-1 bg-[#E3F2F8] rounded-[10px]'>
-                  <span className='text-transparent bg-clip-text bg-gradient-to-r from-[#207FC2] to-[#0ECE8D] text-sm font-semibold'>
-                    18 924 ₸ c кэшбеком
-                  </span>
-                </div>
-              </div>
-            </Link>
-          ))}
       </div>
 
       {/* MOBILE MENU */}
