@@ -35,32 +35,77 @@ const Catalog = () => {
 
       <div className='px-4 bg-[#F6F6F6] mb-3'>
         <div className='grid grid-cols-3 gap-[13px]'>
-          {(vehicle && rootCategories ? rootCategories : items).map(
-            (item: any) => (
-              <button
-                key={item.id}
-                onClick={() => {
-                  if (item.children > 0) {
-                    setActiveCategory(item);
-                  }
-                }}
-                className='aspect-square bg-[#FDFDFD] border border-[#E9EBEE]
-                 rounded-[10px] px-2 py-1 text-left'
-              >
-                <div className='flex flex-col justify-between h-full'>
-                  <span className='text-sm font-medium text-[#56625A]'>
-                    {item.name || item.title}
-                  </span>
-
-                  {item.children > 0 && (
-                    <span className='text-xs text-[#9A9A9A]'>
-                      {item.children} разделов
+          {vehicle
+            ? rootCategories
+              ? rootCategories.map((item: any) => (
+                  <button
+                    key={item.id}
+                    onClick={() => {
+                      if (item.children > 0) setActiveCategory(item);
+                    }}
+                    className='aspect-square bg-[#FDFDFD] border border-[#E9EBEE] rounded-[10px] px-2 py-1 text-left'
+                  >
+                    <div
+                      className='flex flex-col justify-between h-full bg-contain bg-bottom bg-no-repeat'
+                      style={{
+                        backgroundImage: `url(${import.meta.env.BASE_URL}${
+                          item.img
+                        })`,
+                      }}
+                    >
+                      <span className='text-sm font-medium text-[#56625A]'>
+                        {item.name}
+                      </span>
+                      {item.children > 0 && (
+                        <span className='text-xs text-[#9A9A9A]'>
+                          {item.children} разделов
+                        </span>
+                      )}
+                    </div>
+                  </button>
+                ))
+              : // Skeleton
+                Array(6)
+                  .fill(0)
+                  .map((_, idx) => (
+                    <div
+                      key={idx}
+                      className='aspect-square bg-[#FDFDFD] border border-[#E9EBEE] rounded-[10px] px-2 py-1 animate-pulse'
+                    >
+                      <div className='flex flex-col justify-between h-full'>
+                        <div className='h-4 bg-[#E9EBEE] rounded w-3/4 mb-2'></div>
+                        <div className='h-3 bg-[#E9EBEE] rounded w-1/2'></div>
+                      </div>
+                    </div>
+                  ))
+            : // vehicle нет → показываем items
+              items.map((item: any) => (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    if (item.children > 0) setActiveCategory(item);
+                  }}
+                  className='aspect-square bg-[#FDFDFD] border border-[#E9EBEE] rounded-[10px] px-2 py-1 text-left'
+                >
+                  <div
+                    className='flex flex-col justify-between h-full bg-contain bg-bottom bg-no-repeat'
+                    style={{
+                      backgroundImage: `url(${import.meta.env.BASE_URL}${
+                        item.img
+                      })`,
+                    }}
+                  >
+                    <span className='text-sm font-medium text-[#56625A]'>
+                      {item.name || item.title}
                     </span>
-                  )}
-                </div>
-              </button>
-            )
-          )}
+                    {item.children > 0 && (
+                      <span className='text-xs text-[#9A9A9A]'>
+                        {item.children} разделов
+                      </span>
+                    )}
+                  </div>
+                </button>
+              ))}
         </div>
 
         {pathname === '/' && (

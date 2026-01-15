@@ -21,7 +21,6 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
-
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [accessToken, setAccessToken] = useState<string | null>(
     localStorage.getItem(TECDOC_TOKEN_KEY)
@@ -31,7 +30,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.getItem(TECDOC_EXPIRES_KEY)
   );
 
-  // 🔐 Проверка валидности токена
   const isAuthenticated = useMemo(() => {
     if (!accessToken || !expiresAt) return false;
     return new Date(expiresAt).getTime() > Date.now();
@@ -82,6 +80,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem(TECDOC_EXPIRES_KEY);
   };
 
+  // 🔑 Авто-логин при старте приложения, если токена нет или просрочен
+  useEffect(() => {
+    if (!isAuthenticated) {
+      login('admin', '1234').catch(console.error);
+    }
+  }, [isAuthenticated]);
+
   return (
     <AuthContext.Provider
       value={{
@@ -95,6 +100,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     </AuthContext.Provider>
   );
 };
+
 
 export const useAuth = () => {
   const ctx = useContext(AuthContext);
