@@ -1,5 +1,6 @@
 import { X, Search, Check } from 'lucide-react';
 import { useEffect, useState, useMemo } from 'react';
+import { GlobalBottomSheet } from '../ui/GlobalBottomSheet/GlobalBottomSheet';
 
 interface City {
   Id: number;
@@ -86,19 +87,9 @@ const MobileCitySelect = ({
   }, [filteredRemaining, query]);
 
   return (
-    <>
-      {isOpen && (
-        <div className='fixed inset-0 bg-black/30 z-[60]' onClick={onClose} />
-      )}
-
-      <div
-        className={`fixed bottom-0 left-0 right-0 bg-[#F6F6F6] rounded-t-3xl z-[70] transition-transform duration-300 ${
-          isOpen ? 'translate-y-0' : 'translate-y-full'
-        }`}
-        style={{ minHeight: '85vh' }}
-      >
+    <GlobalBottomSheet isOpen={isOpen} onClose={onClose}>
         {/* Header */}
-        <div className='sticky top-0 z-10 pb-3 px-4 pt-5 flex flex-col gap-5 bg-[#F6F6F6]'>
+        <div className='sticky top-0 z-10 pb-3 pt-5 flex flex-col gap-5 bg-[#F6F6F6]'>
           <div className='flex items-center justify-between'>
             <h2 className='text-lg font-semibold text-gray-900'>Выбор города</h2>
             <button
@@ -120,13 +111,13 @@ const MobileCitySelect = ({
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className='w-full h-[42px] pl-10 pr-3 bg-[#EAECED] rounded-[10px] text-sm focus:outline-none'
+              placeholder='Поиск вашего города'
+              className='w-full h-[42px] pl-10 pr-3 bg-[#EAECED] rounded-[10px] text-base focus:outline-none'
             />
           </div>
         </div>
 
-        {/* List */}
-        <div className='overflow-y-auto px-4 pb-10 pt-5 flex flex-col gap-5' style={{ maxHeight: '70vh' }}>
+        <div className='overflow-y-auto pb-16 pt-5 flex flex-col gap-5' style={{ maxHeight: '70vh' }}>
           {loading && <div className='text-center py-10'>Загрузка городов...</div>}
 
           {/* Favorites */}
@@ -176,7 +167,7 @@ const MobileCitySelect = ({
         </div>
 
         {selectedCity && (
-          <div className='absolute bottom-5 w-full px-4'>
+          <div className='absolute bottom-5 left-0 w-full px-4'>
             <button
               onClick={() => onConfirm(selectedCity)}
               className='w-full h-12 rounded-xl bg-[#4EBC73] text-white text-base font-semibold'
@@ -185,8 +176,7 @@ const MobileCitySelect = ({
             </button>
           </div>
         )}
-      </div>
-    </>
+      </GlobalBottomSheet>
   );
 };
 

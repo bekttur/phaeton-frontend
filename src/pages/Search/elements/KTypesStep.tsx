@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useKTypes, useShowVehicleByKType } from '../../../hooks/useModel';
-import { ChevronLeft, X } from 'lucide-react';
+import { ChevronLeft, Search, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface Props {
@@ -13,6 +13,7 @@ interface Props {
 
 const KTypesStep = ({ brand, series, onBack, onClose }: Props) => {
   const [selected, setSelected] = useState<any | null>(null);
+  const [query, setQuery] = useState('');
 
   const navigate = useNavigate();
   const { data: ktypes, isLoading } = useKTypes(brand.id, series.id, true);
@@ -20,20 +21,31 @@ const KTypesStep = ({ brand, series, onBack, onClose }: Props) => {
 
   const grouped = useMemo(() => {
     if (!ktypes) return {};
-    return ktypes.reduce((acc: Record<string, any[]>, item: any) => {
+
+    const normalizedQuery = query.trim().toLowerCase();
+
+    const filtered = !normalizedQuery
+      ? ktypes
+      : ktypes.filter(
+          (item: any) =>
+            item.desc?.toLowerCase().includes(normalizedQuery) ||
+            item.engine?.type?.toLowerCase().includes(normalizedQuery),
+        );
+
+    return filtered.reduce((acc: Record<string, any[]>, item: any) => {
       const key = item.engine?.type || 'Другое';
       if (!acc[key]) acc[key] = [];
       acc[key].push(item);
       return acc;
     }, {});
-  }, [ktypes]);
+  }, [ktypes, query]);
 
   const handleConfirm = async () => {
     if (!selected) return;
 
     try {
       const data = await showVehicleMutation.mutateAsync(selected.ktype);
-	  onClose()
+      onClose();
       navigate('/catalog', {
         state: {
           vehicle: data,
@@ -46,6 +58,12 @@ const KTypesStep = ({ brand, series, onBack, onClose }: Props) => {
       console.error('Ошибка получения автомобиля', e);
     }
   };
+
+  {
+    !isLoading && Object.keys(grouped).length === 0 && (
+      <p className='text-center text-gray-400 mt-10'>Ничего не найдено</p>
+    );
+  }
 
   return (
     <div className='flex flex-col flex-1 overflow-hidden'>
@@ -60,6 +78,21 @@ const KTypesStep = ({ brand, series, onBack, onClose }: Props) => {
         >
           <X width={16} height={16} color='#8C8C8C' />
         </button>
+      </div>
+
+      <div className='relative mb-2'>
+        <Search
+          className='absolute left-3 top-1/2 -translate-y-1/2'
+          width={18}
+          height={18}
+          color='#AEAEB2'
+        />
+        <input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder='Поиск комплектации'
+          className='w-full h-[42px] pl-10 pr-3 bg-[#EAECED] rounded-[10px] text-base focus:outline-none'
+        />
       </div>
 
       <div className='flex-1 overflow-y-auto'>
@@ -98,7 +131,7 @@ const KTypesStep = ({ brand, series, onBack, onClose }: Props) => {
         ))}
       </div>
 
-      <div className='pt-3 bg-white sticky bottom-0'>
+      <div className='absolute bottom-5 left-0 w-full px-4'>
         <button
           disabled={!selected || showVehicleMutation.isPending}
           onClick={handleConfirm}

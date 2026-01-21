@@ -4,9 +4,10 @@ import { useNavigate } from 'react-router-dom';
 interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
+  onOpenCitySelect?: () => void;
 }
 
-const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
+const MobileMenu = ({ isOpen, onClose, onOpenCitySelect }: MobileMenuProps) => {
   const navigate = useNavigate();
 
   const menuItems = [
@@ -19,6 +20,11 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
       icon: 'icon/mobile-menu/language.svg',
       title: 'Язык',
       subtitle: 'Русский',
+    },
+    {
+      icon: 'icon/home.svg',
+      title: 'Главная',
+      href: '/',
     },
     {
       icon: 'icon/shopping_cart.svg',
@@ -51,10 +57,16 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
     },
   ];
 
-  const handleNavigation = (href?: string) => {
-    if (href) {
-      navigate(href);
+  const handleNavigation = (item: (typeof menuItems)[0]) => {
+    if (item.title === 'Город' && onOpenCitySelect) {
+      onOpenCitySelect();
+      return;
     }
+
+    if (item.href) {
+      navigate(item.href);
+    }
+
     onClose();
   };
 
@@ -68,34 +80,33 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
       )}
 
       <div
-        className={`fixed bottom-0 left-0 right-0 bg-white rounded-t-3xl z-[70] transition-transform duration-300 ${
+        className={`fixed bottom-0 left-0 right-0 bg-[#F6F6F6] rounded-t-xl z-[70] transition-transform duration-300 ${
           isOpen ? 'translate-y-0' : 'translate-y-full'
         }`}
         style={{ maxHeight: '90vh' }}
       >
-        <div className='px-4 py-6'>
+        <div className='px-4 py-2'>
           <div className='flex items-center justify-between mb-2'>
             <h2 className='text-lg font-semibold text-gray-900'>Меню</h2>
             <button
               onClick={onClose}
-              className='w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition'
+              className='w-10 h-10 flex items-center justify-end rounded-full hover:bg-gray-100 transition'
             >
               <X width={24} height={24} color='#666' />
             </button>
           </div>
 
-          <div className='space-y-1'>
+          <div className='space-y-0 bg-white px-1 py-2 rounded-xl mb-4'>
             {menuItems.map((item, index) => (
               <button
                 key={index}
-                onClick={() => handleNavigation(item.href)}
+                onClick={() => handleNavigation(item)}
                 className='w-full flex items-center gap-4 px-2 py-2 rounded-xl hover:bg-gray-50 transition'
               >
                 <div className='w-12 h-12 rounded-md bg-[#DEF2E3] flex items-center justify-center flex-shrink-0'>
                   <img
                     src={`${import.meta.env.BASE_URL}${item.icon}`}
-                    width={22}
-                    height={22}
+                    className='scale-110'
                   />
                 </div>
 

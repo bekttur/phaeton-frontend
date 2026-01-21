@@ -48,7 +48,14 @@ const Header = () => {
         </div>
       </div>
 
-      <MobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
+      <MobileMenu
+        isOpen={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        onOpenCitySelect={() => {
+          setIsCitySelectOpen(true);
+          setIsMenuOpen(false);
+        }}
+      />
 
       <MobileCitySelect
         isOpen={isCitySelectOpen}

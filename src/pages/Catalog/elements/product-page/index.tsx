@@ -24,7 +24,7 @@ const ProductPage = () => {
 
   return (
     <div className='min-h-screen bg-gray-100 pt-14'>
-      <SearchHeader />
+      <SearchHeader from={state?.from}/>
       <ProductGallery product={product} />
       <ProductTabs product={product} />
       <Reviews />

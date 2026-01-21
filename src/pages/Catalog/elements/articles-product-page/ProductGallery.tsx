@@ -5,12 +5,24 @@ export default function ProductGallery({ product }: any) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [favorite, setFavorite] = useState(false);
 
-  const slides = [
-    'product/first-product.png',
-    'product/first-product.png',
-    'product/first-product.png',
-    'product/first-product.png',
-  ];
+  const images: string[] = product?.images ?? [];
+  const isCarousel = images.length > 1;
+
+  const getVisibleDots = (total: number, current: number) => {
+    return Array.from({ length: total }, (_, i) => i).filter(
+      (i) => Math.abs(i - current) <= 2
+    );
+  };
+
+  const getDotSize = (dotIndex: number, current: number) => {
+    const diff = Math.abs(dotIndex - current);
+
+    if (diff === 0) return 'w-2 h-2';
+    if (diff === 1) return 'w-1.5 h-1.5';
+    if (diff === 2) return 'w-1 h-1';
+
+    return 'hidden';
+  };
 
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
@@ -61,46 +73,61 @@ export default function ProductGallery({ product }: any) {
       </div>
 
       <div
-        ref={scrollRef}
-        onScroll={handleScroll}
-        className='
-          relative 
-          w-full 
-          overflow-x-auto 
-          snap-x 
-          snap-mandatory 
-          flex 
-          no-scrollbar
-        '
+        ref={isCarousel ? scrollRef : null}
+        onScroll={isCarousel ? handleScroll : undefined}
+        className={
+          isCarousel
+            ? `
+              relative 
+              w-full 
+              overflow-x-auto 
+              snap-x 
+              snap-mandatory 
+              flex 
+              no-scrollbar
+             `
+            : 'w-full flex items-center justify-center aspect-[4/3]'
+        }
       >
-        {/* {slides.map((src, i) => (
-          <div
-            key={i}
-            className='snap-start flex-shrink-0 w-full flex items-center justify-center aspect-[4/3]'
-          >
-            <img
-              src={`${import.meta.env.BASE_URL}${src}`}
-              className='w-[70%] h-full object-contain'
-            />
-          </div>
-        ))} */}
-        <div className='snap-start flex-shrink-0 w-full flex items-center justify-center aspect-[4/3]'>
-          <img src={product.images[0]} className='w-50 h-auto' />
-        </div>
+        {isCarousel ? (
+          images.map((src, i) => (
+            <div
+              key={i}
+              className='snap-start flex-shrink-0 w-full flex items-center justify-center aspect-[4/3]'
+            >
+              <img src={src} className='w-[70%] h-full object-contain' alt='' />
+            </div>
+          ))
+        ) : (
+          <img
+            src={images[0]}
+            className='h-[80%] object-contain'
+            alt=''
+          />
+        )}
       </div>
 
       {/* ===== DOTS ===== */}
-      <div className='flex justify-center gap-2 mt-3 mb-5'>
-        {slides.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => goToSlide(index)}
-            className={`w-2 h-2 rounded-full transition-all ${
-              currentSlide === index ? 'bg-gray-800' : 'bg-gray-300'
-            }`}
-          />
-        ))}
-      </div>
+      {isCarousel && (
+        <div className='flex justify-center items-center gap-1 mt-3 mb-5'>
+          {getVisibleDots(images.length, currentSlide).map((index) => {
+            const isActive = index === currentSlide;
+
+            return (
+              <button
+                key={index}
+                onClick={() => goToSlide(index)}
+                className={`
+                  rounded-full
+                  transition-all duration-300 ease-out
+                  ${getDotSize(index, currentSlide)}
+                  ${isActive ? 'opacity-100 bg-[#7E7E7E]' : 'opacity-40 bg-[#b7b9ba]'}
+                `}
+              />
+            );
+          })}
+        </div>
+      )}
 
       <div className='flex flex-col items-start gap-2 '>
         <div className='flex items-center gap-1 bg-[#EAECED] w-fit py-0.5 px-2 rounded-md'>

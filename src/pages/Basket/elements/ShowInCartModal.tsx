@@ -55,11 +55,23 @@ const ShowInCartModal = ({ isOpen, onClose, city, onSelect }: Props) => {
           <motion.div
             className='fixed inset-0 bg-black bg-opacity-50 z-40'
             onClick={onClose}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.05 }}
           />
 
           <motion.div
             className='fixed bottom-0 left-0 right-0 bg-white rounded-t-3xl z-50 h-[80vh] flex flex-col'
             onClick={(e) => e.stopPropagation()}
+            initial={{ y: '100vh' }}
+            animate={{ y: 0 }}
+            exit={{ y: '100vh' }}
+            transition={{
+              stiffness: 420,
+              damping: 40,
+              mass: 0.8,
+            }}
           >
             {/* header */}
             <div className='p-4 border-b flex justify-between'>

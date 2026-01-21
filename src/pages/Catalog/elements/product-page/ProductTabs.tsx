@@ -13,15 +13,13 @@ export default function ProductTabs({ product }: any) {
     ([label, value]) => ({
       label,
       value: String(value),
-    })
+    }),
   );
 
-  // Показываем первые 7 или все
-  const visibleSpecs = showAllSpecs ? specs : specs.slice(0, 7);
+  const visibleSpecs = showAllSpecs ? specs : specs.slice(0, 5);
 
   return (
     <div className='bg-white mt-2 rounded-xl mx-4 p-3'>
-      {/* Вкладки */}
       <div className='flex bg-[#EAECED] p-1 rounded-[10px]'>
         <button
           onClick={() => setActiveTab('specs')}
@@ -63,13 +61,19 @@ export default function ProductTabs({ product }: any) {
               ))}
             </div>
 
-            {/* Кнопка показать всё только если больше 7 */}
-            {!showAllSpecs && specs.length > 7 && (
+            {specs.length > 5 && (
               <button
-                className='text-green-600 text-sm font-medium mt-4'
-                onClick={() => setShowAllSpecs(true)}
+                className={`${showAllSpecs ? 'text-gray-600' : 'text-green-600'} text-sm font-medium mt-2`}
+                onClick={() => {
+                  setShowAllSpecs((prev) => !prev);
+                  if (showAllSpecs) {
+                    document
+                      .querySelector('.specs-top')
+                      ?.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
               >
-                показать всё
+                {showAllSpecs ? 'скрыть' : 'показать всё'}
               </button>
             )}
           </div>

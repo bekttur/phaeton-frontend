@@ -4,6 +4,7 @@ import { ArrowLeft, Search, X } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useArticlesTree } from '../../../hooks/useModel';
 import VehicleBlock from './VehicleBlock';
+import FilterModal from './filter/FilterModal';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -83,6 +84,7 @@ const SortMenu = ({ isOpen, onClose }: MobileMenuProps) => {
 
 const ConfirmationPage = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [filterOpen, setFilterOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const state = location.state as any;
@@ -133,13 +135,6 @@ const ConfirmationPage = () => {
             className='w-full pl-10 pr-4 py-2 bg-[#EAECED] rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
           />
         </div>
-        <div className='p-3 bg-[#EAECED] rounded-lg transition-colors'>
-          <img
-            src={`${import.meta.env.BASE_URL}icon/discover_tune.svg`}
-            width={18}
-            height={18}
-          />
-        </div>
       </div>
 
       <div className='bg-[#F6F6F6] px-4 flex flex-col gap-4 pt-4'>
@@ -167,20 +162,20 @@ const ConfirmationPage = () => {
           </div>
         )}
 
-        <div className='flex items-center justify-start gap-3.5'>
+        <div className='flex items-center gap-2'>
           <button
             onClick={() => setMenuOpen(true)}
-            className='h-12 w-12 bg-[#EAECED] rounded-[10px] flex items-center justify-center'
+            className='w-10 h-10 shrink-0 bg-[#EAECED] rounded-[10px] flex items-center justify-center'
           >
             <img
-              src={`${import.meta.env.BASE_URL}icon/format_line_spacing.svg`}
-              width={24}
-              height={24}
+              src={`${import.meta.env.BASE_URL}icon/discover_tune2.svg`}
+              width={26}
+              height={26}
             />
           </button>
 
-          <div className='flex flex-col items-start'>
-            <span className='text-base font-semibold text-black'>
+          <div className='flex flex-1 flex-col items-start min-w-0'>
+            <span className='text-base font-semibold text-black truncate w-full'>
               {currentNode.name}
             </span>
 
@@ -188,6 +183,17 @@ const ConfirmationPage = () => {
               {/* @ts-ignore */}
               {isLoading ? 'Загрузка...' : `${data?.total ?? 0} товаров`}
             </span>
+          </div>
+
+          <div
+            className='w-10 h-10 shrink-0 bg-[#EAECED] rounded-[10px] transition-colors flex items-center justify-center'
+            onClick={() => setFilterOpen(true)}
+          >
+            <img
+              src={`${import.meta.env.BASE_URL}icon/discover_tune.svg`}
+              width={18}
+              height={18}
+            />
           </div>
         </div>
 
@@ -251,6 +257,8 @@ const ConfirmationPage = () => {
 
       {/* MOBILE MENU */}
       <SortMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+
+      {filterOpen && <FilterModal onClose={() => setFilterOpen(false)} />}
     </div>
   );
 };

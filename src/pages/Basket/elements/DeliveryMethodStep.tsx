@@ -287,7 +287,7 @@ export default function DeliveryMethodStep({
       )}
 
       {data.method === 'pickup' && (
-        <div className='space-y-3 mb-4'>
+        <div className=' mb-4'>
           {data.address && (
             <div className='flex flex-col gap-1 p-3'>
               <div className='rounded-[10px] flex items-center gap-2'>

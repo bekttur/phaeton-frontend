@@ -53,6 +53,7 @@ const BrandStep = ({ onSelect, onClose }: Props) => {
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          placeholder='Поиск марки автомобиля'
           className='w-full h-[42px] pl-10 pr-3 bg-[#EAECED] rounded-[10px] text-base focus:outline-none'
         />
       </div>

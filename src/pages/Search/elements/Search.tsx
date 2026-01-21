@@ -52,10 +52,14 @@ const SearchPage = () => {
     selectedBrand,
   ]);
 
+  useEffect(() => {
+    setSelectedBrand(urlBrand);
+  }, [urlBrand]);
+
   const filteredItems = useMemo(() => {
     if (!selectedCity) return brandData?.Items || [];
     return (brandData?.Items || []).filter(
-      (item: any) => item.Warehouse === selectedCity
+      (item: any) => item.Warehouse === selectedCity,
     );
   }, [brandData, selectedCity]);
 

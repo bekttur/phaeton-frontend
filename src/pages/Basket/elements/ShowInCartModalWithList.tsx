@@ -12,7 +12,6 @@ type Props = {
   onSelect: (address: string) => void;
 };
 
-
 export default function ShowInCartModalWithList({
   isOpen,
   onClose,
@@ -29,11 +28,23 @@ export default function ShowInCartModalWithList({
           <motion.div
             className='fixed inset-0 bg-black bg-opacity-50 z-40'
             onClick={onClose}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.05 }}
           />
 
           <motion.div
-            className='fixed bottom-0 left-0 right-0 bg-[#F6F6F6] rounded-t-3xl z-50 min-h-[80vh]  max-h-[95vh] flex flex-col'
+            className='fixed bottom-0 left-0 right-0 bg-[#F6F6F6] rounded-t-3xl z-50 h-[85vh] flex flex-col'
             onClick={(e) => e.stopPropagation()}
+            initial={{ y: '100vh' }}
+            animate={{ y: 0 }}
+            exit={{ y: '100vh' }}
+            transition={{
+              stiffness: 420,
+              damping: 40,
+              mass: 0.8,
+            }}
           >
             {/* header */}
             <div className='p-4 flex justify-between items-center'>
@@ -45,7 +56,7 @@ export default function ShowInCartModalWithList({
             <div className='flex gap-2 px-4'>
               <button
                 onClick={() => setMode('list')}
-                className={`w-1/2 py-3 rounded ${
+                className={`w-1/2 py-3 rounded-[10px] ${
                   mode === 'list' ? 'bg-[#4EBC73] text-white' : 'bg-[#E3E5E6]'
                 }`}
               >
@@ -53,7 +64,7 @@ export default function ShowInCartModalWithList({
               </button>
               <button
                 onClick={() => setMode('map')}
-                className={`w-1/2 py-3 rounded ${
+                className={`w-1/2 py-3 rounded-[10px] ${
                   mode === 'map' ? 'bg-[#4EBC73] text-white' : 'bg-[#E3E5E6]'
                 }`}
               >

@@ -5,7 +5,7 @@ const BottomNav = () => {
 
   return (
     <div
-      className={`grid lg:hidden grid-cols-4 gap-1 py-2 px-7 sticky bottom-0 bg-white border-t ${
+      className={`grid lg:hidden grid-cols-5 gap-1 py-2 px-7 sticky bottom-0 bg-white border-t ${
         pathname.startsWith('/product/') || pathname.startsWith('/search') ? 'hidden' : 'grid'
       }`}
     >
@@ -22,7 +22,7 @@ const BottomNav = () => {
             alt=''
           />
         </div>
-        <p className='text-xs font-semibold mt-1'>Главное</p>
+        <p className={`text-xs font-medium mt-1 ${pathname === '/' ? 'text-[#000]' : 'text-[#636366]'} `}>Главное</p>
       </Link>
 
       {/* Каталог */}
@@ -38,7 +38,7 @@ const BottomNav = () => {
             alt=''
           />
         </div>
-        <p className='text-xs font-semibold mt-1'>Каталог</p>
+        <p className={`text-xs font-medium mt-1 ${pathname.startsWith('/catalog') ? 'text-[#000]' : 'text-[#636366]'} `}>Каталог</p>
       </Link>
 
       {/* Корзина */}
@@ -50,7 +50,7 @@ const BottomNav = () => {
             alt=''
           />
         </div>
-        <p className='text-xs font-semibold mt-1'>Корзина</p>
+        <p className='text-xs font-medium mt-1 text-[#636366]'>Корзина</p>
       </div>
 
       {/* Гараж */}
@@ -62,7 +62,19 @@ const BottomNav = () => {
             alt=''
           />
         </div>
-        <p className='text-xs font-semibold mt-1'>Гараж</p>
+        <p className='text-xs font-medium mt-1 text-[#636366]'>Гараж</p>
+      </div>
+
+      {/* Ассистент */}
+      <div className='w-full flex flex-col items-center'>
+        <div className='rounded-md bg-[#F6F6F6] w-10 h-10 flex items-center justify-center'>
+          <img
+            className='w-6 h-6'
+            src={`${import.meta.env.BASE_URL}icon/assistent.svg`}
+            alt=''
+          />
+        </div>
+        <p className={`text-xs font-medium mt-1 ${pathname.startsWith('/assistent') ? 'text-[#000]' : 'text-[#636366]'} `}>Ассистент</p>
       </div>
     </div>
   );

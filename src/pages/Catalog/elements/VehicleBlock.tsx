@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Check, X } from 'lucide-react';
 import MobileModelSelect from '../../Search/elements/MobileModelSelect';
+import { GlobalBottomSheet } from '../../../components/ui/GlobalBottomSheet/GlobalBottomSheet';
 
 interface Props {
   vehicle: any;
@@ -73,152 +74,143 @@ const VehicleBlock = ({ vehicle }: Props) => {
       )}
 
       {isModalOpen && (
-        <>
-          <div
-            onClick={() => setIsModalOpen(false)}
-            className={`
-                fixed inset-0 bg-black/30 z-[80]
-                transition-opacity duration-300
-                ${isModalOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}
-              `}
-          />
-          <div
-            className={`
-                fixed bottom-0 left-0 right-0 bg-[#F6F6F6] rounded-t-2xl z-[90]
-                p-4 h-[85vh] overflow-y-auto
-                transform transition-transform duration-300 ease-out
-                ${isModalOpen ? 'translate-y-0' : 'translate-y-full'}
-              `}
-          >
-            {vehicle && (
-              <div className='flex flex-col gap-4'>
-                <div className='flex items-center justify-between mb-3'>
-                  <div />
-                  <h2 className='text-lg font-semibold'>
-                    {vehicle.mfrName} {vehicle.vehicleModelSeriesName}
-                  </h2>
-                  <button
-                    className='w-6 h-6 flex items-center justify-center rounded-full bg-[#E3E6E8] hover:bg-gray-100'
-                    onClick={() => setIsModalOpen(false)}
-                  >
-                    <X width={16} height={16} color='#8C8C8C' />
-                  </button>
-                </div>
+        <GlobalBottomSheet
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        >
+          {vehicle && (
+            <div className='flex flex-col gap-4'>
+              <div className='flex items-center justify-between mb-3'>
+                <div />
+                <h2 className='text-lg font-semibold'>
+                  {vehicle.mfrName} {vehicle.vehicleModelSeriesName}
+                </h2>
+                <button
+                  className='w-6 h-6 flex items-center justify-center rounded-full bg-[#E3E6E8] hover:bg-gray-100'
+                  onClick={() => setIsModalOpen(false)}
+                >
+                  <X width={16} height={16} color='#8C8C8C' />
+                </button>
+              </div>
 
-                <div className='bg-white rounded-xl py-4 px-3 flex flex-col gap-3'>
-                  <p className='text-lg font-medium'>Основные сведения</p>
-                  {vehicle.vehicleImages?.[0] && (
-                    <img
-                      src={vehicle.vehicleImages[0].imageURL800}
-                      alt='Vehicle'
-                      className='w-full rounded-xl object-cover'
-                    />
-                  )}
+              <div className='bg-white rounded-xl py-4 px-3 flex flex-col gap-3'>
+                <p className='text-lg font-medium'>Основные сведения</p>
 
-                  <div className='space-y-1'>
-                    <div className='flex justify-between items-center py-2 border-b'>
-                      <span className='text-[#636366] text-sm'>Тип</span>
-                      <span className='text-black text-sm font-medium text-end'>
-                        {vehicle.description}
-                      </span>
-                    </div>
-                    <div className='flex justify-between items-center py-2 border-b'>
-                      <span className='text-[#636366] text-sm'>
-                        Дата выпуска
-                      </span>
-                      <span className='text-black text-sm font-medium text-end'>
-                        {formatYearMonth(vehicle.beginYearMonth)} –{' '}
-                        {formatYearMonth(vehicle.endYearMonth)}
-                      </span>
-                    </div>
-                    <div className='flex justify-between items-center py-2 border-b'>
-                      <span className='text-[#636366] text-sm'>Тип</span>
-                      <span className='text-black text-sm font-medium text-end'>
-                        {vehicle.bodyStyle}
-                      </span>
-                    </div>
-                    <div className='flex justify-between items-center py-2 border-b'>
-                      <span className='text-[#636366] text-sm'>Привод</span>
-                      <span className='text-black text-sm font-medium text-end'>
-                        {vehicle.driveType}
-                      </span>
-                    </div>
+                {vehicle.vehicleImages?.[0] ? (
+                  <img
+                    src={vehicle.vehicleImages[0].imageURL800}
+                    alt='Vehicle'
+                    className='w-full rounded-xl object-cover'
+                  />
+                ) : (
+                  <img
+                    src='/images/911.svg'
+                    style={{
+                      width: '85%',
+                      margin: '0 auto',
+                      transform: 'scaleX(-1)',
+                    }}
+                  />
+                )}
+
+                <div className='space-y-1'>
+                  <div className='flex justify-between items-center py-2 border-b'>
+                    <span className='text-[#636366] text-sm'>Тип</span>
+                    <span className='text-black text-sm font-medium text-end'>
+                      {vehicle.description}
+                    </span>
                   </div>
-                </div>
-
-                <div className='bg-white rounded-xl py-4 px-3 text-xl font-medium flex flex-col gap-3'>
-                  <p className='text-lg font-medium'>Технические данные</p>
-
-                  <div className='space-y-1'>
-                    <div className='flex justify-between items-center py-2 border-b'>
-                      <span className='text-[#636366] text-sm'>
-                        Код двигателя
-                      </span>
-                      <span className='text-black text-sm font-medium text-end'>
-                        {vehicle.engines[0]?.code}
-                      </span>
-                    </div>
-                    <div className='flex justify-between items-center py-2 border-b'>
-                      <span className='text-[#636366] text-sm'>
-                        Тип двигателя
-                      </span>
-                      <span className='text-black text-sm font-medium text-end'>
-                        {vehicle.engineType}
-                      </span>
-                    </div>
-                    <div className='flex justify-between items-center py-2 border-b'>
-                      <span className='text-[#636366] text-sm'>
-                        Рабочий объём двигателя
-                      </span>
-                      <span className='text-black text-sm font-medium text-end'>
-                        {vehicle.capacityCC} см³ / {vehicle.capacityLiters} л
-                      </span>
-                    </div>
-                    <div className='flex justify-between items-center py-2 border-b'>
-                      <span className='text-[#636366] text-sm'>Мощность</span>
-                      <span className='text-black text-sm font-medium text-end'>
-                        {vehicle.kiloWattsFrom} кВт / {vehicle.horsePowerFrom}{' '}
-                        л.c
-                      </span>
-                    </div>
-                    <div className='flex justify-between items-center py-2 border-b'>
-                      <span className='text-[#636366] text-sm'>
-                        Тип топлива
-                      </span>
-                      <span className='text-black text-sm font-medium text-end'>
-                        {vehicle.fuelType}
-                      </span>
-                    </div>
-                    <div className='flex justify-between items-center py-2 border-b'>
-                      <span className='text-[#636366] text-sm'>
-                        Количество цилиндров
-                      </span>
-                      <span className='text-black text-sm font-medium text-end'>
-                        {vehicle.cylinders}
-                      </span>
-                    </div>
-                    <div className='flex justify-between items-center py-2 border-b'>
-                      <span className='text-[#636366] text-sm'>
-                        Клапанов на цилиндр
-                      </span>
-                      <span className='text-black text-sm font-medium text-end'>
-                        {vehicle.valves}
-                      </span>
-                    </div>
-                    <div className='flex justify-between items-center py-2 border-b'>
-                      <span className='text-[#636366] text-sm'>
-                        Система подачи топлива
-                      </span>
-                      <span className='text-black text-sm font-medium text-end'>
-                        {vehicle.fuelMixtureFormationType}
-                      </span>
-                    </div>
+                  <div className='flex justify-between items-center py-2 border-b'>
+                    <span className='text-[#636366] text-sm'>Дата выпуска</span>
+                    <span className='text-black text-sm font-medium text-end'>
+                      {formatYearMonth(vehicle.beginYearMonth)} –{' '}
+                      {formatYearMonth(vehicle.endYearMonth)}
+                    </span>
+                  </div>
+                  <div className='flex justify-between items-center py-2 border-b'>
+                    <span className='text-[#636366] text-sm'>Тип</span>
+                    <span className='text-black text-sm font-medium text-end'>
+                      {vehicle.bodyStyle}
+                    </span>
+                  </div>
+                  <div className='flex justify-between items-center py-2 border-b'>
+                    <span className='text-[#636366] text-sm'>Привод</span>
+                    <span className='text-black text-sm font-medium text-end'>
+                      {vehicle.driveType}
+                    </span>
                   </div>
                 </div>
               </div>
-            )}
-          </div>
-        </>
+
+              <div className='bg-white rounded-xl py-4 px-3 text-xl font-medium flex flex-col gap-3'>
+                <p className='text-lg font-medium'>Технические данные</p>
+
+                <div className='space-y-1'>
+                  <div className='flex justify-between items-center py-2 border-b'>
+                    <span className='text-[#636366] text-sm'>
+                      Код двигателя
+                    </span>
+                    <span className='text-black text-sm font-medium text-end'>
+                      {vehicle.engines[0]?.code}
+                    </span>
+                  </div>
+                  <div className='flex justify-between items-center py-2 border-b'>
+                    <span className='text-[#636366] text-sm'>
+                      Тип двигателя
+                    </span>
+                    <span className='text-black text-sm font-medium text-end'>
+                      {vehicle.engineType}
+                    </span>
+                  </div>
+                  <div className='flex justify-between items-center py-2 border-b'>
+                    <span className='text-[#636366] text-sm'>
+                      Рабочий объём двигателя
+                    </span>
+                    <span className='text-black text-sm font-medium text-end'>
+                      {vehicle.capacityCC} см³ / {vehicle.capacityLiters} л
+                    </span>
+                  </div>
+                  <div className='flex justify-between items-center py-2 border-b'>
+                    <span className='text-[#636366] text-sm'>Мощность</span>
+                    <span className='text-black text-sm font-medium text-end'>
+                      {vehicle.kiloWattsFrom} кВт / {vehicle.horsePowerFrom} л.c
+                    </span>
+                  </div>
+                  <div className='flex justify-between items-center py-2 border-b'>
+                    <span className='text-[#636366] text-sm'>Тип топлива</span>
+                    <span className='text-black text-sm font-medium text-end'>
+                      {vehicle.fuelType}
+                    </span>
+                  </div>
+                  <div className='flex justify-between items-center py-2 border-b'>
+                    <span className='text-[#636366] text-sm'>
+                      Количество цилиндров
+                    </span>
+                    <span className='text-black text-sm font-medium text-end'>
+                      {vehicle.cylinders}
+                    </span>
+                  </div>
+                  <div className='flex justify-between items-center py-2 border-b'>
+                    <span className='text-[#636366] text-sm'>
+                      Клапанов на цилиндр
+                    </span>
+                    <span className='text-black text-sm font-medium text-end'>
+                      {vehicle.valves}
+                    </span>
+                  </div>
+                  <div className='flex justify-between items-center py-2 border-b'>
+                    <span className='text-[#636366] text-sm'>
+                      Система подачи топлива
+                    </span>
+                    <span className='text-black text-sm font-medium text-end'>
+                      {vehicle.fuelMixtureFormationType}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </GlobalBottomSheet>
       )}
     </>
   );

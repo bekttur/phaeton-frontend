@@ -1,29 +1,13 @@
 import { ArrowLeft, Search } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-export default function SearchHeader({ from }: { from?: { article?: string; brand?: string } }) {
+export default function SearchHeader() {
   const navigate = useNavigate();
-
-  const handleBack = () => {
-    if (from?.article) {
-      const params = new URLSearchParams();
-      params.set('article', from.article);
-
-      if (from.brand) {
-        params.set('brand', from.brand);
-      }
-
-      navigate(`/search?${params.toString()}`);
-      return;
-    }
-
-  };
-
 
   return (
     <div className='bg-white p-4 flex items-center gap-3'>
       <button
-        onClick={handleBack}
+        onClick={() => navigate(-1)}
         className='p-2 bg-[#EAECED] rounded-lg transition-colors'
       >
         <ArrowLeft className='w-6 h-6 text-[#8C8C8C]' />

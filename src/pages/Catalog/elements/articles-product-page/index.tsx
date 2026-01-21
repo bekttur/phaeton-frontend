@@ -1,9 +1,9 @@
 import { useLocation, useParams } from 'react-router-dom';
-import SearchHeader from '../product-page/SearchHeader';
 import Reviews from '../product-page/Reviews';
 import ProductTabs from './ProductTabs';
 import ProductGallery from './ProductGallery';
 import { useArticleDetails } from '../../../../hooks/useModel';
+import SearchHeader from './SearchHeader';
 
 const ArticlesProductPage = () => {
   const location = useLocation();
