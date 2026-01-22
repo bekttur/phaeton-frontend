@@ -6,7 +6,7 @@ interface FilterSelectProps {
   onChange?: (value: string) => void;
 }
 
-function FilterSelect({ value, options, onChange }: FilterSelectProps) {
+function FilterSelect({ value }: FilterSelectProps) {
   return (
     <div className='relative'>
       <button className='w-full px-4 py-3 bg-[#EAECED] rounded-[10px] flex items-center justify-between text-left text-black hover:bg-[#d9dcde] transition-colors'>
