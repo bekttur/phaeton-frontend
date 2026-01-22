@@ -17,7 +17,7 @@ const Catalog = () => {
   const { data: treeData } = useTreeVehicleByKType(ktype?.ktype);
 
   const rootCategories = treeData?.filter(
-    (item: any) => item.parentId === null
+    (item: any) => item.parentId === null,
   );
 
   const showAll = pathname === '/catalog';
@@ -122,23 +122,21 @@ const Catalog = () => {
           </div>
         )}
 
-        {activeCategory && (
-          <CategoryModal
-            isOpen={!!activeCategory}
-            category={activeCategory}
-            treeData={treeData || []}
-            ktype={ktype?.ktype}
-            vehicle={vehicle}
-            onClose={() => setActiveCategory(null)}
-            onSelectLeaf={({ ktype, categoryId }) => {
-              console.log('Запрос с параметрами:', {
-                ktype,
-                categoryId,
-                vehicle,
-              });
-            }}
-          />
-        )}
+        <CategoryModal
+          isOpen={!!activeCategory}
+          category={activeCategory}
+          treeData={treeData || []}
+          ktype={ktype?.ktype}
+          vehicle={vehicle}
+          onClose={() => setActiveCategory(null)}
+          onSelectLeaf={({ ktype, categoryId }) => {
+            console.log('Запрос с параметрами:', {
+              ktype,
+              categoryId,
+              vehicle,
+            });
+          }}
+        />
       </div>
     </div>
   );

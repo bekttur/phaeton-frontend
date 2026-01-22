@@ -66,36 +66,38 @@ const KTypesStep = ({ brand, series, onBack, onClose }: Props) => {
   }
 
   return (
-    <div className='flex flex-col flex-1 overflow-hidden'>
-      <div className='flex items-center mb-3 justify-between'>
-        <button onClick={onBack}>
-          <ChevronLeft size={24} color='#8E8E93' />
-        </button>
-        <h2 className='text-lg font-semibold'>Модификация</h2>
-        <button
-          onClick={onClose}
-          className='w-6 h-6 flex items-center justify-center rounded-full bg-[#E3E6E8]'
-        >
-          <X width={16} height={16} color='#8C8C8C' />
-        </button>
+    <>
+      <div className='sticky top-0 z-10 py-4 flex flex-col gap-5 bg-[#F6F6F6]'>
+        <div className='flex items-center justify-between'>
+          <button onClick={onBack}>
+            <ChevronLeft size={24} color='#8E8E93' />
+          </button>
+          <h2 className='text-lg font-semibold'>Модификация</h2>
+          <button
+            onClick={onClose}
+            className='w-6 h-6 flex items-center justify-center rounded-full bg-[#E3E6E8]'
+          >
+            <X width={16} height={16} color='#8C8C8C' />
+          </button>
+        </div>
+
+        <div className='relative'>
+          <Search
+            className='absolute left-3 top-1/2 -translate-y-1/2'
+            width={18}
+            height={18}
+            color='#AEAEB2'
+          />
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder='Поиск комплектации'
+            className='w-full h-[42px] pl-10 pr-3 bg-[#EAECED] rounded-[10px] text-base focus:outline-none'
+          />
+        </div>
       </div>
 
-      <div className='relative mb-2'>
-        <Search
-          className='absolute left-3 top-1/2 -translate-y-1/2'
-          width={18}
-          height={18}
-          color='#AEAEB2'
-        />
-        <input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder='Поиск комплектации'
-          className='w-full h-[42px] pl-10 pr-3 bg-[#EAECED] rounded-[10px] text-base focus:outline-none'
-        />
-      </div>
-
-      <div className='flex-1 overflow-y-auto'>
+      <div className='flex-1 overflow-y-auto mb-16'>
         {isLoading && <p>Загрузка...</p>}
 
         {Object.entries(grouped).map(([type, items]: any) => (
@@ -142,7 +144,7 @@ const KTypesStep = ({ brand, series, onBack, onClose }: Props) => {
           {showVehicleMutation.isPending ? 'Загрузка...' : 'Выбрать'}
         </button>
       </div>
-    </div>
+    </>
   );
 };
 

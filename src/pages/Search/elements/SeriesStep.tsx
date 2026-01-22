@@ -34,33 +34,35 @@ const SeriesStep = ({ brand, onBack, onConfirm, onClose }: Props) => {
 
   return (
     <>
-      <div className='flex items-center mb-3 justify-between'>
-        <button onClick={onBack}>
-          <ChevronLeft size={24} color='#8E8E93' />
-        </button>
+      <div className='sticky top-0 z-10 py-4 flex flex-col gap-5 bg-[#F6F6F6]'>
+        <div className='flex items-center justify-between'>
+          <button onClick={onBack}>
+            <ChevronLeft size={24} color='#8E8E93' />
+          </button>
 
-        <h2 className='text-lg font-semibold'>{brand.name}</h2>
-        <button
-          onClick={onClose}
-          className='w-6 h-6 flex items-center justify-center rounded-full bg-[#E3E6E8] hover:bg-gray-100'
-        >
-          <X width={16} height={16} color='#8C8C8C' />
-        </button>
-      </div>
+          <h2 className='text-lg font-semibold'>{brand.name}</h2>
+          <button
+            onClick={onClose}
+            className='w-6 h-6 flex items-center justify-center rounded-full bg-[#E3E6E8] hover:bg-gray-100'
+          >
+            <X width={16} height={16} color='#8C8C8C' />
+          </button>
+        </div>
 
-      <div className='relative mb-5'>
-        <Search
-          className='absolute left-3 top-1/2 -translate-y-1/2'
-          width={18}
-          height={18}
-          color='#AEAEB2'
-        />
-        <input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder='Поиск модели'
-          className='w-full h-[42px] pl-10 pr-3 bg-[#EAECED] rounded-[10px] text-base focus:outline-none'
-        />
+        <div className='relative'>
+          <Search
+            className='absolute left-3 top-1/2 -translate-y-1/2'
+            width={18}
+            height={18}
+            color='#AEAEB2'
+          />
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder='Поиск модели'
+            className='w-full h-[42px] pl-10 pr-3 bg-[#EAECED] rounded-[10px] text-base focus:outline-none'
+          />
+        </div>
       </div>
 
       {isLoading && <p>Загрузка...</p>}
@@ -84,7 +86,7 @@ const SeriesStep = ({ brand, onBack, onConfirm, onClose }: Props) => {
                     onClick={() => setSelectedSeries(item)}
                     className='w-full flex items-center justify-between px-3 py-5 border-b last:border-none'
                   >
-                    <span className='text-base'>{item.name}</span>
+                    <span className='text-base text-left'>{item.name}</span>
 
                     <span
                       className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${

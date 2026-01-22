@@ -32,30 +32,32 @@ const BrandStep = ({ onSelect, onClose }: Props) => {
 
   return (
     <>
-      <div className='flex items-center justify-between mb-3'>
-        <div />
-        <h2 className='text-lg font-semibold'>Марка</h2>
-        <button
-          onClick={onClose}
-          className='w-6 h-6 flex items-center justify-center rounded-full bg-[#E3E6E8] hover:bg-gray-100'
-        >
-          <X width={16} height={16} color='#8C8C8C' />
-        </button>
-      </div>
+      <div className='sticky top-0 z-10 py-4 flex flex-col gap-5 bg-[#F6F6F6]'>
+        <div className='flex items-center justify-between'>
+          <div className='w-6 h-6' />
+          <h2 className='text-lg font-semibold'>Марка</h2>
+          <button
+            onClick={onClose}
+            className='w-6 h-6 flex items-center justify-center rounded-full bg-[#E3E6E8] hover:bg-gray-100'
+          >
+            <X width={16} height={16} color='#8C8C8C' />
+          </button>
+        </div>
 
-      <div className='relative mb-5'>
-        <Search
-          className='absolute left-3 top-1/2 -translate-y-1/2'
-          width={18}
-          height={18}
-          color='#AEAEB2'
-        />
-        <input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder='Поиск марки автомобиля'
-          className='w-full h-[42px] pl-10 pr-3 bg-[#EAECED] rounded-[10px] text-base focus:outline-none'
-        />
+        <div className='relative'>
+          <Search
+            className='absolute left-3 top-1/2 -translate-y-1/2'
+            width={18}
+            height={18}
+            color='#AEAEB2'
+          />
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder='Поиск марки автомобиля'
+            className='w-full h-[42px] pl-10 pr-3 bg-[#EAECED] rounded-[10px] text-base focus:outline-none'
+          />
+        </div>
       </div>
 
       {isLoading && <p>Загрузка...</p>}
@@ -79,7 +81,7 @@ const BrandStep = ({ onSelect, onClose }: Props) => {
                     onClick={() => setSelectedBrand(brand)}
                     className='w-full flex items-center justify-between px-3 py-5 border-b last:border-none'
                   >
-                    <span className='text-base'>{brand.name}</span>
+                    <span className='text-base text-left'>{brand.name}</span>
 
                     <span
                       className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${

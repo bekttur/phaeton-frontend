@@ -89,7 +89,7 @@ const MobileCitySelect = ({
   return (
     <GlobalBottomSheet isOpen={isOpen} onClose={onClose}>
         {/* Header */}
-        <div className='sticky top-0 z-10 pb-3 pt-5 flex flex-col gap-5 bg-[#F6F6F6]'>
+        <div className='sticky top-0 z-10 py-4 flex flex-col gap-5 bg-[#F6F6F6]'>
           <div className='flex items-center justify-between'>
             <h2 className='text-lg font-semibold text-gray-900'>Выбор города</h2>
             <button
@@ -117,7 +117,7 @@ const MobileCitySelect = ({
           </div>
         </div>
 
-        <div className='overflow-y-auto pb-16 pt-5 flex flex-col gap-5' style={{ maxHeight: '70vh' }}>
+        <div className='overflow-y-auto pb-16 pt-3 flex flex-col gap-5' style={{ maxHeight: '70vh' }}>
           {loading && <div className='text-center py-10'>Загрузка городов...</div>}
 
           {/* Favorites */}
@@ -144,7 +144,7 @@ const MobileCitySelect = ({
 
           {/* Alphabet groups */}
           {Object.keys(grouped).map((letter) => (
-            <div key={letter} className='mb-3 mt-2 bg-[#FFFFFF] p-3 rounded-xl'>
+            <div key={letter} className='mt-2 bg-[#FFFFFF] p-3 rounded-xl'>
               {!query && <div className='text-sm px-2 py-2 font-semibold text-gray-500 mb-1'>{letter}</div>}
               {grouped[letter].map((city: string) => (
                 <button

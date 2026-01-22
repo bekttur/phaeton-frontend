@@ -5,6 +5,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useArticlesTree } from '../../../hooks/useModel';
 import VehicleBlock from './VehicleBlock';
 import FilterModal from './filter/FilterModal';
+import { GlobalBottomSheet } from '../../../components/ui/GlobalBottomSheet/GlobalBottomSheet';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -33,41 +34,30 @@ const SortMenu = ({ isOpen, onClose }: MobileMenuProps) => {
   const [selected, setSelected] = useState('Все товары');
 
   return (
-    <>
-      {isOpen && (
-        <div className='fixed inset-0 bg-black/30 z-[60]' onClick={onClose} />
-      )}
+    <GlobalBottomSheet isOpen={isOpen} onClose={onClose}>
+      <>
+        <div className='flex items-center justify-between py-4'>
+          <h2 className='text-lg font-semibold text-gray-900'>Сортировать</h2>
+          <button
+            className='w-6 h-6 flex items-center justify-center rounded-full bg-[#E3E6E8] hover:bg-gray-100'
+            onClick={onClose}
+          >
+            <X width={16} height={16} color='#8C8C8C' />
+          </button>
+        </div>
 
-      <div
-        className={`fixed bottom-0 left-0 right-0 bg-[#F6F6F6] rounded-t-3xl z-[70] min-h-[70vh] transition-transform duration-300 ${
-          isOpen ? 'translate-y-0' : 'translate-y-full'
-        }`}
-        style={{ maxHeight: '90vh' }}
-      >
-        <div className='px-4 py-6'>
-          <div className='flex items-center justify-between mb-4'>
-            <h2 className='text-lg font-semibold text-gray-900'>Сортировать</h2>
+        <div className='space-y-1 bg-white rounded-[10px] p-4'>
+          {items.map((name) => (
             <button
-              onClick={onClose}
-              className='w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition'
+              key={name}
+              onClick={() => setSelected(name)}
+              className='w-full flex items-center justify-between px-2 py-3 rounded-xl hover:bg-gray-50 transition'
             >
-              <X width={24} height={24} color='#666' />
+              <span className='text-base text-gray-900'>{name}</span>
+
+              <Radio active={selected === name} />
             </button>
-          </div>
-
-          <div className='space-y-1 bg-white rounded-[10px] p-4'>
-            {items.map((name) => (
-              <button
-                key={name}
-                onClick={() => setSelected(name)}
-                className='w-full flex items-center justify-between px-2 py-3 rounded-xl hover:bg-gray-50 transition'
-              >
-                <span className='text-base text-gray-900'>{name}</span>
-
-                <Radio active={selected === name} />
-              </button>
-            ))}
-          </div>
+          ))}
         </div>
         <div className='absolute bottom-2 w-full px-4 pb-6'>
           <button
@@ -77,8 +67,8 @@ const SortMenu = ({ isOpen, onClose }: MobileMenuProps) => {
             Выбрать
           </button>
         </div>
-      </div>
-    </>
+      </>
+    </GlobalBottomSheet>
   );
 };
 
@@ -101,12 +91,12 @@ const ConfirmationPage = () => {
   });
 
   const children = treeData.filter(
-    (item: any) => item.parentId === currentNode.id
+    (item: any) => item.parentId === currentNode.id,
   );
 
   const handleBack = () => {
     const parentNode = treeData.find(
-      (item: any) => item.id === currentNode.parentId
+      (item: any) => item.id === currentNode.parentId,
     );
 
     if (parentNode && parentNode.parentId !== null) {

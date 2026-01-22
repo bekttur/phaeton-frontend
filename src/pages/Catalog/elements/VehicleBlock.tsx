@@ -73,15 +73,14 @@ const VehicleBlock = ({ vehicle }: Props) => {
         />
       )}
 
-      {isModalOpen && (
         <GlobalBottomSheet
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
         >
           {vehicle && (
-            <div className='flex flex-col gap-4'>
-              <div className='flex items-center justify-between mb-3'>
-                <div />
+            <div className='flex flex-col gap-4 mb-7'>
+              <div className='sticky top-0 z-10 pt-4 pb-2 flex items-center justify-between bg-[#F6F6F6]'>
+                <div className='w-6 h-6' />
                 <h2 className='text-lg font-semibold'>
                   {vehicle.mfrName} {vehicle.vehicleModelSeriesName}
                 </h2>
@@ -211,7 +210,6 @@ const VehicleBlock = ({ vehicle }: Props) => {
             </div>
           )}
         </GlobalBottomSheet>
-      )}
     </>
   );
 };
