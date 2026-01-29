@@ -179,7 +179,7 @@ const DigitalGarage = () => {
       <div className='flex-1 flex flex-col justify-start'>
         <div className='relative overflow-hidden px-6'>
           <div className='relative w-full'>
-            <div className='w-[80%] bg-[#FFFFFF26] rounded-lg p-4 m-auto absolute left-0 right-0 top-0 h-[90vh]'>
+            <div className='w-[80%] bg-[#FFFFFF26] rounded-[10px] p-4 m-auto absolute left-0 right-0 top-0 h-[90vh]'>
               <div className='flex justify-between items-start'>
                 <div>
                   <h3 className='text-white text-lg font-semibold'>

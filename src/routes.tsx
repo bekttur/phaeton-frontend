@@ -11,6 +11,7 @@ import Search from './pages/Search/elements/Search';
 import CheckoutPage from './pages/Basket/elements/CheckoutPage';
 import MyOrders from './pages/MyOrders/MyOrders';
 import ArticlesProductPage from './pages/Catalog/elements/articles-product-page';
+import { Garage } from './pages/Garage/Garage';
 
 export const AppRoutes = () => (
   <Routes>
@@ -25,5 +26,6 @@ export const AppRoutes = () => (
     <Route path="/search" element={<Search />} />
     <Route path="/basket" element={<CheckoutPage />} />
     <Route path="/my-orders" element={<MyOrders />} />
+    <Route path="/garage" element={<Garage />} />
   </Routes>
 );

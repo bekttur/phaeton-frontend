@@ -6,7 +6,9 @@ const BottomNav = () => {
   return (
     <div
       className={`grid lg:hidden grid-cols-5 gap-1 py-2 px-7 sticky bottom-0 bg-white border-t ${
-        pathname.startsWith('/product/') || pathname.startsWith('/search') ? 'hidden' : 'grid'
+        pathname.startsWith('/product/') || pathname.startsWith('/search')
+          ? 'hidden'
+          : 'grid'
       }`}
     >
       {/* Главное */}
@@ -22,7 +24,11 @@ const BottomNav = () => {
             alt=''
           />
         </div>
-        <p className={`text-xs font-medium mt-1 ${pathname === '/' ? 'text-[#000]' : 'text-[#636366]'} `}>Главное</p>
+        <p
+          className={`text-xs font-medium mt-1 ${pathname === '/' ? 'text-[#000]' : 'text-[#636366]'} `}
+        >
+          Главное
+        </p>
       </Link>
 
       {/* Каталог */}
@@ -38,7 +44,11 @@ const BottomNav = () => {
             alt=''
           />
         </div>
-        <p className={`text-xs font-medium mt-1 ${pathname.startsWith('/catalog') ? 'text-[#000]' : 'text-[#636366]'} `}>Каталог</p>
+        <p
+          className={`text-xs font-medium mt-1 ${pathname.startsWith('/catalog') ? 'text-[#000]' : 'text-[#636366]'} `}
+        >
+          Каталог
+        </p>
       </Link>
 
       {/* Корзина */}
@@ -54,16 +64,18 @@ const BottomNav = () => {
       </div>
 
       {/* Гараж */}
-      <div className='w-full flex flex-col items-center'>
-        <div className='rounded-md bg-[#F6F6F6] w-10 h-10 flex items-center justify-center'>
+      <Link to={'/garage'} className='w-full flex flex-col items-center'>
+        <div className={`rounded-md w-10 h-10 flex items-center justify-center ${
+            pathname.startsWith('/garage') ? 'bg-[#DEF2E3]' : 'bg-[#F6F6F6]'
+          }`}>
           <img
             className='w-5 h-5'
             src={`${import.meta.env.BASE_URL}icon/car_gear.svg`}
             alt=''
           />
         </div>
-        <p className='text-xs font-medium mt-1 text-[#636366]'>Гараж</p>
-      </div>
+        <p className={`text-xs font-medium mt-1 ${pathname.startsWith('/garage') ? 'text-[#000]' : 'text-[#636366]'} `}>Гараж</p>
+      </Link>
 
       {/* Ассистент */}
       <div className='w-full flex flex-col items-center'>
@@ -74,7 +86,11 @@ const BottomNav = () => {
             alt=''
           />
         </div>
-        <p className={`text-xs font-medium mt-1 ${pathname.startsWith('/assistent') ? 'text-[#000]' : 'text-[#636366]'} `}>Ассистент</p>
+        <p
+          className={`text-xs font-medium mt-1 ${pathname.startsWith('/assistent') ? 'text-[#000]' : 'text-[#636366]'} `}
+        >
+          Ассистент
+        </p>
       </div>
     </div>
   );
