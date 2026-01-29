@@ -112,6 +112,11 @@ export default function CheckoutPage() {
           onNext={handleDeliveryNext}
           isExpanded={currentStep === 'delivery'}
           onHeaderClick={goToDelivery}
+          
+          expressDelivery={payment.expressDelivery}
+          onExpressChange={(value) =>
+            setPayment((prev) => ({ ...prev, expressDelivery: value }))
+          }
         />
 
         {/* )} */}

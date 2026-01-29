@@ -42,9 +42,9 @@ export default function PaymentStep({
 
   const subtotal = items.reduce(
     (sum, item) => sum + item.Price * item.quantity,
-    0
+    0,
   );
-  const deliveryFee = data.expressDelivery ? 2000 : 0;
+  const deliveryFee = data.expressDelivery ? 1500 : 0;
   const total = subtotal + deliveryFee;
 
   // const { data: contragentData } = useGettingContragent();
@@ -96,10 +96,17 @@ export default function PaymentStep({
 
             Address: fullAddress || 'Адрес не указан',
 
-            CoordinateX: delivery.method === 'pickup' ? String(delivery.pickupLng) : String(delivery.lng),
-            CoordinateY: delivery.method === 'pickup' ? String(delivery.pickupLat) : String(delivery.lat),
+            CoordinateX:
+              delivery.method === 'pickup'
+                ? String(delivery.pickupLng)
+                : String(delivery.lng),
+            CoordinateY:
+              delivery.method === 'pickup'
+                ? String(delivery.pickupLat)
+                : String(delivery.lat),
             Courier: delivery.method === 'pickup' ? '2' : '0',
             Code: '0',
+            isExpress: data.expressDelivery,
 
             ...(delivery.method === 'pickup' && {
               SelectedPvzAddress: delivery.address,
@@ -108,8 +115,8 @@ export default function PaymentStep({
               SelectedPvzLon: delivery.pickupLng,
               SelectedPvzName: delivery.pickupName,
             }),
-          })
-        )
+          }),
+        ),
       );
 
       const orderItems = orderResponses.flatMap((r) => r.OrderItems ?? []);
@@ -123,7 +130,7 @@ export default function PaymentStep({
           (i) =>
             i.Article === orderItem.Article &&
             i.Brand === orderItem.Brand &&
-            i.WarehouseId === orderItem.WarehouseId
+            i.WarehouseId === orderItem.WarehouseId,
         );
 
         return {
@@ -246,14 +253,16 @@ export default function PaymentStep({
               {subtotal.toLocaleString('ru-RU')} ₸
             </span>
           </div>
-          {/* <div className='flex justify-between items-center border-b border-gray-200 py-2'>
-            <span className='text-base font-semibold text-[#636366]'>
-              Доставка
-            </span>
-            <span className='text-base font-semibold'>
-              {deliveryFee.toLocaleString('ru-RU')} ₸
-            </span>
-          </div> */}
+          {data.expressDelivery && (
+            <div className='flex justify-between items-center border-b border-gray-200 py-2'>
+              <span className='text-base font-semibold text-[#636366]'>
+                Доставка
+              </span>
+              <span className='text-base font-semibold'>
+                {deliveryFee.toLocaleString('ru-RU')} ₸ (Экспресс)
+              </span>
+            </div>
+          )}
           <div className='flex justify-between items-center border-b border-gray-200 py-2'>
             <span className='text-base font-semibold text-[#636366]'>
               Итого

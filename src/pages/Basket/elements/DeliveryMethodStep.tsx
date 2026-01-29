@@ -11,12 +11,15 @@ import type { DeliveryData } from './CheckoutPage';
 interface DeliveryMethodStepProps {
   data: DeliveryData;
   onUpdate: (
-    data: DeliveryData | ((prev: DeliveryData) => DeliveryData)
+    data: DeliveryData | ((prev: DeliveryData) => DeliveryData),
   ) => void;
   completed: boolean;
   onNext: () => void;
   isExpanded: boolean;
   onHeaderClick?: () => void;
+
+  expressDelivery: boolean;
+  onExpressChange: (value: boolean) => void;
 }
 
 export default function DeliveryMethodStep({
@@ -26,6 +29,9 @@ export default function DeliveryMethodStep({
   onNext,
   isExpanded,
   onHeaderClick,
+
+  expressDelivery,
+  onExpressChange,
 }: DeliveryMethodStepProps) {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -47,7 +53,7 @@ export default function DeliveryMethodStep({
         address: p.addStreetRu,
         name: p.nameStore,
         workTime: p.locTime,
-      })
+      }),
     );
   }, [pvzData, city]);
 
@@ -283,6 +289,31 @@ export default function DeliveryMethodStep({
             onChange={(e) => handleChange('comments', e.target.value)}
             className='w-full px-4 py-3 bg-[#EAECED] rounded-[10px] focus:outline-none focus:ring-2 focus:ring-[#4EBC73] resize-none h-20'
           />
+
+          <div className='flex items-center justify-between py-2'>
+            <div>
+              <div className='flex items-center justify-start gap-2'>
+                <img
+                  className='w-6 h-6'
+                  src='/icon/delivery_truck_speed.png'
+                  alt='delivery_truck_speed'
+                />
+                <h4 className='font-semibold text-base'>Экспресс доставка</h4>
+              </div>
+              {/* <span className='text-base text-[#8E8E93]'>
+                Платная доставка за 2-3 дня
+              </span> */}
+            </div>
+
+            <label className='switch flex items-center justify-center'>
+              <input
+                type='checkbox'
+                checked={expressDelivery}
+                onChange={(e) => onExpressChange(e.target.checked)}
+              />
+              <span className='slider'></span>
+            </label>
+          </div>
         </div>
       )}
 
