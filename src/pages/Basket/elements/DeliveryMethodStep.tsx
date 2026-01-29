@@ -300,9 +300,9 @@ export default function DeliveryMethodStep({
                 />
                 <h4 className='font-semibold text-base'>Экспресс доставка</h4>
               </div>
-              {/* <span className='text-base text-[#8E8E93]'>
-                Платная доставка за 2-3 дня
-              </span> */}
+              <span className='text-base text-[#8E8E93]'>
+                Быстро: сегодня в течение 1–2 часов
+              </span>
             </div>
 
             <label className='switch flex items-center justify-center'>
