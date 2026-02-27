@@ -12,17 +12,23 @@ export type SelectedAddress = {
   lng: string;
 };
 
-
 type Props = {
-  mode: 'click' | 'points';
+  mode: 'click' | 'points' | 'confirm';
   points?: PickupPoint[];
 
   center?: [number, number];
   zoom?: number;
+  height?: number
   bounds?: [[number, number], [number, number]];
 
+  selectedPoint?: {
+    address: string;
+    lat: string;
+    lng: string;
+  };
+
   // click
-    onAddressSelect?: (data: SelectedAddress) => void;
+  onAddressSelect?: (data: SelectedAddress) => void;
 
   // points
   onPointSelect?: (point: PickupPoint) => void;
@@ -33,7 +39,9 @@ export default function YandexMap({
   points = [],
   center,
   zoom,
+  height=600,
   bounds,
+  selectedPoint,
   onAddressSelect,
   onPointSelect,
 }: Props) {
@@ -74,11 +82,14 @@ export default function YandexMap({
       if (mode === 'points') {
         initPointsMode(map);
       }
+
+      if (mode === 'confirm') {
+        initConfirmMode(map);
+      }
     });
   };
 
   const initClickMode = (map: any) => {
-    // 🔍 поиск
     const searchControl = new window.ymaps.control.SearchControl({
       options: {
         noPlacemark: true,
@@ -89,25 +100,26 @@ export default function YandexMap({
       },
     });
 
+    
+
     map.controls.add(searchControl);
 
     searchControl.events.add('resultselect', async (e: any) => {
-  const index = e.get('index');
-  const result = await searchControl.getResult(index);
+      const index = e.get('index');
+      const result = await searchControl.getResult(index);
 
-  const coords = result.geometry.getCoordinates();
-  const address = result.getAddressLine();
+      const coords = result.geometry.getCoordinates();
+      const address = result.getAddressLine();
 
-  setPlacemark(coords);
-  map.setCenter(coords, 16);
+      setPlacemark(coords);
+      map.setCenter(coords, 16);
 
-  onAddressSelect?.({
-    address,
-    lat: coords[0],
-    lng: coords[1],
-  });
-});
-
+      onAddressSelect?.({
+        address,
+        lat: coords[0],
+        lng: coords[1],
+      });
+    });
 
     map.events.add('click', (e: any) => {
       const coords = e.get('coords');
@@ -126,18 +138,17 @@ export default function YandexMap({
   };
 
   const geocode = (coords: number[]) => {
-  window.ymaps.geocode(coords).then((res: any) => {
-    const firstGeoObject = res.geoObjects.get(0);
-    const address = firstGeoObject.getAddressLine();
+    window.ymaps.geocode(coords).then((res: any) => {
+      const firstGeoObject = res.geoObjects.get(0);
+      const address = firstGeoObject.getAddressLine();
 
-    onAddressSelect?.({
-      address,
-      lat: String(coords[0]),
-      lng: String(coords[1]),
+      onAddressSelect?.({
+        address,
+        lat: String(coords[0]),
+        lng: String(coords[1]),
+      });
     });
-  });
-};
-
+  };
 
   const initPointsMode = (map: any) => {
     points.forEach((point) => {
@@ -148,7 +159,7 @@ export default function YandexMap({
         },
         {
           preset: 'islands#greenIcon',
-        }
+        },
       );
 
       placemark.events.add('click', () => {
@@ -159,11 +170,36 @@ export default function YandexMap({
     });
   };
 
+  const initConfirmMode = (map: any) => {
+      if (selectedPoint) {
+        const coords = [Number(selectedPoint.lat), Number(selectedPoint.lng)];
+
+        setPlacemark(coords);
+        map.setCenter(coords, 16);
+      }
+
+      map.events.add('click', (e: any) => {
+        const coords = e.get('coords');
+
+        setPlacemark(coords);
+
+        window.ymaps.geocode(coords).then((res: any) => {
+          const address = res.geoObjects.get(0).getAddressLine();
+
+          onAddressSelect?.({
+            address,
+            lat: String(coords[0]),
+            lng: String(coords[1]),
+          });
+        });
+      });
+    };
+
   useEffect(() => {
     if (mapInstance.current && center) {
       mapInstance.current.setCenter(center, zoom ?? 12, { duration: 300 });
     }
   }, [center, zoom]);
 
-  return <div ref={mapRef} style={{ width: '100%', height: 300 }} />;
+  return <div ref={mapRef} style={{ width: '100%', height: height }} />;
 }

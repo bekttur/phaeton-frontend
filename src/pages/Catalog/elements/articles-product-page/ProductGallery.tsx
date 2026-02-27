@@ -107,7 +107,7 @@ export default function ProductGallery({ product }: any) {
         )}
       </div>
 
-      {/* ===== DOTS ===== */}
+      {/* DOTS */}
       {isCarousel && (
         <div className='flex justify-center items-center gap-1 mt-3 mb-5'>
           {getVisibleDots(images.length, currentSlide).map((index) => {

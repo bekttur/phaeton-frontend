@@ -11,7 +11,7 @@ export function Garage() {
   const [activeTab, setActiveTab] = useState<'status' | 'services'>('status');
 
   return (
-    <div className='block lg:hidden min-h-screen'>
+    <div className='block lg:hidden min-h-screen pb-20 lg:pb-0'>
       <div className='bg-[radial-gradient(circle,#2B4744,#28363B)] relative'>
         <GarageHeader />
 

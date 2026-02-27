@@ -1,4 +1,5 @@
 import axios from 'axios';
+import apiBackendFra from './api';
 
 interface CreateOrderPayload {
   Contact: {
@@ -27,24 +28,6 @@ interface CreateOrderPayload {
   Code: string;
 }
 
-export const fetchGettingContragent = async (): Promise<any> => {
-  const response = await axios.get(
-    `https://api.phaeton.kz/api/Dictionary?UserGuid=9A6DAC71-DC40-11F0-BBDB-BC97E1B23A0B&ApiKey=ihUOF5RTrO5wAHhQfbQW`
-  );
-  return response.data;
-};
-
-export const fetchCreateOrder = async (
-  payload: CreateOrderPayload
-): Promise<any> => {
-  const response = await axios.post(
-    'https://api.phaeton.kz/api/RetailOrder',
-    payload
-  );
-
-  return response.data;
-};
-
 export interface PayboxOrder {
   ProductCategoryGuid: string;
   WarehouseGuid: string;
@@ -64,11 +47,48 @@ interface PayboxPayload {
   Model: any;
 }
 
+export const fetchGettingContragent = async (): Promise<any> => {
+  const response = await axios.get(
+    `https://api.phaeton.kz/api/Dictionary?UserGuid=9A6DAC71-DC40-11F0-BBDB-BC97E1B23A0B&ApiKey=ihUOF5RTrO5wAHhQfbQW`
+  );
+  return response.data;
+};
+
+
+export const fetchCreateOrder = async (
+  payload: CreateOrderPayload
+): Promise<any> => {
+  const response = await axios.post(
+    'https://api.phaeton.kz/api/RetailOrder',
+    payload
+  );
+
+  return response.data;
+};
+
+// для теста
+export const fetchCreateOrderBackendFra = async (
+  payload: CreateOrderPayload
+): Promise<any> => {
+  const response = await apiBackendFra.post('/orders', payload);
+
+  return response.data;
+};
+
+
 export const fetchPaybox = async (payload: PayboxPayload) => {
   const response = await axios.post(
     'https://api.phaeton.kz/api/PayBoxRetail/CreatePaymentPaybox',
     payload
   );
 
+  return response.data;
+};
+
+
+export const fetchMyOrders = async () => {
+  const response = await apiBackendFra.get(
+    `https://backendfra.phaeton.kz/orders`
+  );
   return response.data;
 };

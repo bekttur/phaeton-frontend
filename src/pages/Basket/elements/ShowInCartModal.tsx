@@ -30,8 +30,8 @@ const ShowInCartModal = ({ isOpen, onClose, city, onSelect }: Props) => {
   const cityCenter = useMemo(() => {
     if (!city || !cities) return undefined;
 
-    const cityObj = cities.find((c: any) => c.Name === city);
-    return parseLatLng(cityObj?.LatLng);
+    const cityObj = cities.find((c: any) => c.name === city);
+    return parseLatLng(cityObj?.latLng);
   }, [city, cities]);
 
   const getCityBounds = (

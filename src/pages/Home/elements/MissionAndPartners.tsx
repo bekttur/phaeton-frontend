@@ -31,9 +31,8 @@ const MissionAndPartners = () => {
           </p>
         </div>
 
-        {/* Правый блок — Партнёры + карусель */}
         <div className='flex-1 flex flex-col gap-4'>
-          {/* Партнёры */}
+          {/* Партнеры */}
           <div className='flex flex-col gap-2'>
             <p className='text-lg text-[#62C382] font-semibold'>
               Наши партнёры
@@ -46,7 +45,7 @@ const MissionAndPartners = () => {
           </p>
           </div>
 
-          {/* Карусель логотипов */}
+          {/* Карусель */}
           <div className='relative w-full overflow-hidden'>
             <div className='scroll-container'>
               <div className='scroll-content flex items-center gap-6 animate-scroll'>

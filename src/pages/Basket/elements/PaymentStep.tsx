@@ -3,6 +3,7 @@ import { useCart } from '../../../context/CartContext';
 import { useLoader } from '../../../context/LoaderContext';
 import { useCreateOrder, usePaybox } from '../../../hooks/useData';
 import type { DeliveryData } from './CheckoutPage';
+import type { ContactDetails } from '../../../api/services/register';
 
 interface PaymentData {
   promoCode: string;
@@ -13,11 +14,7 @@ interface PaymentStepProps {
   data: PaymentData;
   onUpdate: (data: PaymentData) => void;
   isExpanded: boolean;
-  contact: {
-    fullName: string;
-    email: string;
-    phone: string;
-  };
+  contact: ContactDetails;
   delivery: DeliveryData;
 }
 
@@ -63,63 +60,90 @@ export default function PaymentStep({
       const orderResponses = await Promise.all(
         items.map((item) =>
           createOrder({
-            Contact: {
-              UserGuid: '906f6c86-e0db-11f0-bbbd-f8f21e092c7d',
-              OrderType: 1,
-              Name:
+            contact: {
+              // userGuid: '9A6DAC71-DC40-11F0-BBDB-BC97E1B23A0B',
+              userGuid:
+                !!contact && contact.userGuid
+                  ? contact.userGuid
+                  : '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+              orderType: 1,
+              name:
                 !!contact && contact.fullName
                   ? contact.fullName
                   : 'Тестовый заказ',
-              Phone:
-                !!contact && contact.phone
-                  ? `7${contact.phone}`
-                  : '77001234567',
-              Email:
+              phone:
+                !!contact && contact.phone ? `${contact.phone}` : '77001234567',
+              email:
                 !!contact && contact.email ? contact.email : 'test@mail.kz',
             },
-            UserGuid: '9A6DAC71-DC40-11F0-BBDB-BC97E1B23A0B',
-            ApiKey: 'ihUOF5RTrO5wAHhQfbQW',
-            ContragentGuid: contragentGuid,
+            // userGuid: '9A6DAC71-DC40-11F0-BBDB-BC97E1B23A0B',
+            userGuid:
+              !!contact && contact.userGuid
+                ? contact.userGuid
+                : '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+            // contragentGuid: contragentGuid,
+            apiKey: 'ihUOF5RTrO5wAHhQfbQW',
 
-            Brand: item.Brand,
-            Article: item.Article,
-            WarehouseId: item.WarehouseId,
+            contragentGuid: contragentGuid,
+            // contragentGuid:
+            //   !!contact && contact.contragentGuid
+            //     ? contact.contragentGuid
+            //     : '3fa85f64-5717-4562-b3fc-2c963f66afa6',
 
-            Price: item.Price,
-            Count: item.quantity,
-
-            ExpectedDelivery: item.ExpectedDelivery,
-            GuaranteedDelivery: item.GuaranteedDelivery,
-
-            Comment: fullAddress || 'Адрес не указан',
-            Force: 0,
-
-            Address: fullAddress || 'Адрес не указан',
-
-            CoordinateX:
+            brand: item.Brand,
+            article: item.Article,
+            warehouseId: '9b1ccf6b-9555-11e3-b018-0025909bbfce',
+            // warehouseId:
+            //   !!contact && contact.userGuid
+            //     ? contact.userGuid
+            //     : '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+            price: item.Price,
+            count: item.quantity,
+            expectedDelivery: item.ExpectedDelivery,
+            guaranteedDelivery: item.GuaranteedDelivery,
+            comment: fullAddress || 'Адрес не указан',
+            force: 0,
+            address: fullAddress || 'Адрес не указан',
+            coordinateX:
               delivery.method === 'pickup'
                 ? String(delivery.pickupLng)
                 : String(delivery.lng),
-            CoordinateY:
+            coordinateY:
               delivery.method === 'pickup'
                 ? String(delivery.pickupLat)
                 : String(delivery.lat),
-            Courier: delivery.method === 'pickup' ? '2' : '0',
-            Code: '0',
+            courier: delivery.method === 'pickup' ? '2' : '0',
+            code: '0',
             isExpress: data.expressDelivery,
 
+            // name: item.Name,
+            // globalID: 'string',
+
+            // warehouseId: item.WarehouseId,
+
+            // order1CGuid:
+            //   !!contact && contact.userGuid
+            //     ? contact.userGuid
+            //     : '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+
+            // supplierId: 0,
+
+            // deliveryProbability: 0,
+
+            // useBonus: 0,
+
             ...(delivery.method === 'pickup' && {
-              SelectedPvzAddress: delivery.address,
-              SelectedPvzId: delivery.pickupId,
-              SelectedPvzLat: delivery.pickupLat,
-              SelectedPvzLon: delivery.pickupLng,
-              SelectedPvzName: delivery.pickupName,
+              selectedPvzAddress: delivery.address,
+              selectedPvzId: delivery.pickupId,
+              selectedPvzLat: delivery.pickupLat,
+              selectedPvzLon: delivery.pickupLng,
+              selectedPvzName: delivery.pickupName,
             }),
           }),
         ),
       );
 
-      const orderItems = orderResponses.flatMap((r) => r.OrderItems ?? []);
+      const orderItems = orderResponses.flatMap((r) => r.orderItems ?? []);      
 
       if (!orderItems.length) {
         throw new Error('OrderItems пустой');
@@ -128,16 +152,17 @@ export default function PaymentStep({
       const payboxOrders = orderItems.map((orderItem) => {
         const cartItem = items.find(
           (i) =>
-            i.Article === orderItem.Article &&
-            i.Brand === orderItem.Brand &&
-            i.WarehouseId === orderItem.WarehouseId,
+            i.Article === orderItem.article &&
+            i.Brand === orderItem.brand
+            // i.WarehouseId === orderItem.warehouseId,
         );
+        
 
         return {
           ProductCategoryGuid: cartItem!.CategoryId,
-          WarehouseGuid: orderItem.WarehouseId,
-          OrderGuid: orderItem.OrderGuid,
-          OrderNumber: orderItem.OrderNumber,
+          WarehouseGuid: orderItem.warehouseId,
+          OrderGuid: orderItem.orderGuid,
+          OrderNumber: orderItem.orderNumber,
           // ErrorCode: orderItem.Error ?? null,
           // Result: orderItem.Error ? 'Error' : 'Ok',
         };
@@ -145,11 +170,17 @@ export default function PaymentStep({
 
       const orderNumber = payboxOrders[0].OrderNumber;
 
+      console.log("payboxOrders", payboxOrders);
+      
+
       const payboxResponse = await paybox({
         Orders: payboxOrders,
 
         Amount: total,
-        UserGuid: '9A6DAC71-DC40-11F0-BBDB-BC97E1B23A0B',
+        // userGuid: '9A6DAC71-DC40-11F0-BBDB-BC97E1B23A0B',
+        UserGuid: !!contact && contact.userGuid
+                ? contact.userGuid
+                : '3fa85f64-5717-4562-b3fc-2c963f66afa6',
         AgentGuid: contragentGuid,
         ContractGuid: contragentGuid,
 

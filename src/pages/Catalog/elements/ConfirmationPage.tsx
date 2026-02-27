@@ -111,7 +111,7 @@ const ConfirmationPage = () => {
   }, [currentNode.id]);
 
   return (
-    <div className='lg:hidden w-full h-full min-h-screen pt-14'>
+    <div className='lg:hidden w-full h-full min-h-screen pt-14 pb-20 lg:pb-0'>
       <div className='bg-white px-4 py-2 flex items-center gap-3'>
         <button onClick={handleBack} className='p-2 bg-[#EAECED] rounded-lg'>
           <ArrowLeft className='w-6 h-6 text-[#8C8C8C]' />

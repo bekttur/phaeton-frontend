@@ -1,6 +1,6 @@
 import React from 'react';
 import { ChevronRight } from 'lucide-react';
-import { Link } from 'react-router-dom'; // если используешь Next.js — замени на next/link
+import { Link } from 'react-router-dom';
 
 type BreadcrumbItem = {
   title: string;

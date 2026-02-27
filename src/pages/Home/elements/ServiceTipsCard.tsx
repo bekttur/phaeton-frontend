@@ -22,7 +22,6 @@ const ServiceTipsCard = () => {
     >
       {/* Mobile version */}
       <div className='w-full max-w-[800px] mx-auto flex lg:hidden flex-col gap-2 bg-[#E3E6E8] p-2 lg:p-4 rounded-2xl lg:rounded-2xl'>
-        {/* Верхняя карточка с текстом */}
         <div className='bg-white rounded-xl py-6 px-6 flex flex-col gap-3 shadow-sm'>
           {/* <span className='text-[15px] text-black'>Советы сервиса</span> */}
           <h2 className='text-xl font-semibold text-black'>
@@ -39,9 +38,7 @@ const ServiceTipsCard = () => {
           </button>
         </div>
 
-        {/* Видео-превью */}
         <div className='w-full grid grid-cols-[1fr_80px] gap-2'>
-          {/* Основное видео */}
           <div className='relative rounded-xl overflow-hidden'>
             <img
               src={`https://img.youtube.com/vi/c5LeLdbK_-A/maxresdefault.jpg`}
@@ -59,7 +56,6 @@ const ServiceTipsCard = () => {
             </div>
           </div>
 
-          {/* Маленькие превью */}
           <div className='flex flex-col gap-2'>
             {previews.map((video) => (
               <div

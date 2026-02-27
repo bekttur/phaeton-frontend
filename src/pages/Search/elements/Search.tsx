@@ -6,8 +6,9 @@ import { Check, ChevronLeft, Search, X } from 'lucide-react';
 import { useSearchModal } from '../../../context/SearchModalContext';
 import MobileSearch from '../../Search/MobileSearch';
 import { useLoader } from '../../../context/LoaderContext';
-import { catalog_data } from '../../Catalog/elements/catalog.data';
+
 import { useCity } from '../../../context/CityContext';
+import { catalog_data } from '../../Catalog/constants/catalog.data';
 
 const SearchPage = () => {
   const { startRequest, finishRequest, loading } = useLoader();
@@ -95,7 +96,7 @@ const SearchPage = () => {
   };
 
   return (
-    <div className='relative top-14 min-h-screen bg-[#F6F6F6] flex flex-col gap-4 px-4'>
+    <div className='relative top-14 min-h-screen bg-[#F6F6F6] flex flex-col gap-4 px-4 pb-20 lg:pb-0'>
       {/* SEARCH FIELD */}
       <div className='flex items-center gap-3 py-3'>
         <button

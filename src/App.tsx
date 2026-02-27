@@ -8,7 +8,6 @@ import CartModal from './pages/Basket/elements/CartModal';
 function App() {
   const { pathname } = useLocation();
 
-
   return (
     <>
       {!pathname.includes('/garage') && <Header />}

@@ -7,6 +7,7 @@ interface GlobalBottomSheetProps {
   onClose: () => void;
   children: ReactNode;
   zIndex?: number;
+  height?: string | number;
 }
 
 export function GlobalBottomSheet({
@@ -14,8 +15,8 @@ export function GlobalBottomSheet({
   onClose,
   children,
   zIndex = 70,
+  height = '85vh',
 }: GlobalBottomSheetProps) {
-  // 🔒 Lock body scroll
   useEffect(() => {
     if (!isOpen) return;
 
@@ -44,7 +45,6 @@ export function GlobalBottomSheet({
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Overlay */}{' '}
           <motion.div
             onClick={onClose}
             className='fixed inset-0 bg-black/30'
@@ -53,11 +53,11 @@ export function GlobalBottomSheet({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.05 }}
-          />{' '}
-          {/* Bottom Sheet */}{' '}
+          />
+
           <motion.div
-            className=' fixed bottom-0 left-0 right-0 bg-[#F6F6F6] rounded-t-3xl h-[85vh] '
-            style={{ zIndex }}
+            className='fixed bottom-0 left-0 right-0 bg-[#F6F6F6] rounded-t-3xl'
+            style={{ zIndex, height }}
             initial={{ y: '100vh' }}
             animate={{ y: 0 }}
             exit={{ y: '100vh' }}

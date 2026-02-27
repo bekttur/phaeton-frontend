@@ -1,5 +1,8 @@
 import { X, ChevronRight } from 'lucide-react';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import LanguageSwitcherSheet from './LanguageSwitcherSheet';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -9,57 +12,73 @@ interface MobileMenuProps {
 
 const MobileMenu = ({ isOpen, onClose, onOpenCitySelect }: MobileMenuProps) => {
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation('menu');
+  const [isLanguageSheetOpen, setIsLanguageSheetOpen] = useState(false);
 
+  const getLanguageLabel = () => {
+    return i18n.language === 'kz' ? 'Қазақша' : 'Русский';
+  };
   const menuItems = [
     {
       icon: 'icon/mobile-menu/location_on.svg',
-      title: 'Город',
+      title: t('city'),
       subtitle: 'Алматы',
     },
     {
       icon: 'icon/mobile-menu/language.svg',
-      title: 'Язык',
-      subtitle: 'Русский',
+      title: t('language'),
+      subtitle: getLanguageLabel(),
+      action: 'language',
     },
     {
       icon: 'icon/home.svg',
-      title: 'Главная',
+      title: t('home'),
       href: '/',
     },
     {
       icon: 'icon/shopping_cart.svg',
-      title: 'Корзина',
+      title: t('profile'),
+      href: '/profile',
     },
     {
-      icon: 'icon/mobile-menu/bucket_check.svg',
-      title: 'Мои заказы',
-      href: '/my-orders',
+      icon: 'icon/shopping_cart.svg',
+      title: t('catalog'),
     },
+    // {
+    //   icon: 'icon/mobile-menu/bucket_check.svg',
+    //   title: 'Мои заказы',
+    //   href: '/my-orders',
+    // },
     {
       icon: 'icon/mobile-menu/favorite.svg',
-      title: 'Избранное',
+      title: t('favorites'),
     },
     {
       icon: 'icon/mobile-menu/smart_toy.svg',
-      title: 'AI-ассистент запчастей',
+      title: t('ai'),
     },
-    {
-      icon: 'icon/mobile-menu/newsmode.svg',
-      title: 'Новости',
-    },
+    // {
+    //   icon: 'icon/mobile-menu/newsmode.svg',
+    //   title: 'Новости',
+    // },
     {
       icon: 'icon/mobile-menu/headphones.svg',
-      title: 'Контакты',
+      title: t('support'),
     },
-    {
-      icon: 'icon/mobile-menu/school.svg',
-      title: 'Вопросы и ответы',
-    },
+    // {
+    //   icon: 'icon/mobile-menu/school.svg',
+    //   title: 'Вопросы и ответы',
+    // },
   ];
 
   const handleNavigation = (item: (typeof menuItems)[0]) => {
-    if (item.title === 'Город' && onOpenCitySelect) {
+    if (item.title === t('city') && onOpenCitySelect) {
       onOpenCitySelect();
+      return;
+    }
+
+    if (item.action === 'language') {
+      setIsLanguageSheetOpen(true);
       return;
     }
 
@@ -69,7 +88,6 @@ const MobileMenu = ({ isOpen, onClose, onOpenCitySelect }: MobileMenuProps) => {
 
     onClose();
   };
-
   return (
     <>
       {isOpen && (
@@ -87,7 +105,7 @@ const MobileMenu = ({ isOpen, onClose, onOpenCitySelect }: MobileMenuProps) => {
       >
         <div className='px-4 py-2'>
           <div className='flex items-center justify-between mb-2'>
-            <h2 className='text-lg font-semibold text-gray-900'>Меню</h2>
+            <h2 className='text-lg font-semibold text-gray-900'>{t('menu')}</h2>
             <button
               onClick={onClose}
               className='w-10 h-10 flex items-center justify-end rounded-full hover:bg-gray-100 transition'
@@ -132,6 +150,11 @@ const MobileMenu = ({ isOpen, onClose, onOpenCitySelect }: MobileMenuProps) => {
           </div>
         </div>
       </div>
+
+      <LanguageSwitcherSheet
+        isOpen={isLanguageSheetOpen}
+        onClose={() => setIsLanguageSheetOpen(false)}
+      />
     </>
   );
 };

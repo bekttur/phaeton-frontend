@@ -1,22 +1,24 @@
 import { useEffect, useRef, useState } from 'react';
 import CatalogCategories from './CatalogCategories';
+import { useTranslation } from 'react-i18next';
 
 const HeroCarousel = () => {
   const [isLg, setIsLg] = useState(false);
   const [current, setCurrent] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation('home')
 
   const data = [
     {
-      title: 'Найдите запчасть ',
-      title2: 'с помощью AI-Phaeton',
+      title: t('hero_session.carousel.slide_1.title'),
+      title2: t('hero_session.carousel.slide_1.title2'),
       img: isLg ? 'images/hero-lg.png' : 'images/hero2.png',
       isCashback: false,
     },
     {
-      title: 'Повышенный кешбэк',
-      title2: 'на автозапчасти',
-      description: 'Покупайте нужное для авто и получайте выгоду каждый раз',
+      title: t('hero_session.carousel.slide_2.title'),
+      title2: t('hero_session.carousel.slide_2.title2'),
+      description: t('hero_session.carousel.slide_2.description'),
       isCashback: true,
       img: isLg ? 'images/second.png' : 'images/second.png',
     },
@@ -54,7 +56,7 @@ const HeroCarousel = () => {
         behavior: 'smooth',
       });
       setCurrent(nextIndex);
-    }, 5000); // 5000ms = 5 секунд
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [current, data.length]);

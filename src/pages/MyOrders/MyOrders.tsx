@@ -1,306 +1,265 @@
-import { useState } from 'react';
-import { ChevronLeft, CheckCircle, XCircle, Clock } from 'lucide-react';
-
-type OrderStatus = 'delivered' | 'cancelled' | 'active';
+import { useRef, useState } from 'react';
+import { ChevronLeft } from 'lucide-react';
+import { useMyOrders } from '../../hooks/useData';
+import { useNavigate } from 'react-router';
+import LoginPrompt from '../Profile/elements/steps/LoginPrompt';
 
 interface OrderItem {
-  id: string;
+  orderItemID: number;
   name: string;
   price: number;
-  quantity: number;
-  image: string;
+  count: number;
+  photoItem: string;
+  lastStatus: {
+    status: string;
+    period: string;
+    providerStatus: string;
+    comment: string;
+  };
 }
 
 interface Order {
-  id: string;
-  orderNumber: string;
-  date: string;
-  status: OrderStatus;
+  orderID: number;
+  createDate: string;
+  isRefuse: boolean;
+  comment: string;
   items: OrderItem[];
-  total: number;
 }
 
-type TabType = 'all' | 'active' | 'completed' | 'cancelled';
-
-const mockOrders: Order[] = [
-  {
-    id: '1',
-    orderNumber: '000085752257',
-    date: '24-12-25, 13:22:16',
-    status: 'delivered',
-    items: [
-      {
-        id: '1',
-        name: 'Моточик кавасаки Врум-ВРУМ',
-        price: 32000,
-        quantity: 1,
-        image: 'product/first-product.png',
-      },
-    ],
-    total: 32000,
-  },
-  {
-    id: '2',
-    orderNumber: '000085752258',
-    date: '23-12-25, 10:15:42',
-    status: 'cancelled',
-    items: [
-      {
-        id: '2',
-        name: 'Моточик кавасаки Врум-ВРУМ',
-        price: 32000,
-        quantity: 1,
-        image: 'product/first-product.png',
-      },
-    ],
-    total: 32000,
-  },
-  {
-    id: '3',
-    orderNumber: '000085752259',
-    date: '22-12-25, 15:30:10',
-    status: 'active',
-    items: [
-      {
-        id: '3',
-        name: 'Моточик кавасаки Врум-ВРУМ',
-        price: 32000,
-        quantity: 1,
-        image: 'product/first-product.png',
-      },
-    ],
-    total: 32000,
-  },
-];
-
 const MyOrders = () => {
-  const [selectedTab, setSelectedTab] = useState<TabType>('all');
+  const navigate = useNavigate();
+
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const { data, isLoading, isError, error } = useMyOrders();
+  const scrollPositionRef = useRef(0);
 
-  const getStatusConfig = (status: OrderStatus) => {
-    switch (status) {
-      case 'delivered':
-        return {
-          icon: CheckCircle,
-          label: 'Доставлено',
-          bgColor: 'bg-green-100',
-          textColor: 'text-green-700',
-        };
-      case 'cancelled':
-        return {
-          icon: XCircle,
-          label: 'Отменено',
-          bgColor: 'bg-red-100',
-          textColor: 'text-red-700',
-        };
-      case 'active':
-        return {
-          icon: Clock,
-          label: 'Активно',
-          bgColor: 'bg-gray-100',
-          textColor: 'text-gray-700',
-        };
+  const orders = data?.orders ?? [];
+
+  const getStatusConfig = (order: Order) => {
+    if (order.isRefuse) {
+      return {
+        label: 'Отменено',
+        bgColor: 'bg-red-100',
+        textColor: 'text-red-700',
+      };
     }
+
+    const status = order.items[0]?.lastStatus?.status ?? 'В обработке';
+
+    return {
+      label: status,
+      bgColor: 'bg-gray-100',
+      textColor: 'text-gray-700',
+    };
   };
 
-  const filterOrders = (orders: Order[]) => {
-    switch (selectedTab) {
-      case 'active':
-        return orders.filter((order) => order.status === 'active');
-      case 'completed':
-        return orders.filter((order) => order.status === 'delivered');
-      case 'cancelled':
-        return orders.filter((order) => order.status === 'cancelled');
-      default:
-        return orders;
+  if (isLoading) {
+    return (
+      <div className='fixed inset-0 z-[9999] bg-black/40 flex items-center justify-center'>
+        <div className='w-12 h-12 p-1 bg-white rounded-full'>
+          <div className='w-10 h-10 border-[3px] border-t-[#4EBC73] border-l-[#4EBC73] border-b-[#4EBC73] border-white rounded-full animate-spin'></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    const status = (error as any)?.response?.status;
+
+    if (status === 401) {
+      return (
+        <div className='bg-[#F6F6F6] relative top-14 bottom-20'>
+          <LoginPrompt
+            onLoginClick={() =>
+              navigate('/profile', {
+                state: { from: 'orders' },
+              })
+            }
+          />
+        </div>
+      );
     }
-  };
-
-  const filteredOrders = filterOrders(mockOrders);
-
-  if (selectedOrder) {
-    const statusConfig = getStatusConfig(selectedOrder.status);
-    const StatusIcon = statusConfig.icon;
 
     return (
-      <div className='min-h-screen bg-gray-50 relative top-14'>
-        <div className='bg-white border-b border-gray-200 sticky top-0 z-10'>
-          <div className='max-w-2xl mx-auto px-4 py-4 flex items-center justify-between'>
+      <div className='pt-20 text-center min-h-screen text-red-500'>
+        Ошибка загрузки
+      </div>
+    );
+  }
+
+  if (!isLoading && !isError && orders.length === 0) {
+    return (
+      <div className='bg-[#F6F6F6] relative top-14 bottom-20 min-h-screen'>
+        <div className='max-w-2xl mx-auto px-4 py-10'>
+          <div className='bg-white rounded-2xl p-5 text-center shadow-sm'>
+            <div className='flex justify-center mb-6'>
+              <div className='w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center'>
+                <img
+                  src='/profile/shopping_cart.svg'
+                  alt='empty-orders'
+                  className='w-10 h-10 opacity-60'
+                />
+              </div>
+            </div>
+
+            <h2 className='text-xl font-semibold mb-2'>
+              У вас пока нет заказов
+            </h2>
+
+            <p className='text-[#636366] mb-6'>
+              Оформите первый заказ в каталоге — и он появится здесь.
+            </p>
+
             <button
-              onClick={() => setSelectedOrder(null)}
-              className='mr-4 text-gray-600 hover:text-gray-900'
+              onClick={() => navigate('/catalog')}
+              className='w-full bg-[#4EBC73] hover:bg-green-700 text-white font-semibold py-3 rounded-[10px] transition-colors text-lg'
+            >
+              Перейти в каталог
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (selectedOrder) {
+    const statusConfig = getStatusConfig(selectedOrder);
+
+    const total = selectedOrder.items.reduce(
+      (sum: number, item: any) => sum + item.price * item.count,
+      0,
+    );
+
+    return (
+      <div className='bg-gray-50 relative top-14 bottom-20'>
+        <div className='bg-white border-b sticky top-0 z-10'>
+          <div className='max-w-2xl mx-auto px-4 py-4 flex items-center'>
+            <button
+              onClick={() => {
+                setSelectedOrder(null);
+                setTimeout(() => {
+                  window.scrollTo(0, scrollPositionRef.current);
+                }, 0);
+              }}
             >
               <ChevronLeft size={24} />
             </button>
-            <h1 className='text-xl font-semibold'>Мои заказы</h1>
-            <div className='ml-4' />
+            <h1 className='text-xl font-semibold ml-4'>Мои заказы</h1>
           </div>
         </div>
 
         <div className='max-w-2xl mx-auto p-4'>
-          <div className='bg-white rounded-xl shadow-sm p-6 mb-4'>
+          <div className='bg-white rounded-xl shadow-sm p-6'>
             <div
-              className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full ${statusConfig.bgColor} mb-4`}
+              className={`inline-flex items-center text-sm gap-2 px-3 py-1 rounded-full ${statusConfig.bgColor} mb-4`}
             >
-              <StatusIcon size={18} className={statusConfig.textColor} />
-              <span className={`text-sm font-medium ${statusConfig.textColor}`}>
+              <span className={statusConfig.textColor}>
                 {statusConfig.label}
               </span>
             </div>
 
             <div className='flex gap-4 mb-6'>
               <img
-                src={`${import.meta.env.BASE_URL}${
-                  selectedOrder.items[0].image
-                }`}
+                src={
+                  selectedOrder.items[0].photoItem ||
+                  `/product/first-product.png`
+                }
                 alt={selectedOrder.items[0].name}
                 className='w-24 h-24 object-contain rounded-lg bg-gray-100'
               />
-              <div className='flex-1'>
-                <h2 className='text-lg font-semibold mb-2'>
+              <div className='flex flex-col justify-between'>
+                <h2 className='text-base font-medium line-clamp-2'>
                   {selectedOrder.items[0].name}
                 </h2>
-                <p className='text-2xl font-bold'>
-                  {selectedOrder.total.toLocaleString()} ₸
+                <p className='text-xl font-semibold'>
+                  {total.toLocaleString()} ₸
                 </p>
               </div>
             </div>
 
-            <div className='space-y-4 border-t pt-4'>
+            <div className='space-y-4 border-t pt-4 text-base'>
               <div className='flex justify-between'>
-                <span className='text-gray-600'>Номер заказа</span>
-                <span className='font-medium'>{selectedOrder.orderNumber}</span>
+                <span className='text-[#636366]'>Номер заказа</span>
+                <span className='font-medium'>{selectedOrder.orderID}</span>
               </div>
               <div className='flex justify-between'>
-                <span className='text-gray-600'>Дата заказа</span>
-                <span className='font-medium'>{selectedOrder.date}</span>
-              </div>
-              <div className='flex justify-between'>
-                <span className='text-gray-600'>Статус</span>
-                <span className={`font-medium ${statusConfig.textColor}`}>
-                  {statusConfig.label}
-                </span>
-              </div>
-              <div className='flex justify-between'>
-                <span className='text-gray-600'>Количество</span>
+                <span className='text-[#636366]'>Дата заказа</span>
                 <span className='font-medium'>
-                  {selectedOrder.items[0].quantity}
+                  {new Date(selectedOrder.createDate).toLocaleString('ru-RU')}
+                </span>
+              </div>
+              <div className='flex justify-between border-dashed border-b border-gray-300 pb-4 mb-4'>
+                <span className='text-[#636366]'>Адрес</span>
+                <span className='font-medium'>
+                  {selectedOrder.comment || 'Адрес не указан'}
                 </span>
               </div>
               <div className='flex justify-between'>
-                <span className='text-gray-600'>Сумма</span>
-                <span className='font-bold text-lg'>
-                  {selectedOrder.total.toLocaleString()} ₸
+                <span className='text-[#636366]'>Количество</span>
+                <span className='font-medium'>
+                  {selectedOrder.items[0].count}
                 </span>
+              </div>
+              <div className='flex justify-between'>
+                <span className='text-[#636366]'>Сумма</span>
+                <span className='font-medium'>{total.toLocaleString()} ₸</span>
               </div>
             </div>
           </div>
-
-          <button className='w-full bg-gray-200 text-gray-700 py-4 rounded-[10px] font-medium mb-3 hover:bg-gray-300 transition-colors'>
-            Вернуть заказ
-          </button>
-          <button className='w-full bg-[#4EBC73] text-white py-4 rounded-[10px] font-medium hover:bg-green-600 transition-colors'>
-            Повторить заказ
-          </button>
         </div>
       </div>
     );
   }
 
+  // ========= LIST =========
   return (
-    <div className='min-h-screen bg-gray-50 relative top-14 mb-16'>
-      <div className='bg-[#F6F6F6] sticky top-0 z-10'>
-        <div className='bg-white max-w-2xl mx-auto px-4 py-4 flex items-center justify-between'>
-          <button className='mr-4 text-gray-600 hover:text-gray-900'>
-            <ChevronLeft size={24} />
-          </button>
-          <h1 className='text-xl font-semibold'>Мои заказы</h1>
-          <div className='ml-4' />
-        </div>
+    <div className='min-h-screen bg-gray-50 relative top-14'>
+      <div className='max-w-2xl mx-auto p-4 space-y-4 mb-32'>
+        {orders.map((order: any) => {
+          const statusConfig = getStatusConfig(order);
 
-        <div className='max-w-2xl mx-auto px-4 mt-2'>
-          <div className='flex gap-2 pb-3 overflow-x-auto'>
-            <button
-              onClick={() => setSelectedTab('all')}
-              className={`px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
-                selectedTab === 'all'
-                  ? 'bg-white text-gray-900 font-medium'
-                  : 'text-gray-600 hover:bg-gray-50'
-              }`}
-            >
-              Все
-            </button>
-            <button
-              onClick={() => setSelectedTab('active')}
-              className={`px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
-                selectedTab === 'active'
-                  ? 'bg-white text-gray-900 font-medium'
-                  : 'text-gray-600 hover:bg-gray-50'
-              }`}
-            >
-              Активные
-            </button>
-            <button
-              onClick={() => setSelectedTab('completed')}
-              className={`px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
-                selectedTab === 'completed'
-                  ? 'bg-white text-gray-900 font-medium'
-                  : 'text-gray-600 hover:bg-gray-50'
-              }`}
-            >
-              Завершенные
-            </button>
-            <button
-              onClick={() => setSelectedTab('cancelled')}
-              className={`px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
-                selectedTab === 'cancelled'
-                  ? 'bg-white text-gray-900 font-medium'
-                  : 'text-gray-600 hover:bg-gray-50'
-              }`}
-            >
-              Отмененные
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div className='max-w-2xl mx-auto p-4 space-y-4 bg-[#F6F6F6]'>
-        {filteredOrders.map((order) => {
-          const statusConfig = getStatusConfig(order.status);
-          const StatusIcon = statusConfig.icon;
+          const total = order.items.reduce(
+            (sum: number, item: any) => sum + item.price * item.count,
+            0,
+          );
 
           return (
-            <div key={order.id} className='bg-white rounded-xl shadow-sm p-4'>
+            <div
+              key={order.orderID}
+              className='bg-white rounded-xl shadow-sm p-4'
+            >
               <div
-                className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full ${statusConfig.bgColor} mb-4`}
+                className={`inline-flex items-center gap-2 px-3 text-sm py-1 rounded-full ${statusConfig.bgColor} mb-4`}
               >
-                <StatusIcon size={18} className={statusConfig.textColor} />
-                <span
-                  className={`text-sm font-medium ${statusConfig.textColor}`}
-                >
+                <span className={statusConfig.textColor}>
                   {statusConfig.label}
                 </span>
               </div>
 
-              <div className='flex gap-4 mb-4 border-b border-gray-200 pb-4'>
+              <div className='flex gap-4 mb-4 border-b pb-4'>
                 <img
-                  src={`${import.meta.env.BASE_URL}${order.items[0].image}`}
-                  alt={order.items[0].name}
+                  src={
+                    order?.items[0]?.photoItem || `/product/first-product.png`
+                  }
+                  alt={order?.items[0]?.name || 'Product Image'}
                   className='w-24 h-24 object-contain rounded-lg bg-gray-100'
                 />
-                <div className='flex-1'>
-                  <h3 className='text-lg font-semibold mb-2'>
-                    {order.items[0].name}
+                <div className='flex flex-col justify-between'>
+                  <h3 className='text-base font-medium line-clamp-2'>
+                    {order?.items[0]?.name}
                   </h3>
-                  <p className='text-2xl font-bold'>
-                    {order.total.toLocaleString()} ₸
+                  <p className='text-xl font-semibold'>
+                    {total.toLocaleString()} ₸
                   </p>
                 </div>
               </div>
 
               <button
-                onClick={() => setSelectedOrder(order)}
-                className='w-full bg-gray-100 text-gray-700 py-3 rounded-xl font-medium hover:bg-gray-200 transition-colors'
+                onClick={() => {
+                  scrollPositionRef.current = window.scrollY;
+                  setSelectedOrder(order);
+                }}
+                className='w-full bg-gray-100 py-3 rounded-xl'
               >
                 Детали заказа
               </button>

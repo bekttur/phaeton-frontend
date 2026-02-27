@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Menu } from 'lucide-react';
 import MobileMenu from './MobileMenu';
 import MobileCitySelect from './MobileCitySelect';
+import { ConfirmCitySheet } from './ConfirmCitySheet';
+import { CookieConsentSheet } from './CookieConsentSheet';
 import { useCity } from '../../context/CityContext';
 import { Link } from 'react-router-dom';
 
@@ -10,13 +12,48 @@ const Header = () => {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCitySelectOpen, setIsCitySelectOpen] = useState(false);
+  const [isConfirmCityOpen, setIsConfirmCityOpen] = useState(false);
+  const [isCookieOpen, setIsCookieOpen] = useState(false);
   const [tempCity, setTempCity] = useState<string | null>(null);
+
+  const checkCookiesConsent = () => {
+    const consent = localStorage.getItem('fra:cookie_consent');
+    if (!consent) {
+      setIsCookieOpen(true);
+    }
+  };
 
   useEffect(() => {
     if (!city) {
-      setIsCitySelectOpen(true);
+      setIsConfirmCityOpen(true);
+    } else {
+      checkCookiesConsent();
     }
-  }, [city]);
+  }, []);
+
+  const handleConfirmAlmaty = () => {
+    setCity('Алматы');
+    setTempCity(null);
+    setIsConfirmCityOpen(false);
+
+    setTimeout(() => {
+      checkCookiesConsent();
+    }, 250);
+  };
+
+  const handleRejectCity = () => {
+    setIsConfirmCityOpen(false);
+    setIsCitySelectOpen(true);
+
+    setTimeout(() => {
+      checkCookiesConsent();
+    }, 250);
+  };
+
+  const handleAcceptCookies = () => {
+    localStorage.setItem('fra:cookie_consent', 'true');
+    setIsCookieOpen(false);
+  };
 
   return (
     <>
@@ -57,6 +94,21 @@ const Header = () => {
         }}
       />
 
+      {/* city */}
+      <ConfirmCitySheet
+        isOpen={isConfirmCityOpen}
+        city='Алматы'
+        onYes={handleConfirmAlmaty}
+        onNo={handleRejectCity}
+      />
+
+      {/* cookie */}
+      <CookieConsentSheet
+        isOpen={isCookieOpen}
+        onAccept={handleAcceptCookies}
+      />
+
+      {/* city select */}
       <MobileCitySelect
         isOpen={isCitySelectOpen}
         onClose={() => setIsCitySelectOpen(false)}
@@ -66,6 +118,14 @@ const Header = () => {
           setCity(city);
           setTempCity(null);
           setIsCitySelectOpen(false);
+
+          setTimeout(() => {
+            checkCookiesConsent();
+          }, 250);
+        }}
+        onBackToConfirm={() => {
+          setIsCitySelectOpen(false);
+          setIsConfirmCityOpen(true);
         }}
       />
     </>

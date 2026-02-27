@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { catalog_data } from './elements/catalog.data';
+import { catalog_data } from './constants/catalog.data';
 import QuickSearchTabs from './elements/QuickSearchTabs';
 import { useTreeVehicleByKType } from '../../hooks/useModel';
 import { useState } from 'react';
@@ -26,7 +26,7 @@ const Catalog = () => {
   return (
     <div
       style={{ paddingTop: showAll ? '70px' : '0px' }}
-      className={`block lg:hidden bg-[#F6F6F6]  ${showAll && 'min-h-screen'}`}
+      className={`block lg:hidden bg-[#F6F6F6] ${showAll && 'min-h-screen pb-20 lg:pb-0'}`}
     >
       {!!showAll && <QuickSearchTabs />}
       <div className='w-full px-4 mb-4'>
@@ -81,7 +81,7 @@ const Catalog = () => {
                       </div>
                     </div>
                   ))
-            : // vehicle нет → показываем items
+            : // vehicle нет -> показываем items
               items.map((item: any) => (
                 <button
                   key={item.id}

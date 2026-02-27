@@ -34,7 +34,7 @@ const ArticlesProductPage = () => {
   }
 
   return (
-    <div className='min-h-screen bg-gray-100 pt-14'>
+    <div className='min-h-screen bg-gray-100 pt-14 pb-20 lg:pb-0'>
       <SearchHeader />
       <ProductGallery product={data} />
       <ProductTabs product={data} />

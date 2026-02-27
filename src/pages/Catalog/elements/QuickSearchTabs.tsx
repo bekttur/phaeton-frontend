@@ -3,11 +3,14 @@ import { useState } from 'react';
 import MobileModelSelect from '../../Search/elements/MobileModelSelect';
 import MobileSearch from '../../Search/MobileSearch';
 import { useSearchModal } from '../../../context/SearchModalContext';
+import { useTranslation } from 'react-i18next';
 
 const QuickSearchTabs = () => {
   const [activeTab, setActiveTab] = useState<'catalog' | 'vin' | 'model'>(
-    'catalog'
+    'catalog',
   );
+
+  const { t } = useTranslation('search');
 
   const [isCarSelectOpen, setIsCarSelectOpen] = useState(false);
   const [selectedCar, setSelectedCar] = useState({
@@ -33,7 +36,7 @@ const QuickSearchTabs = () => {
                 : ' text-[#858588]'
             }`}
           >
-            {tab === 'catalog' ? 'Каталог' : tab === 'vin' ? 'VIN' : 'По марке'}
+            {tab === 'catalog' ? t('catalog') : tab === 'vin' ? t('vin') : t('model')}
           </button>
         ))}
       </fieldset>
@@ -42,7 +45,7 @@ const QuickSearchTabs = () => {
         <div className='relative mt-3'>
           <input
             type='text'
-            placeholder='Поиск запчастей'
+            placeholder={t('search_placeholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onClick={open}
@@ -64,7 +67,7 @@ const QuickSearchTabs = () => {
           >
             {selectedCar.brand
               ? `${selectedCar.brand} ${selectedCar.model} ${selectedCar.year} ${selectedCar.modification}`
-              : 'Выбрать марку'}
+              : t('selected_model_placeholder')}
             <ChevronDown className='pointer-events-none' color='#8C8C8C' />
           </button>
         </div>
@@ -77,7 +80,7 @@ const QuickSearchTabs = () => {
             alt=''
           />
           <span className='text-sm text-[#636366]'>
-            Быстрый и точный подбор запчастей
+            {t('vin_info')}
           </span>
         </div>
       )}

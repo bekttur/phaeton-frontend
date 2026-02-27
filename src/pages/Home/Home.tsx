@@ -8,9 +8,8 @@ import PopularProducts from './elements/PopularProducts';
 
 const Home = () => {
   return (
-    <div className='w-full bg-[#F6F6F6]'>
+    <div className='w-full bg-[#F6F6F6] pb-20 lg:pb-0'>
       <HeroSection />
-      {/* <CatalogCategories /> */}
       <span className='block lg:hidden px-4 mt-6 mb-2 text-lg font-semibold'>
         Быстрый поиск запчасти
       </span>

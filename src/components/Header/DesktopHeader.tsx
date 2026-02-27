@@ -9,7 +9,6 @@ const DesktopHeader = () => {
 
   return (
     <div className='hidden lg:block fixed top-0 left-0 right-0 z-50 bg-white border-b'>
-      {/* Верхняя строка */}
       <div className='border-b border-gray-200 bg-[#F6F6F6]'>
         <div className='mx-auto px-32 py-3 flex items-center justify-between'>
           <div className='flex items-center gap-3'>
@@ -75,7 +74,6 @@ const DesktopHeader = () => {
         </div>
       </div>
 
-      {/* Нижняя строка */}
       <div className='mx-auto px-32 py-4 flex justify-between'>
         <div className='flex items-center gap-6 lg:w-[70%]'>
           {/* Логотип */}
@@ -85,7 +83,6 @@ const DesktopHeader = () => {
             </span>
           </div>
 
-          {/* Выпадающий список */}
           {/* <div className='flex-shrink-0'>
             <button className='flex items-center gap-2 px-4 py-2 text-md font-semibold text-[#315448] hover:bg-gray-50 rounded-md transition relative'>
               <span>Каталог запчастей</span>
@@ -108,7 +105,6 @@ const DesktopHeader = () => {
             <p>Каталог</p>
           </button>
 
-          {/* Поиск */}
           <div className='flex-1 flex items-center gap-4 bg-[#EAECED] py-1 px-1.5 rounded-[10px]'>
             {/* <div className='relative flex items-center gap-2'>
               <button

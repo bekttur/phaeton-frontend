@@ -15,7 +15,6 @@ export default function ProductTabs({ product }: any) {
 
   return (
     <div className='bg-white mt-2 rounded-xl mx-4 p-3'>
-      {/* Вкладки */}
       <div className='flex bg-[#EAECED] p-1 rounded-[10px] '>
         <button
           onClick={() => setActiveTab('specs')}

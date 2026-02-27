@@ -7,8 +7,10 @@ import { useCity } from '../../../context/CityContext';
 import { DELIVERY_STORAGE_KEY } from '../constants/storage';
 import { useRetailPvz } from '../../../hooks/useData';
 import type { DeliveryData } from './CheckoutPage';
+import SearchAddressModal from './SearchAddressModal';
+import MapConfirmModal from './MapConfirmModal';
 
-interface DeliveryMethodStepProps {
+interface IDeliveryMethodStep {
   data: DeliveryData;
   onUpdate: (
     data: DeliveryData | ((prev: DeliveryData) => DeliveryData),
@@ -32,21 +34,29 @@ export default function DeliveryMethodStep({
 
   expressDelivery,
   onExpressChange,
-}: DeliveryMethodStepProps) {
+}: IDeliveryMethodStep) {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const isValid = data.method && data.address;
   const { city } = useCity();
+  
   const { data: pvzData, isLoading } = useRetailPvz();
 
   const [isOpenCartModel, setIsOpenCartModel] = useState(false);
   const [isPickupModalOpen, setIsPickupModalOpen] = useState(false);
   const [isMailboxModalOpen, setIsMailboxModalOpen] = useState(false);
 
-  const pickupPoints: PickupPoint[] = useMemo(() => {
-    if (!pvzData?.PvzList || !city) return [];
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [mapConfirmData, setMapConfirmData] = useState<{
+    address: string;
+    lat: string;
+    lng: string;
+  } | null>(null);
 
-    return pvzData.PvzList.filter((p: any) => p.regionRu === city).map(
+  const pickupPoints: PickupPoint[] = useMemo(() => {
+    if (!pvzData || !city) return [];
+
+    return pvzData.filter((p: any) => p.regionRu === city).map(
       (p: any) => ({
         id: p.id,
         coords: [Number(p.locLatitude), Number(p.locLongitude)],
@@ -220,12 +230,12 @@ export default function DeliveryMethodStep({
 
       {data.method === 'courier' && (
         <div className='space-y-3 mb-4'>
-          <button
+          {/* <button
             className='w-full mt-2 py-3 rounded-[10px] text-base bg-[#F5F5F5] text-[#4EBC73] font-medium flex items-center justify-center'
             onClick={() => setIsOpenCartModel(true)}
           >
             Указать на карте
-          </button>
+          </button> */}
           <div>
             <ShowInCartModal
               isOpen={isOpenCartModel}
@@ -245,7 +255,7 @@ export default function DeliveryMethodStep({
               }}
             />
 
-            <input
+            {/* <input
               type='text'
               placeholder='Адрес'
               value={data.address}
@@ -253,7 +263,16 @@ export default function DeliveryMethodStep({
               className={`w-full px-4 py-3 bg-[#EAECED] rounded-[10px] focus:outline-none focus:ring-2 focus:ring-[#4EBC73] ${
                 errors.address ? 'ring-2 ring-red-500' : ''
               }`}
+            /> */}
+            <input
+              type='text'
+              value={data.address}
+              readOnly
+              placeholder='Адрес'
+              onClick={() => setIsSearchOpen(true)}
+              className='w-full px-4 py-3 bg-[#EAECED] rounded-[10px] cursor-pointer'
             />
+
             {errors.address && (
               <p className='text-red-500 text-xs mt-1'>{errors.address}</p>
             )}
@@ -396,6 +415,27 @@ export default function DeliveryMethodStep({
       >
         Продолжить
       </button>
+
+      <SearchAddressModal
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        onSelect={(addr) => {
+          setIsSearchOpen(false);
+          setMapConfirmData(addr);
+        }}
+      />
+
+      <MapConfirmModal
+        data={mapConfirmData}
+        onClose={() => setMapConfirmData(null)}
+        onConfirm={(addr) => {
+          onUpdate((prev) => ({
+            ...prev,
+            ...addr,
+          }));
+          setMapConfirmData(null);
+        }}
+      />
     </div>
   );
 }

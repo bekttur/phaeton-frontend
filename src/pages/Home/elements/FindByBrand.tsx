@@ -12,7 +12,6 @@ const FindByBrand = () => {
     { name: 'Audi', img: 'brands/audi.png', width: 47, height: 26 },
   ];
 
-  // Повторяем список
   const repeatedBrands = Array(5).fill(brands).flat();
   const repeatedBrandsLg = Array(9).fill(brands).flat(); 
 

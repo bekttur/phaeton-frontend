@@ -1,4 +1,12 @@
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  type ReactNode,
+} from 'react';
+import { getOrCreateSessionId } from '../shared/lib/session';
+import apiBackendFra from '../api/services/api';
+// import { useAuth } from './AccessTokenContext';
 
 export interface CartItem {
   ItemId: string;
@@ -23,18 +31,22 @@ export interface CartItem {
   quantity: number;
 }
 
-
 interface CartContextType {
   items: CartItem[];
+  fetchCart: () => Promise<void>;
   addItem: (product: any) => void;
-  removeItem: (itemId: string) => void;
-  updateQuantity: (itemId: string, quantity: number) => void;
+  removeItem: (article: string, brand: string) => Promise<void>;
+  removeAllItems: (article: string, brand: string) => Promise<void>;
+  updateQuantity: (
+    itemId: string,
+    warehouseId: string,
+    quantity: number,
+  ) => void;
   clearCart: () => void;
   isCartOpen: boolean;
   openCart: () => void;
   closeCart: () => void;
 
-  // добавляем checkout
   isCheckoutOpen: boolean;
   openCheckout: () => void;
   closeCheckout: () => void;
@@ -46,69 +58,116 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  // const { token } = useAuth();
 
   const openCheckout = () => setIsCheckoutOpen(true);
   const closeCheckout = () => setIsCheckoutOpen(false);
 
-  const addItem = (product: any) => {
-    setItems((prev) => {
-      const existingItem = prev.find(
-        (item) =>
-          item.ItemId === product.ItemId &&
-          item.WarehouseId === product.WarehouseId
-      );
+  const fetchCart = async () => {
+    const { data } = await apiBackendFra.get('/shoppingcarts');
 
-      if (existingItem) {
-        return prev.map((item) =>
-          item.ItemId === product.ItemId &&
-          item.WarehouseId === product.WarehouseId
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      }
+    const mappedItems = data.map((item: any) => ({
+      ItemId: item.item1CGuid,
+      Name: item.name,
+      PhotoItem: '',
+      Brand: item.brand,
+      Article: item.article,
+      WarehouseId: item.warehouse1CGuid,
+      Warehouse: item.warehouseName,
+      CategoryId: item.category1CGuid,
+      Price: item.price,
+      CurrencyCode: 'KZT',
+      ExpectedDelivery: item.expectedDelivery,
+      GuaranteedDelivery: item.guaranteedDelivery,
+      quantity: item.count,
+    }));
 
-      return [
-        ...prev,
-        {
-          ItemId: product.ItemId,
-
-          Name: product.Name,
-          PhotoItem: product.PhotoItem,
-
-          Brand: product.Brand,
-          Article: product.Article,
-
-          WarehouseId: product.WarehouseId,
-          Warehouse: product.Warehouse,
-
-          CategoryId: product.CategoryId,
-
-          Price: product.Price,
-          CurrencyCode: product.CurrencyCode,
-
-          ExpectedDelivery: product.ExpectedDelivery,
-          GuaranteedDelivery: product.GuaranteedDelivery,
-
-          quantity: 1,
-        },
-      ];
-    });
+    setItems(mappedItems);
   };
 
-  const removeItem = (itemId: string) => {
-    setItems((prev) => prev.filter((item) => item.ItemId !== itemId));
+  const addItem = async (product: any) => {
+    const sessionID = getOrCreateSessionId();
+
+    const body = {
+      sessionID,
+      supplierID: product.SupplierId ?? 0,
+      article: product.Article,
+      brand: product.Brand,
+      name: product.Name,
+      price: product.Price,
+      providerPrice: product.ProviderPrice ?? 0,
+      warehouse1CGuid: product.Warehouse1CGuid,
+      category1CGuid: product.Category1CGuid,
+      comment: '',
+      count: 1,
+      oldPrice: 0,
+      oldCount: 0,
+      providerItemID: product.ProviderItemID ?? '',
+      providerWarehouseID: product.ProviderWarehouseID ?? '',
+      optionsJson: '',
+      expectedDelivery: product.ExpectedDelivery,
+      guaranteedDelivery: product.GuaranteedDelivery,
+      unit: product.Unit ?? '',
+      item1CGuid: product.Item1CGuid,
+      orderType: 0,
+      discount: 0,
+      minSize: 0,
+      basePrice: product.Price,
+      priceWithoutDiscount: product.Price,
+      warehouseName: product.Warehouse,
+      cityID: product.CityId ?? 0,
+      contract1CGuid: product.Contract1CGuid,
+    };
+
+    await apiBackendFra.post('/shoppingcarts/add', body);
+
+    await fetchCart();
   };
 
-  const updateQuantity = (itemId: string, quantity: number) => {
+  const removeItem = async (article: string, brand: string) => {
+    const sessionId = getOrCreateSessionId();
+
+    const body = {
+      article,
+      brand,
+      sessionId,
+    };
+
+    await apiBackendFra.post('/shoppingcart/remove', body);
+
+    await fetchCart();
+  };
+
+  const removeAllItems = async (article: string, brand: string) => {
+    const sessionId = getOrCreateSessionId();
+
+    const body = {
+      article,
+      brand,
+      sessionId,
+    };
+
+    await apiBackendFra.post('/shoppingcart/remove-all', body);
+
+    await fetchCart();
+  };
+
+  const updateQuantity = (
+    itemId: string,
+    warehouseId: string,
+    quantity: number,
+  ) => {
     if (quantity <= 0) {
-      removeItem(itemId);
+      removeItem(itemId, warehouseId);
       return;
     }
 
     setItems((prev) =>
       prev.map((item) =>
-        item.ItemId === itemId ? { ...item, quantity } : item
-      )
+        item.ItemId === itemId && item.WarehouseId === warehouseId
+          ? { ...item, quantity }
+          : item,
+      ),
     );
   };
 
@@ -128,6 +187,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     <CartContext.Provider
       value={{
         items,
+        fetchCart,
         isCartOpen,
         isCheckoutOpen,
         openCheckout,
@@ -137,6 +197,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         removeItem,
         updateQuantity,
         addItem,
+        removeAllItems,
         clearCart,
       }}
     >

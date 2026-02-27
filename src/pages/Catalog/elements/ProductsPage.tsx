@@ -21,36 +21,13 @@ function ProductsPage({ items, article, brand }: IProductsPage) {
 
   return (
     <div className='lg:hidden w-full h-full bg-gray-50'>
-      {/* <Breadcrumb
-        items={[
-          { title: 'Главная', href: '/' },
-          { title: 'Каталог товаров', href: '/catalog' },
-          { title: 'Шины', href: '/2' },
-          { title: 'Шины для легковых авто' },
-        ]}
-      /> */}
-
-      {/* <div className="py-4">
-        <h1 className="text-xl font-bold text-[#3E3E3E]">
-          Шины для легковых авто
-        </h1>
-        <p className="text-sm text-[#3E3E3E] font-semibold">120 товаров</p>
-      </div> */}
-
-      {/* <div className="py-4 flex items-center justify-between">
-        <button className="flex items-center gap-2 px-3 py-1.5 border border-gray-300 rounded-lg text-sm text-[#565656] font-semibold">
-          Сначала недорогие
-          <ChevronDown className="w-4 h-4" color="#565656" />
-        </button>
-        <button className="border border-gray-300 px-1.5 py-1.5 rounded-lg text-sm font-medium text-[#565656]">Фильтры</button>
-      </div> */}
-
       <div>
         <div className='grid grid-cols-2 gap-3 pb-4'>
           {!!items &&
             items.map((product) => (
               <Link
                 to={`/product/${product.ItemId}`}
+                key={product.ItemId}
                 state={{
                   product,
                   from: {

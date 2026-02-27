@@ -112,7 +112,7 @@ const PopularProducts = () => {
 
   const toggleFavorite = (id: number) => {
     setFavorites((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
     );
   };
 
@@ -142,11 +142,11 @@ const PopularProducts = () => {
                     </span>
                   )}
 
-                  {/* ❤️ сердечко (кликабельное) */}
+                  {/* сердечко */}
                   <button
                     onClick={(e) => {
-                      e.preventDefault(); // ❗ отменяем переход по Link
-                      e.stopPropagation(); // ❗ останавливаем всплытие
+                      e.preventDefault();
+                      e.stopPropagation(); 
                       toggleFavorite(product.id);
                     }}
                     className={`absolute top-2 right-2 p-1 ${
@@ -218,12 +218,12 @@ const PopularProducts = () => {
       </div>
 
       <div className='lg:hidden block w-full h-full bg-gray-50 px-4'>
-
         <div>
           <div className='grid grid-cols-2 gap-3 pb-4'>
             {!!products &&
-              products.map((product) => (
+              products.map((product, idx) => (
                 <div
+                  key={idx}
                   className='bg-white rounded-xl overflow-hidden shadow-sm'
                 >
                   <div className='relative bg-[#E9F0F3]'>

@@ -19,9 +19,8 @@ const VinWindow = ({ handleCloseVin }: VinWindowProps) => {
   return (
     <div
       className='lg:hidden relative w-full max-w-lg bg-white overflow-hidden flex flex-col'
-      style={{ height: `${viewportHeight}px` }} // ← динамическая высота
+      style={{ height: `${viewportHeight}px` }}
     >
-      {/* Кнопка закрытия */}
       <button
         onClick={handleCloseVin}
         className='absolute top-6 right-6 z-10 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-lg hover:bg-gray-50 transition-colors'
@@ -29,7 +28,6 @@ const VinWindow = ({ handleCloseVin }: VinWindowProps) => {
         <X className='w-4 h-4 text-gray-700' />
       </button>
 
-      {/* Контент с прокруткой */}
       <div className='flex-1 overflow-y-auto'>
         <div
           className='relative h-[300px] bg-gradient-to-b from-[#4EBC73] to-[#65DDC0] flex items-end justify-center overflow-hidden pb-8'
@@ -87,7 +85,6 @@ const VinWindow = ({ handleCloseVin }: VinWindowProps) => {
         </div>
       </div>
 
-      {/* Нижние кнопки — фиксированы */}
     </div>
   );
 };
